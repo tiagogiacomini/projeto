@@ -1,0 +1,245 @@
+	/* MOBILE FIRST */
+	/* OS CSS PARA DESKTOP ESTAVAO NA QUERY MEDIA > 768px
+
+    /* GLOBAIS */ 
+    html, body {
+    background-color: #e9e9e9;
+    color: #666666;
+    font-family: 'Abel', sans-serif;
+    font-weight: 100;
+    margin: 0;
+    margin-top: 0;
+    
+    }
+
+    a {
+    	text-decoration: none;
+    }
+
+
+	.pace {
+	  -webkit-pointer-events: none;
+	  pointer-events: none;
+
+	  -webkit-user-select: none;
+	  -moz-user-select: none;
+	  user-select: none;
+	}
+
+	.pace-inactive {
+	  display: none;
+	}
+
+	.pace .pace-progress {
+	  background: #29d;
+	  position: fixed;
+	  z-index: 2000;
+	  top: 0;
+	  right: 100%;
+	  width: 100%;
+	  height: 3px;
+	}
+
+
+
+
+	.sidebar {
+
+		display: none;
+
+	}
+
+	.btn_menu {
+		position: absolute;
+		left: 10px;
+		top: 10px;
+		z-index: 999;
+		color: #fff;
+	}
+
+	.center_obj {
+		align-items: center;
+  		display: flex;
+  		flex-direction: row;
+  		flex-wrap: wrap;
+  		justify-content: center;
+	}
+
+	.container_painel {
+	
+	    position: absolute;
+	   	height: 100%;
+	    width: 100%;
+	    color: #fff;
+
+	}
+
+	.container_listagem {
+	
+		position: relative;
+		color: #666;
+		top: 80px;
+		font-size: 18px;
+		width: 100%;
+	}
+
+	.form-group {
+
+		background-color: #ddd;
+	    border: 1px solid #ccc;
+	    border-radius: 0px 0px 5px 5px;
+	    padding: 10px;
+	    margin: 0px 10px 10px 10px;
+	}
+
+	.listagem {
+		
+		font-size: 16px;
+
+	}
+
+
+	.top_bar {
+
+	    position: absolute;
+	    height: 50px;
+	    width: 100%;
+	    background-color: #265A88;
+	    border-width: 0px 0px 3px;
+	    border-color: #1e496f;
+	    border-style: solid;
+
+	}
+
+
+	h1 {
+		
+		position: relative;
+		top: -5px;
+
+	}
+
+	.inputs_form {
+		
+		height: 50px;
+		font-size: 18px;
+		
+	}
+
+	.inputs_texto {
+
+		width: 450px;
+
+	}
+
+	.texto_comum {
+			
+		font-size: 12px;
+
+	}
+
+	.container_botoes {
+		position: relative;
+		width: 100%;
+		top: 200px;
+		height: 250px;
+		z-index: 9999;
+		text-align: center;
+	}
+
+	.btn_painel {
+	    
+	    position: relative;
+	    display: inline-block;
+	    width: 100px;
+	    height: 100px;
+	    border: 1px solid #000;
+	    margin: 10px;
+	    color: #fff;
+	    background-color: #265A88;
+	    border-width: 0px 0px 3px;
+	    border-color: #1e496f;
+	    border-style: solid;
+		border-radius: 5px;
+		font-size: 16px;
+	}
+
+	.btn_painel i {
+	
+		position: relative;
+		top: 15px;
+	}
+	.btn_painel p {
+	
+		position: relative;
+		top: 20px;
+	}
+
+
+
+	.botton_bar {
+		
+		position: absolute;
+		bottom: 0px;
+		width: 100%;
+	    height: 40px;
+	    background-color: #265A88;
+	    border-width: 3px 0px 0px;
+	    border-color: #1e496f;
+	    border-style: solid;
+	    color: #fff;
+
+	}
+
+	.container_forms {
+
+		position: relative;
+		top: 80px;
+		padding: 20px;
+		
+	}
+
+	
+
+	/* DESKTOP */
+	/* PARA devices MAIORE QUE 768*/
+	@media all and (min-width: 768px) {
+
+
+		/* classes */ 
+		.sidebar {
+
+			float: left;
+			width: 250px;
+			background-color: #00003c;
+			height: 100%;			
+		
+		}
+
+		.texto_comum {
+			
+			font-size: 12px;
+
+		}
+
+		.img_usuario {
+			width: 90px;
+			position: relative;
+			top: 20px;
+
+		}
+
+		.p_nome_usuario {
+			font-size: 20px;
+			color: #fff;
+			z-index: 999;
+		}
+
+		.container_forms {
+
+			
+		}
+
+  	}	
+
+ 	
