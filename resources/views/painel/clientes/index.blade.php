@@ -34,12 +34,18 @@
 	  						@else
 	  						<input type="text" class="form-control inputs_form" name="pesquisa" id="edit_busca" placeholder="Insira CPF/CNPJ ou RAZÃO..." autofocus>
 	  						@endif
-	  						<div class="input-group-addon"><i class="fa fa-search fa-2x"></i></div>
+	  						<div class="input-group-addon"><button type="submit" style="border: none; background-color: #eee;"><i class="fa fa-search fa-2x"></i></button></div>
 	  					</div>
 					</div>
 				
 				</form>
 			</div>
+
+			@if(Session::has('cad_cliente_msg_ok'))
+			    <div class="alert alert-success">
+			        {!! Session::get('cad_cliente_msg_ok') !!}
+			    </div>
+			@endif
 
 			@if (isset($clientes))
 			<table class="table table-hover table-striped">

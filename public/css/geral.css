@@ -16,6 +16,10 @@
     	text-decoration: none;
     }
 
+    .full-height {
+    	height: 100vh;
+	}	
+
 
 	.pace {
 	  -webkit-pointer-events: none;
@@ -47,6 +51,12 @@
 
 		display: none;
 
+	}
+
+    .flex-center {
+     	align-items: center;
+    	display: flex;
+    	justify-content: center;
 	}
 
 	.btn_menu {

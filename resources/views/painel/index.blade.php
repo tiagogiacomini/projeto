@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div class="container_botoes center_obj">
+        <div class="container_botoes full_height flex_center center_obj">
             <div>
                 
                 <a href="{!! route('pedido') !!}" >
