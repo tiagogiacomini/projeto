@@ -13,28 +13,10 @@ use DB;
 class PedidosController extends Controller 
 {
 
-	 static function getPedido(Request $request) {
+	 static function index(Request $request) {
 
-
-	 	$dados_cliente = array();
-
- 		$dados_cliente = ['cnpj' => $request->cnpj_cliente];
- 				
-
-		if (!empty($dados_cliente['cnpj'])) {
-
-			$query_cliente = Clientes::where('CNPJ', 'like', $dados_cliente['cnpj'])->first(); 
-			
-			if (!empty($query_cliente)) {
-				$dados_cliente['nome'] = $query_cliente->NOME_FANTASIA;	
-
-			} else {
-				$dados_cliente['achou'] = 'CNPJ/CPF informado não foi encontrado!';
-			}
-
-		}	
 		
-		return view('painel/pedidos/create', compact('dados_cliente'));
+		return view('painel/pedidos/create');
 
 	}
 

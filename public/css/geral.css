@@ -13,7 +13,23 @@
     }
 
     a {
+    	
     	text-decoration: none;
+
+    }
+
+    .links_icones {
+
+    	color : #fff;
+    	text-decoration: none;
+
+    }
+
+    .links_icones:hover {
+    	
+    	color: #fff;
+		text-decoration: none;
+
     }
 
     .full-height {
@@ -43,9 +59,6 @@
 	  width: 100%;
 	  height: 3px;
 	}
-
-
-
 
 	.sidebar {
 
@@ -93,14 +106,15 @@
 		width: 100%;
 	}
 
-	.form-group {
+	.form-group-style {
 
 		background-color: #ddd;
 	    border: 1px solid #ccc;
-	    border-radius: 0px 0px 5px 5px;
+	    border-radius: 5px;
 	    padding: 10px;
 	    margin: 0px 10px 10px 10px;
 	}
+
 
 	.listagem {
 		
@@ -209,7 +223,18 @@
 		
 	}
 
-	
+	.titulo-gbox {
+		font-size: 18px;
+		font-weight: bold;
+	}
+
+
+	.invisivel {
+
+		display: none;
+
+	}
+
 
 	/* DESKTOP */
 	/* PARA devices MAIORE QUE 768*/

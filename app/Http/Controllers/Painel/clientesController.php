@@ -21,8 +21,8 @@ class ClientesController extends Controller
 			$request->session()->forget('status');
 		}	
 
-		$clientes_count = Clientes::all()->count();
 		$clientes       = Clientes::orderBy('CNPJ')->paginate(10);
+		$clientes_count = $clientes->total();
 
 		return view('painel/clientes/index', compact('clientes', 'clientes_count'));
 		
@@ -52,7 +52,7 @@ class ClientesController extends Controller
 	                        ->paginate(10)
 	                        ->appends(['pesquisa' => $request->pesquisa]);
 
-		$clientes_count = $clientes->count();
+		$clientes_count = $clientes->total();
 		$pesquisa	    = $request->pesquisa;
 
  		return view('painel/clientes/index', compact('clientes', 'clientes_count', 'pesquisa'));
@@ -80,7 +80,6 @@ class ClientesController extends Controller
 
 
 		if (empty($request->edit_ierg)) {
-			
 
 			$request->session()->flash('ierg_cliente', 'É obrigatório o preenchimento da IE/RG!');
 			return view('painel/clientes/create');
@@ -146,13 +145,13 @@ class ClientesController extends Controller
 			$cliente->save();
 
 
-			return redirect()->route('clientes')->with('cad_cliente_msg_ok', 'Cliente cadastrado com sucesso!');
+			return redirect()->route('clientes')->with('cad_cliente_msg', 'Cliente cadastrado com sucesso!');
 
 		}
 		
 		catch(Exception $e) {
 
-			return redirect()->route('clientes')->with('cad_cliente_msg_erro', $e->getMessage());			
+			return redirect()->route('clientes')->with('cad_cliente_msg', $e->getMessage());			
 
 		}
 

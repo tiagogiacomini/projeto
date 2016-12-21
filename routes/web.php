@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use App\Models\Produtos;
-use Illuminate\Pagination\Paginator;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,22 +30,25 @@ Route::post('painel/home', [
 ]);
 */
 
-Route::get( 'painel/home'    , 'Painel\painelController@getPainel'     )->name( 'home'     );
+Route::get( 'painel/home', 'Painel\painelController@getPainel')->name('home');
 
 // faz a busca do CEP
 Route::get('painel/buscacep/{cep}', 'Painel\painelController@buscaCEP');
 
+// faz a busca do CLIENTE
+Route::get('painel/buscacliente/{pesquisa}', 'Painel\painelController@buscaCliente');
+
 
 // PRODUTOS
-Route::get( 'painel/produtos', 'Painel\produtosController@getProdutos' )->name( 'produtos' );
+Route::get( 'painel/produtos', 'Painel\produtosController@index' )->name('produtos');
+	Route::get('painel/produtos/busca', 'Painel\produtosController@getBuscaProduto');	
 
 // CLIENTES
-Route::get( 'painel/clientes', 'Painel\clientesController@index' )->name( 'clientes' );
+Route::get( 'painel/clientes', 'Painel\clientesController@index' )->name('clientes');
 	Route::get('painel/clientes/busca', 'Painel\clientesController@getBuscaCliente');
 	Route::get('painel/clientes/adiciona', 'Painel\clientesController@create');	
 	Route::post('painel/clientes/store', 'Painel\clientesController@store');
 
-
 // PEDIDOS
-Route::get( 'painel/pedido', 'Painel\pedidosController@getPedido')->name( 'pedido'   );
+Route::get( 'painel/pedido', 'Painel\pedidosController@index')->name('pedido');
 

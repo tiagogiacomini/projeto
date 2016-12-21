@@ -10,7 +10,7 @@
 	<body>
 		<div class="container_painel">
 			<div class="btn_menu">
-				<i class="fa fa-bars fa-2x"></i>
+				<i class="fa fa-chevron-left fa-2x"></i>
 			</div>
 			<div class="top_bar center_obj">
 				<i class="fa fa-users fa-2x"></i><h2>&nbspInclusão de Cliente</h2>
@@ -71,7 +71,7 @@
 					<label for="edit_cep">CEP</label>	
 					<div class="input-group">
 						<input class="form-control" type="number" value="{!! \Request::input('edit_cep') !!}" name="edit_cep" id="edit_cep" placeholder="Insira o CEP (sem pontos ou traços)">
-						<div class="input-group-addon"><i class="fa fa-search"></i></div>
+						<div class="input-group-addon"><button type="button" id="btn_buscacep" style="border: none; background-color: #eee;"><i class="fa fa-search"></i></div>
 					</div>
 						
 					

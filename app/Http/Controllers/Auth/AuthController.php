@@ -24,10 +24,7 @@ class AuthController extends Controller
 
 
 	public function postLogin(Request $request) {
-
-		
-		
-		
+	
 
 		if (isset($request->edit_usuario )) {
 	   		$usuario_nome = mb_strtoupper($request->edit_usuario);
@@ -55,7 +52,7 @@ class AuthController extends Controller
 		
 				$senha_md5_usuario = md5($usuario_senha);
 				$senha_md5_banco   = $usuario[0]->SENHA;
-		
+
 			} else {
 
 				$falha_login = true;
