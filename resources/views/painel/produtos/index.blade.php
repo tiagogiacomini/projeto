@@ -4,26 +4,23 @@
 
 </head>
 	<body>
-		
-
-
 		<div class="container_painel">
 			<div class="btn_menu">
-				<i class="fa fa-chevron-left fa-2x"></i>
+				<a href="{!! route('home') !!}" class="links_icones"><i class="fa fa-home fa-2x"></i></a>
 			</div>
 			<div class="top_bar center_obj">
-				<i class="fa fa-puzzle-piece fa-2x"></i><h1>&nbspProdutos</h1>
+				<i class="fa fa-puzzle-piecefa-2x"></i><h1>&nbspProdutos</h1>
 			</div>
-
 		</div>
-
+		
 		<div class="container_listagem">
-			<div class="center_obj">
-				<form class="form-inline" method="GET" action="/painel/produtos/busca">
+			
+			<div class="container-fluid form-group-style">
+				<form method="GET" action="/painel/produtos/busca">
 					{{-- csrf_field() --}}
-
-					<div class="form-group">
 					
+					<p>Pesquisa</p>
+
 					@if(Session::has('msg_pesquisa'))
 					    <div class="alert alert-warning">
 					        {!! Session::get('msg_pesquisa') !!}
@@ -38,32 +35,36 @@
 	  						<input type="text" class="form-control inputs_form" name="pesquisa" id="edit_busca" placeholder="Insira o MODELO ou DESCRIÇÃO..." autofocus>
 	  						@endif
 	  						<div class="input-group-addon"><button type="submit" style="border: none; background-color: #eee;"><i class="fa fa-search fa-2x"></i></div>
-	  					</div>
-					</div>
-				
+	  					</div>			
 				</form>
 			</div>
+			</br>
+		
+			<div class="container-fluid form-group-style">
 
 			@if (isset($produtos))
 			<table class="table table-hover table-striped">
 	  			<thead> 
 		  			<tr class="row">
-		  				<th class="col-xs-2 col-md-2">CÓD.</th>
-		  				<th class="col-xs-8 col-md-8">DESCRIÇÃO</th>
+		  				<th class="col-xs-4 col-md-2">MODELO</th>
+		  				<th class="col-xs-8 col-md-10">DESCRIÇÃO</th>
 		  			</tr>
 		  		</thead>
 
 	  			<tbody>
 	  			@foreach($produtos as $produto)
 		  			<tr class="row listagem">
-		  				<td class="col-xs-2 col-md-2"><a href="{!! $produto->ID_PRODUTO !!}">{!! $produto->MODELO !!}</a></td>
-						<td class="col-xs-8 col-md-8"><a href="{!! $produto->ID_PRODUTO !!}">{!! $produto->DESCRICAO !!}</td>
+		  				<td class="col-xs-4 col-md-2">{!! $produto->MODELO !!}</td>
+						<td class="col-xs-8 col-md-10">{!! $produto->DESCRICAO !!}</td>
 				  	</tr>
 		  		@endforeach
 		  		</tbody>
 			</table>
 			@endif
 			
+
+			</div>
+
 			<div class="center_obj">
 				<center>
 					@if ((isset($produtos_count) && ($produtos_count == 0)) && (!Session::has('msg_pesquisa'))) 
@@ -84,9 +85,6 @@
 			@endif
 			</div>
 		</div>
-
-		
-		
 		
 	</body>
 </html>

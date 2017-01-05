@@ -8,5 +8,9 @@ class Pedidos extends Model
 {
 
 
-    protected $table = 'PEDIDOS';
+    protected $table      = 'PEDIDOS';
+    public $incrementing  = true;
+    public $timestamps    = false;
+    protected $primaryKey = ('ID_PEDIDO');
+
 }

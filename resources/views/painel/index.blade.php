@@ -8,10 +8,10 @@
     <div>
         <div class="container_painel">
             <div class="btn_menu">
-                <i class="fa fa-power-off fa-2x"></i>
+                <a href="{!! route('logout') !!}" class="links_icones"><i class="fa fa-power-off fa-2x"></i></a>
             </div>
             <div class="top_bar center_obj">
-                <i class="fa fa-user-circle-o fa-2x"></i><h1>&nbsp{!!config('app.name')!!}</h1>
+                <i class="fa fa-user-circle-o fa-2x"></i><h1>&nbsp{!! config('app.name') !!}</h1>
             </div>
         </div>
 

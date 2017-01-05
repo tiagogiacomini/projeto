@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Clientes extends Model
 {
 
-	public $timestamps = false;
-    protected $table   = 'CLIENTES';
+	public $timestamps    = false;
+	public $incrementing  = false;
+    protected $table      = 'CLIENTES';
+    protected $primaryKey = ('CNPJ');
 }

@@ -7,14 +7,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades;
 use App\Models\Clientes;
-use App\Helpers ;
+use App\Models\TabelaPrecos;
+use App\Helpers;
 use DB;
+use Cookie;
 
 class ClientesController extends Controller 
 {
 
-	
 	public static function index(Request $request) {
+
+
+		if (empty(Cookie::get('userdata'))) {
+			return redirect()->route('login');
+		} 
+
 
 		//limpa msg da sessão		
 		if ($request->session()->has('status')) {
@@ -24,7 +31,8 @@ class ClientesController extends Controller
 		$clientes       = Clientes::orderBy('CNPJ')->paginate(10);
 		$clientes_count = $clientes->total();
 
-		return view('painel/clientes/index', compact('clientes', 'clientes_count'));
+
+		return view('painel.clientes.index', compact('clientes', 'clientes_count'));
 		
 	}
 
@@ -41,7 +49,7 @@ class ClientesController extends Controller
 
    		 	$request->session()->flash('msg_pesquisa', 'Para agilizar a pesquisa informe no mínimo 5 caracteres!');
  			
- 			return view('painel/clientes/index');
+ 			return view('painel.clientes.index');
 
 		}
 
@@ -55,96 +63,107 @@ class ClientesController extends Controller
 		$clientes_count = $clientes->total();
 		$pesquisa	    = $request->pesquisa;
 
- 		return view('painel/clientes/index', compact('clientes', 'clientes_count', 'pesquisa'));
+ 		return view('painel.clientes.index', compact('clientes', 'clientes_count', 'pesquisa'));
 
 	}
 
 
 	public static function create() {
 
-		return view('painel.clientes.create');
+   		if (empty(Cookie::get('userdata'))) {
+			return redirect()->route('login');
+		} 
+
+
+		$tabelaPrecos = TabelaPrecos::pluck('DESCRICAO', 'ID_TABELA');
+
+		return view('painel.clientes.create', compact('cliente', 'tabelaPrecos'));
 	
 	}
 
+	public static function show($cnpj) {
 
+
+		$cliente      = Clientes::findOrFail($cnpj);
+		$tabelaPrecos = TabelaPrecos::pluck('DESCRICAO', 'ID_TABELA');
+		
+		return view('painel.clientes.show', compact('cliente', 'tabelaPrecos'));
+	
+	}
+
+	public static function edit($cnpj) {
+		
+		$cliente      = Clientes::findOrFail($cnpj);
+		$tabelaPrecos = TabelaPrecos::pluck('DESCRICAO', 'ID_TABELA');
+
+		return view('painel.clientes.edit', compact('cliente', 'tabelaPrecos'));
+	
+	}
+
+	public static function update(Request $request, $cnpj) {
+
+
+		$cliente = Clientes::findOrFail($cnpj);
+
+	//	dd($request);
+
+		try  {
+
+			$cliente->CNPJ          = $request->edit_cnpj;
+			$cliente->RAZAO         = mb_strtoupper($request->edit_razao);
+			$cliente->NOME_FANTASIA = mb_strtoupper($request->edit_nome);
+			$cliente->IERG          = $request->edit_ierg;
+			$cliente->ENDERECO	    = mb_strtoupper($request->edit_endereco);
+			$cliente->NUMERO	    = $request->edit_numero;
+			$cliente->BAIRRO 	    = mb_strtoupper($request->edit_bairro);		
+			$cliente->CEP           = $request->edit_cep;
+			$cliente->CIDADE        = mb_strtoupper($request->edit_cidade);
+			$cliente->ESTADO        = mb_strtoupper($request->edit_estado);
+			$cliente->TELEFONE      = $request->edit_telefone;			
+			$cliente->PFPJ 			= mb_strtoupper($request->edit_tipopessoa);
+			$cliente->ID_TABELA		= $request->edit_tabpreco;			
+
+			$cliente->save();
+
+		
+			return redirect()->route('clientes')->with('cad_cliente_msg', 'Cliente editado com sucesso!');
+
+		}
+		
+		catch(Exception $e) {
+
+			return redirect()->route('clientes')->with('cad_cliente_msg', $e->getMessage());			
+
+		}
+
+	}
+
+
+	
 	public static function store(Request $request) {
 
-
-		//VALIDACAO
-		if (empty($request->edit_cnpj)) {
-			
-			$request->session()->flash('cnpj_cliente', 'É obrigatório o preenchimento do CPF/CNPJ!');
-			return view('painel/clientes/create');
-
-		}
-
-
-		if (empty($request->edit_ierg)) {
-
-			$request->session()->flash('ierg_cliente', 'É obrigatório o preenchimento da IE/RG!');
-			return view('painel/clientes/create');
-			
-		}
-		
-
-		if (empty($request->edit_razao)) {
-		
-			$request->session()->flash('razao_cliente', 'É obrigatório o preenchimento da NOME/RAZÃO SOCIAL!');
-			return view('painel/clientes/create');
-			
-		}
-
-		if (empty($request->edit_cep)) {
-			
-			$request->session()->flash('cep_cliente', 'É obrigatório o preenchimento do CEP!');
-			return view('painel/clientes/create');
-			
-		}
-
-		/*
-
-		if ($request->session()->has('cnpj_cliente')) {
-			$request->session()->forget('cnpj_cliente');
-		}	
-
-		if ($request->session()->has('razao_cliente')) {
-			$request->session()->forget('razao_cliente');
-		}	
-
-  		if ($request->session()->has('ierg_cliente')) {
-			$request->session()->forget('ierg_cliente');
-		}	
-		
-		if ($request->session()->has('cep_cliente')) {
-			$request->session()->forget('cep_cliente');
-		}	
-		*/
 
 		try {
 
 
 			$cliente                = new Clientes;
 			$cliente->CNPJ          = $request->edit_cnpj;
-			$cliente->RAZAO         = $request->edit_razao;
-			$cliente->NOME_FANTASIA = $request->edit_nome;
+			$cliente->RAZAO         = mb_strtoupper($request->edit_razao);
+			$cliente->NOME_FANTASIA = mb_strtoupper($request->edit_nome);
 			$cliente->IERG          = $request->edit_ierg;
-			$cliente->ENDERECO	    = $request->edit_endereco;
-			$cliente->BAIRRO 	    = $request->edit_bairro;		
+			$cliente->ENDERECO	    = mb_strtoupper($request->edit_endereco);
+			$cliente->NUMERO	    = $request->edit_numero;
+			$cliente->BAIRRO 	    = mb_strtoupper($request->edit_bairro);		
 			$cliente->CEP           = $request->edit_cep;
-			$cliente->CIDADE        = $request->edit_cidade;
-			$cliente->ESTADO        = $request->edit_estado;
+			$cliente->CIDADE        = mb_strtoupper($request->edit_cidade);
+			$cliente->ESTADO        = mb_strtoupper($request->edit_estado);
 			$cliente->TELEFONE      = $request->edit_telefone;			
-
-			if (strlen($request->edit_razao) == 11) {
-				$cliente->PFPJ = 'FÍSICA';
-			} else  {
-				$cliente->PFPJ = 'JURÍDICA';
-			}
-
-
+			$cliente->PFPJ 			= mb_strtoupper($request->edit_tipopessoa);
+			$cliente->ID_TABELA		= $request->edit_tabpreco;			
+		
 			$cliente->save();
-
-
+			
+		
 			return redirect()->route('clientes')->with('cad_cliente_msg', 'Cliente cadastrado com sucesso!');
 
 		}

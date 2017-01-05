@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Models\Produtos;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,22 +13,14 @@ use App\Models\Produtos;
 |
 */
 
-
-Route::get('/', 'Auth\AuthController@showLogin');
+Route::get('/', 'Auth\AuthController@showLogin')->name('login');
 
 
 // Authentication routes...
 //Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::get('auth/logout', 'Auth\AuthController@getLogout')->name('logout');
 
- /*
-Route::post('painel/home', [
-    'middleware' => 'auth',
-    'uses' => 'PainelController@getPainel',
-    'name' => 'home'
-]);
-*/
 
 Route::get( 'painel/home', 'Painel\painelController@getPainel')->name('home');
 
@@ -37,8 +29,7 @@ Route::get('painel/buscacep/{cep}', 'Painel\painelController@buscaCEP');
 
 // faz a busca do CLIENTE
 Route::get('painel/buscacliente/{pesquisa}', 'Painel\painelController@buscaCliente');
-
-
+	
 // PRODUTOS
 Route::get( 'painel/produtos', 'Painel\produtosController@index' )->name('produtos');
 	Route::get('painel/produtos/busca', 'Painel\produtosController@getBuscaProduto');	
@@ -46,9 +37,15 @@ Route::get( 'painel/produtos', 'Painel\produtosController@index' )->name('produt
 // CLIENTES
 Route::get( 'painel/clientes', 'Painel\clientesController@index' )->name('clientes');
 	Route::get('painel/clientes/busca', 'Painel\clientesController@getBuscaCliente');
-	Route::get('painel/clientes/adiciona', 'Painel\clientesController@create');	
+	Route::get('painel/clientes/show/{cnpj}', 'Painel\clientesController@show')->name('show_cliente');
+	Route::get('painel/clientes/edit/{cnpj}', 'Painel\clientesController@edit')->name('edit_cliente');
+	Route::post('painel/clientes/update/{cnpj}', 'Painel\clientesController@update');	
+	Route::get('painel/clientes/create', 'Painel\clientesController@create');	
 	Route::post('painel/clientes/store', 'Painel\clientesController@store');
 
 // PEDIDOS
-Route::get( 'painel/pedido', 'Painel\pedidosController@index')->name('pedido');
+Route::get( 'painel/pedido', 'Painel\pedidosController@create')->name('pedido');
+	Route::post('painel/pedido/store', 'Painel\pedidosController@store');
+
+
 

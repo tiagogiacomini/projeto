@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades;
+use Cookie;
 
 class AuthController extends Controller 
 {
@@ -18,7 +19,15 @@ class AuthController extends Controller
 
 	public static function showLogin(Request $request) {
 
+		
 		return view('login', compact('nome_usuario', 'senha_usuario', 'falha_login'));
+
+	}
+
+	public static function getLogout() {
+
+			$cookie_user = Cookie::forget('userdata');
+			return redirect()->route('login')->cookie($cookie_user);	
 
 	}
 
@@ -37,7 +46,7 @@ class AuthController extends Controller
 		if (!is_null($usuario_nome)) {
 
 			// faz o select do usuário
-			$usuario = DB::select("select USUARIOS.NOME, USUARIOS.SENHA from USUARIOS where USUARIOS.NOME = '$usuario_nome'", [1]);
+			$usuario = DB::select("select USUARIOS.ID_USUARIO, USUARIOS.NOME, USUARIOS.SENHA from USUARIOS where USUARIOS.NOME = '$usuario_nome'", [1]);
 
 			// se não achar o usuário
 			if (!$usuario) {
@@ -69,13 +78,18 @@ class AuthController extends Controller
 
 					$falha_login = false;
 
+					$cookie_user = Cookie::forget('userdata');
+					$cookie_user = Cookie::forever('userdata', $usuario_nome . '|' . $usuario[0]->ID_USUARIO);
+								
+					//dd( Cookie::get('id_user'));
 
-					return redirect()->route('home', [ 'user' => $usuario_nome ] );
+					return redirect()->route('home')->cookie($cookie_user);
    			    
 						
 				} else {
 
 					$falha_login = true;
+					$cookie_user = Cookie::forget('userdata');
 					return view('login', compact('nome_usuario', 'senha_usuario', 'falha_login'));
 								
 				}			
