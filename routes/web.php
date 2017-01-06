@@ -46,6 +46,8 @@ Route::get( 'painel/clientes', 'Painel\clientesController@index' )->name('client
 // PEDIDOS
 Route::get( 'painel/pedido', 'Painel\pedidosController@create')->name('pedido');
 	Route::post('painel/pedido/store', 'Painel\pedidosController@store');
+	
+	Route::get('painel/pedido/{id_pedido}/itens', 'Painel\pedidosController@addItens')->name('pedido-itens');
 
 
 

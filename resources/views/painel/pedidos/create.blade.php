@@ -21,13 +21,24 @@
 
         <div style="position: relative; top: 70px;">
             
+            <div class="form-group form-group-style">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label for="edit_vendedor">Vendedor Responsável</label>
+                        <input type="text" class="form-control" value="{!! $vendedor_nome !!}" disabled>
+                        
+                    </div>
+                </div>
+            </div>
+
+
             <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-id-card-o"></i>&nbspInformações do Cliente</p>            
 
-            <form id="form_pedido" method="POST" action="painel/pedidos/store">
+            <form id="form_pedido" method="POST" action="/painel/pedido/store">
                 {{ csrf_field() }}
                 <div class="content">
                     <div class="form-group form-group-style" >
-                    
+                                            
                         <div class="alert alert-danger invisivel" id="alerta-cnpj">
                             
                         </div>
@@ -36,12 +47,12 @@
                             
                         </div>                  
 
-                        <label for="pesquisa_cliente">Informe o CPF/CNPJ ou NOME/RAZÃO SOCIAL do cliente</label>                                                                   
+                        <label for="pesquisa_cliente">Informe o CPF/CNPJ do Cliente</label>                                                                   
                         <div class="input-group" id="gbox_pesquisa_cliente">
                             
                             <input type="text" class="form-control input-lg" id="edit_busca_cliente" name="pesquisa_cliente" value="{!! \Request::input('pesquisa_cliente') !!}" placeholder="Informe o CPF ou CNPJ do cliente" autofocus>
 
-                            <div class="input-group-addon"><button type="button" style="border: none; background-color: none;" id="btn_buscacliente"><i class="fa fa-search"></i></button></div> 
+                            <div class="input-group-addon"><button type="button" style="border: none; background-color: transparent;" id="btn_buscacliente"><i class="fa fa-search fa-2x"></i></button></div> 
                         </div>                          
                                                                          
                         <div class="collapse" id="gbox_endereco">
@@ -125,12 +136,12 @@
 
                 <div class="form-group form-group-style">
                     <label for="edit_formapagto">Forma de pagamento</label>
-                    <input type="text" class="form-control input-lg" id="edit_formapagto" name="edit_formapagto" value="" placeholder="Ex: 30/60/90 ou A VISTA...">
+                    <input type="text" class="form-control input-lg uppercase" maxlength="30" id="edit_formapagto" name="edit_formapagto" value="" placeholder="Ex: 30/60/90 ou A VISTA...">
                 </div>   
 
                 </br>
                 
-                
+                {{--
                 <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspInformações dos produtos</p>         
                 
                 <div class="form-group form-group-style">
@@ -141,10 +152,27 @@
                     </div>
                 </div>
 
+                --}}
+
+
+                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-commenting"></i>&nbspObservações</p>         
+
+                <div class="form-group form-group-style">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea style="resize:none;" rows="5" maxlength="255" class="form-control" id="edit_obs" name="edit_obs" value=""></textarea>
+                        </div>
+                    </div>
+                </div>   
+
+                </br>
+
+                <input type="hidden" name="id_vendedor" value="{!! $vendedor_id !!}" class="id_vendedor" id="id_vendedor">
+
                 <div class="form-group-style">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="button" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Salvar e Adicionar Produtos">
+                            <input type="submit" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Salvar e Adicionar Produtos">
                         </div>
                         
                         <div class="col-md-6">

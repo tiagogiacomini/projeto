@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades;
-use Cookie;
+use Session;
 
 class AuthController extends Controller 
 {
@@ -24,10 +24,12 @@ class AuthController extends Controller
 
 	}
 
-	public static function getLogout() {
+	public static function getLogout(Request $request) {
 
-			$cookie_user = Cookie::forget('userdata');
-			return redirect()->route('login')->cookie($cookie_user);	
+		
+		$request->session()->forget('userdata');
+
+		return redirect()->route('login');	
 
 	}
 
@@ -78,18 +80,15 @@ class AuthController extends Controller
 
 					$falha_login = false;
 
-					$cookie_user = Cookie::forget('userdata');
-					$cookie_user = Cookie::forever('userdata', $usuario_nome . '|' . $usuario[0]->ID_USUARIO);
-								
-					//dd( Cookie::get('id_user'));
+					session(['userdata' => $usuario_nome . '|' . $usuario[0]->ID_USUARIO]);
 
-					return redirect()->route('home')->cookie($cookie_user);
+					return redirect()->route('home');
    			    
 						
 				} else {
 
 					$falha_login = true;
-					$cookie_user = Cookie::forget('userdata');
+					
 					return view('login', compact('nome_usuario', 'senha_usuario', 'falha_login'));
 								
 				}			

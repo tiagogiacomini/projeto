@@ -13,11 +13,17 @@
                         @if (isset($falha_login))
                            @if ($falha_login)
                            
-                           <div class="alert alert-warning">
+                            <div class="alert alert-warning">
                                 <strong>Atenção! </strong>Usuário ou senha estão incorretos, verifique!
                             </div>
 
                            @endif
+                        @endif
+
+                        @if(Session::has('msg_login'))
+                            <div class="alert alert-danger">
+                                {!! Session::get('msg_login') !!}
+                            </div>
                         @endif
 
                         <input type="text" name="edit_usuario" id="usuario" class="form-control edit_usuario" placeholder="Nome de Usuário" autofocus></br>

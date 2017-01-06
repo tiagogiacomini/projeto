@@ -10,17 +10,16 @@ use App\Models\Clientes;
 use App\Models\TabelaPrecos;
 use App\Helpers;
 use DB;
-use Cookie;
 
 class ClientesController extends Controller 
 {
 
 	public static function index(Request $request) {
 
-
-		if (empty(Cookie::get('userdata'))) {
-			return redirect()->route('login');
-		} 
+		// verifica LOGIN
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
 
 
 		//limpa msg da sessão		
@@ -70,9 +69,10 @@ class ClientesController extends Controller
 
 	public static function create() {
 
-   		if (empty(Cookie::get('userdata'))) {
-			return redirect()->route('login');
-		} 
+		// verifica LOGIN
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
 
 
 		$tabelaPrecos = TabelaPrecos::pluck('DESCRICAO', 'ID_TABELA');
@@ -82,6 +82,11 @@ class ClientesController extends Controller
 	}
 
 	public static function show($cnpj) {
+
+		// verifica LOGIN
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
 
 
 		$cliente      = Clientes::findOrFail($cnpj);
@@ -93,6 +98,11 @@ class ClientesController extends Controller
 
 	public static function edit($cnpj) {
 		
+		// verifica LOGIN
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
+
 		$cliente      = Clientes::findOrFail($cnpj);
 		$tabelaPrecos = TabelaPrecos::pluck('DESCRICAO', 'ID_TABELA');
 

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades;
 use App\Models\CEP;
 use App\Models\Clientes;
-use Cookie;
+
 
 
 class PainelController extends Controller 
@@ -16,11 +16,11 @@ class PainelController extends Controller
 
 	public static function getPainel(Request $request) {
 
-		if (empty(Cookie::get('userdata'))) {
-			return redirect()->route('login');
-		}	
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
 
-    	return view('painel/index');
+		return view('painel/index');  
 
 	}
 
@@ -38,9 +38,8 @@ class PainelController extends Controller
 
 	public static function buscaCliente($pesquisa) {
 
-		$resultado = Clientes::where('CNPJ', addslashes($pesquisa))
-		                    ->orWhere('RAZAO', 'like', addslashes($pesquisa) . '%')
-		                    ->first();
+		$resultado = Clientes::where('CNPJ', addslashes($pesquisa))		                    
+		                     ->first();
 
 		return $resultado->toJson();
 

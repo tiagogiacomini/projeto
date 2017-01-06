@@ -6,7 +6,6 @@ namespace App\Helpers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades;
-use Cookie;
 
 
 class Helpers extends Controller 
@@ -51,7 +50,5 @@ class Helpers extends Controller
 		return $maskared;
 
 	}
-
-
 
 }

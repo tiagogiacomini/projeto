@@ -14,37 +14,11 @@ $(document).ready(function() {
 	    $(".btn_collapse").html('<i class="fa fa-chevron-up fa-2x"></i>');
 	});
 
-	
-	$("#edit_busca_cliente").keypress(function (){
-
-		if ($(this).val().length == 0) {
-			$("#edit_busca_cliente").unmask();			
-		}
-
-	});
-
-	
-
-	$("#edit_busca_cliente").focusout(function () {
-
-		$("#edit_busca_cliente").unmask();			
-
-		if ($(this).val().length == 11) {
-			$("#edit_busca_cliente").mask('999.999.999-99');
-			return false;
-		}
-
-		if ($(this).val().length == 14) {
-			$("#edit_busca_cliente").mask('99.999.999/9999-99');
-			return false;
-		}
-
-	});
 
 	// FAZ A BUSCA POR CLIENTE e PREENCHE OS CAMPOS NO FORM
 	$('#btn_buscacliente').click(function () {
 
-		var valor = $("#edit_busca_cliente").cleanVal();
+		var valor = $("#edit_busca_cliente").val();
 
 		if (valor.length == 0 )  {
 			return false;
@@ -97,15 +71,8 @@ $(document).ready(function() {
 				     		$("#edit_telefone").val(data.TELEFONE);
 				     	}
 
-
-						if ($("#edit_busca_cliente").cleanVal().length == 11) {
-							$("#edit_busca_cliente").mask('999.999.999-99');
-							return false;
-						}
-
-						if ($("#edit_busca_cliente").cleanVal().length == 14) {
-							$("#edit_busca_cliente").mask('99.999.999/9999-99');
-						}				     	
+				     	$("#gbox_pesquisa_cliente").addClass('has-success');
+		     	
 				     	
 				    },
 
