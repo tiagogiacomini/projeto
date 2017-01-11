@@ -44,10 +44,18 @@ Route::get( 'painel/clientes', 'Painel\clientesController@index' )->name('client
 	Route::post('painel/clientes/store', 'Painel\clientesController@store');
 
 // PEDIDOS
-Route::get( 'painel/pedido', 'Painel\pedidosController@create')->name('pedido');
-	Route::post('painel/pedido/store', 'Painel\pedidosController@store');
+Route::get( 'painel/pedidos', 'Painel\pedidosController@index')->name('pedidos');
+	Route::get('painel/pedidos/busca', 'Painel\pedidosController@getBuscaPedido');
+	Route::get( 'painel/pedidos/create', 'Painel\pedidosController@create');
+	Route::post('painel/pedidos/store', 'Painel\pedidosController@store');
+
+	Route::post('painel/pedidos/additem', 'Painel\pedidosController@addItem');
 	
-	Route::get('painel/pedido/{id_pedido}/itens', 'Painel\pedidosController@addItens')->name('pedido-itens');
+	//buscas de produto
+	Route::get('painel/pedidos/busca_prod_modelo/{modelo}', 'Painel\pedidosController@buscaProdModelo');
+	Route::get('painel/pedidos/busca_prod_descr/{descricao}', 'Painel\pedidosController@buscaProdDescr');	
+	Route::get('painel/pedidos/busca_prod_tamanho/{id_produto}/{tabela_preco}', 'Painel\pedidosController@buscaProdTamanhos');		
+	
 
 
 

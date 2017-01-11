@@ -31,7 +31,7 @@ class ClientesController extends Controller
 		$clientes_count = $clientes->total();
 
 
-		return view('painel.clientes.index', compact('clientes', 'clientes_count'));
+		return view('painel/clientes/index', compact('clientes', 'clientes_count'));
 		
 	}
 
@@ -48,7 +48,7 @@ class ClientesController extends Controller
 
    		 	$request->session()->flash('msg_pesquisa', 'Para agilizar a pesquisa informe no mínimo 5 caracteres!');
  			
- 			return view('painel.clientes.index');
+ 			return view('painel/clientes/index');
 
 		}
 
@@ -62,7 +62,7 @@ class ClientesController extends Controller
 		$clientes_count = $clientes->total();
 		$pesquisa	    = $request->pesquisa;
 
- 		return view('painel.clientes.index', compact('clientes', 'clientes_count', 'pesquisa'));
+ 		return view('painel/clientes/index', compact('clientes', 'clientes_count', 'pesquisa'));
 
 	}
 
@@ -77,7 +77,7 @@ class ClientesController extends Controller
 
 		$tabelaPrecos = TabelaPrecos::pluck('DESCRICAO', 'ID_TABELA');
 
-		return view('painel.clientes.create', compact('cliente', 'tabelaPrecos'));
+		return view('painel/clientes/create', compact('cliente', 'tabelaPrecos'));
 	
 	}
 
@@ -92,7 +92,7 @@ class ClientesController extends Controller
 		$cliente      = Clientes::findOrFail($cnpj);
 		$tabelaPrecos = TabelaPrecos::pluck('DESCRICAO', 'ID_TABELA');
 		
-		return view('painel.clientes.show', compact('cliente', 'tabelaPrecos'));
+		return view('painel/clientes/show', compact('cliente', 'tabelaPrecos'));
 	
 	}
 
@@ -106,7 +106,7 @@ class ClientesController extends Controller
 		$cliente      = Clientes::findOrFail($cnpj);
 		$tabelaPrecos = TabelaPrecos::pluck('DESCRICAO', 'ID_TABELA');
 
-		return view('painel.clientes.edit', compact('cliente', 'tabelaPrecos'));
+		return view('painel/clientes/edit', compact('cliente', 'tabelaPrecos'));
 	
 	}
 

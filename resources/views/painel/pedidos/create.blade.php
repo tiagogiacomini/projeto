@@ -4,8 +4,7 @@
 <script type="text/javascript" src="/js/jsmask.js"></script>
 <script type="text/javascript" src="/js/pace.min.js"></script>
 <script type="text/javascript" src="/js/pedidos.js"></script>
-
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
 
@@ -34,7 +33,7 @@
 
             <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-id-card-o"></i>&nbspInformações do Cliente</p>            
 
-            <form id="form_pedido" method="POST" action="/painel/pedido/store">
+            <form id="form_pedido" method="POST" action="/painel/pedidos/store">
                 {{ csrf_field() }}
                 <div class="content">
                     <div class="form-group form-group-style" >
@@ -106,7 +105,6 @@
                                     <input type="text" class="form-control input-sm" id="edit_cep" name="edit_cep" disabled>                        
                                 </div>
                             </div>
-
                         </div>
 
                         <div class="center_obj"><a class="btn_collapse" data-toggle="collapse" href="#gbox_endereco"><i class="fa fa-chevron-down fa-2x"></i></a></div>
@@ -167,12 +165,44 @@
 
                 </br>
 
-                <input type="hidden" name="id_vendedor" value="{!! $vendedor_id !!}" class="id_vendedor" id="id_vendedor">
+                
+                <p class="titulo-gbox invisivel">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspItens do Pedido</p>         
+                <div class="form-group form-group-style invisivel" id="gbox_itens">
+                       
+                    <table class="table table-hover table-striped invisivel" id="tabela_itens">
+                        <thead> 
+                            <tr>
+                                <th class="col-sm-1 col-md-1">MODELO</th>
+                                <th class="col-sm-1 col-md-1 text-center">TAMANHO</th>
+                                <th class="col-sm-7 col-md-6">DESCRIÇÃO</th>
+                                <th class="hidden-xs col-md-1 text-right">PREÇO</th>
+                                <th class="hidden-xs col-md-1 text-right">QUANTIDADE</th>
+                                <th class="col-sm-3 col-md-2 text-right">TOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
+                        </tbody>
+                    </table>
+                    TOTALLIZAAAAAAAAAAAAAAAAAAAAAAAR                
+
+                    <div class="center_obj">
+                        <button type="button" style="border: none; background-color: transparent;" id="btn_additem" data-toggle="modal" data-target="#modalItens"><i class="fa fa-plus fa-3x"></i></button>
+                    </div>
+
+                </div>   
+
+                </br>
+
+
+                <input type="hidden" name="id_vendedor"     value="{!! $vendedor_id !!}" class="id_vendedor" id="id_vendedor">
+                <input type="hidden" name="id_tabela_preco" class="id_tabela_preco" id="id_tabela_preco">
+                <input type="hidden" name="id_pedido"       id="id_pedido" value="{!! $id_pedido !!}">
+                
                 <div class="form-group-style">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="submit" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Salvar e Adicionar Produtos">
+                            <input type="submit" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Concluir Pedido">
                         </div>
                         
                         <div class="col-md-6">
@@ -186,3 +216,125 @@
         </div>
 
     </div>
+
+
+
+    {{-- MODAL PARA INSERCAO DE ITENS --}}
+    <div id="modalItens" class="modal fade" tabindex="-1" role="document" data-keyboard="false" data-backdrop="static" aria-labelledby="myModalLabel">
+
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel"><i class="fa fa-shopping-basket"></i> Adicionar Produto</h4>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="sel_pesquisa_por">Pesquisar por</label>
+                            <select id="sel_pesquisa_por" class="form-control input-lg">                                
+                                <option value="MODELO">MODELO</option>
+                                <option value="DESCRICAO">DESCRIÇÃO</option>                                    
+                            </select>
+                        </div>    
+                        
+                        <div class="col-md-9 gbox_pesquisa_prod">
+                            <label for="edit_busca_prod">Pesquisar</label>
+                            <div class="input-group">
+                                <input type="text" id="edit_busca_prod" class="form-control uppercase input-lg">
+                                <div class="input-group-addon"><button type="button" style="border: none; background-color: transparent;" id="btn_busca_prod"><i class="fa fa-search fa-2x"></i></button></div> 
+                            </div>
+                        </div>
+                    </div>
+                    
+                    </br>
+                    <div class="form-group invisivel" id="gbox_resultado">
+
+                    <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspDetalhes do Produto Encontrado</p>         
+                        <form id="form_additem" method="POST" >
+                            {{ csrf_field() }}
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <label for="edit_descricao">Descrição do Produto</label>
+                                    <input id="edit_descricao" class="form-control" disabled>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="edit_unidade">Unidade</label>
+                                    <input id="edit_unidade" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="edit_grupo">Grupo do Produto</label>
+                                    <input id="edit_grupo" class="form-control" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="edit_genero">Gênero do Produto</label>
+                                    <input id="edit_genero" class="form-control" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="edit_cor">Cor do Produto</label>
+                                    <input id="edit_cor" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="edit-tamanhos">Tamanhos Disponíveis</label>
+                                    <select id="edit_tamanhos" name="edit_tamanhos" class="form-control input-lg">
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="edit-preco">Preço Unitário</label>
+                                    <input id="edit_preco" name="edit_preco" class="form-control input-lg" disabled>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="edit-quantidade">Quantidade</label>
+                                    <input id="edit_quantidade" name="edit_quantidade" class="form-control input-lg" type="number">
+                                </div>
+                            </div>
+
+
+                            <input type="hidden" name="id_produto" id="id_produto">
+                            <input type="hidden" name="id_pedido"  id="id_pedido" value="{!! $id_pedido !!}">
+                            <input type="hidden" name="preco_unitario" id="preco_unitario">     
+
+                        </form>
+                    </div>
+
+                    <div class="form-group invisivel" id="gbox_nenhum_resultado">
+                        <div class="alert alert-danger">
+                            <p><strong>Nenhum resultado encontrado para o critério informado!</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group invisivel" id="gbox_item_incluso">
+                        <div class="alert alert-info">
+                            <p><strong>Produto incluído com sucesso no pedido!</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group invisivel" id="gbox_item_erro">
+                        <div class="alert alert-danger">
+                            <p><strong>Não foi possível incluir este produto! </strong></p>
+                        </div>
+                    </div>
+                
+                    <div class="center_obj invisivel" id="btn_add_prod">
+                        <div >
+                            <button type="button" class="btn btn-primary btn-lg" id="submit_form_item">Adicionar Produto</button>
+                        </div>
+                    </div>
+
+                </div> {{-- model-body --}}
+
+
+                <div class="modal-footer">
+              
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Concluir</button>    
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+

@@ -13,4 +13,10 @@ class Pedidos extends Model
     public $timestamps    = false;
     protected $primaryKey = ('ID_PEDIDO');
 
+    public function items() {
+
+    	return $this->hasMany('App\Models\PedidosItens');
+    	
+    }
+
 }

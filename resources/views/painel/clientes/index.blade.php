@@ -95,7 +95,7 @@
 					<p>Exibindo <strong>1</strong> registro.</p>
 					@endif
 					@if ((isset($clientes_count) && ($clientes_count > 1)) && (!Session::has('msg_pesquisa'))) 
-					<p>Exibindo <strong>10 </strong>registros, num total de <strong>{!! $clientes_count !!}</strong> registros encontrados.</p>
+					<p>Exibindo <strong>{!! $clientes->count() !!} </strong>registros, num total de <strong>{!! $clientes_count !!}</strong> registros encontrados.</p>
 					@endif
 				</center>
 			</div>
