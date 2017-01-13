@@ -15,7 +15,7 @@
 		
 		<div class="container_listagem">
 			
-			<div class="container-fluid form-group-style">
+			<div class="container-fluid form-group-style listagem">
 				<form method="GET" action="/painel/pedidos/busca">
 					{{-- csrf_field() --}}
 					
@@ -50,8 +50,9 @@
 			  			<tr class="row">
 			  				<th class="col-sm-2 col-md-2">Nº PEDIDO</th>
 			  				<th class="hidden-xs col-md-2">DATA EMISSÃO</th>
-			  				<th class="col-sm-7 col-md-7">CLIENTE</th>
-			  				<th class="col-sm-1 col-md-1 text-center">AÇÕES</th>
+			  				<th class="col-sm-6 col-md-5">CLIENTE</th>
+			  				<th class="col-sm-1 col-md-1 text-right">TOTAL</th>
+			  				<th class="col-sm-2 col-md-2 text-center">AÇÕES</th>
 			  			</tr>
 			  		</thead>
 
@@ -62,8 +63,9 @@
 			  				
 			  		 		<td class="col-sm-2 col-md-2">{!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</td>
 							<td class="hidden-xs col-md-2">{!! \Carbon\Carbon::parse($pedido->DATA_EMISSAO)->format('d/m/Y') !!}</td>			  		 		
-			  				<td class="col-sm-7 col-md-7">{!! $pedido->RAZAO !!}</td>
-			  				<td class="col-sm-1 col-md-1 text-center">
+			  				<td class="col-sm-6 col-md-5">{!! $pedido->RAZAO !!}</td>
+			  				<td class="col-sm-1 col-md-1 text-right">R$ {!! number_format( $pedido->TOTAL, 2, ',', '.') !!}</td>
+			  				<td class="col-sm-2 col-md-2 text-center">
 			  					<a href="@{!! route('show_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-success"><i class="fa fa-eye"></i></a>
 			  				    <a href="@{!! route('edit_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
 			  				    <a href="@{!! route('delete_pedido', $pedido->ID_PEDIDO) !!}" class="btn btn-danger" ><i class="fa fa-trash-o"></i></a>
@@ -82,14 +84,14 @@
 
 			<div class="center_obj">
 				<center>
-					@if ((isset($pedidos_count) && ($pedidos_count == 0))) 
+					@if ($pedidos->total() == 0) 
 					<p><strong>Nenhum registro encontrado</strong></p>
 					@endif
-					@if ((isset($pedidos_count) && ($pedidos_count == 1))) 
+					@if ($pedidos->total() == 1) 
 					<p>Exibindo <strong>1</strong> registro.</p>
 					@endif
-					@if ((isset($pedidos_count) && ($pedidos_count > 1))) 
-					<p>Exibindo <strong>{!! $pedidos->count() !!} </strong>registros, num total de <strong>{!! $pedidos_count !!}</strong> registros encontrados.</p>
+					@if ($pedidos->total() > 1) 
+					<p>Exibindo <strong>{!! $pedidos->count() !!} </strong> pedidos, num total de <strong>{!! $pedidos->total() !!}</strong> pedidos encontrados.</p>
 					@endif
 				</center>
 			</div>

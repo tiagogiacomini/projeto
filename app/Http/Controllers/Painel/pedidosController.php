@@ -34,6 +34,7 @@ class PedidosController extends Controller
     	//VAI LISTAR APENAS PEDIDOS DO VENDEDOR LOGADO NO SISTEMA
     	$pedidos = Pedidos::where('ID_VENDEDOR', $vendedor_id)
     	                  ->orderBy('DATA_EMISSAO', 'DESC')
+						  ->orderBy('ID_PEDIDO', 'DESC')    	                  
     	                  ->join('CLIENTES', 'CLIENTES.CNPJ' ,'=', 'PEDIDOS.CNPJ_CLIFOR')
     	                  ->paginate(10)
     	                  ->appends(['pesquisa' => $request->pesquisa]);
@@ -92,15 +93,15 @@ class PedidosController extends Controller
     	$pedidos = Pedidos::where([['ID_VENDEDOR', '=', $vendedor_id ], 
     		                       ['ID_PEDIDO'  , 'LIKE', '%' . $request->pesquisa . '%']])
     	                  ->orderBy('DATA_EMISSAO', 'DESC')
+					   	  ->orderBy('ID_PEDIDO', 'DESC')    	                      	                  
     	                  ->join('CLIENTES', 'CLIENTES.CNPJ' ,'=', 'PEDIDOS.CNPJ_CLIFOR')
     	                  ->paginate(10)
     	                  ->appends(['pesquisa' => $request->pesquisa]);
 
 
-		$pedidos_count  = $pedidos->total();
-		$pesquisa	    = $request->pesquisa;
+		$pesquisa = $request->pesquisa;
 
- 		return view('painel/pedidos/index', compact('pedidos', 'pedidos_count', 'pesquisa'));
+ 		return view('painel/pedidos/index', compact('pedidos', 'pesquisa'));
 	}
 
 	public static function create() {
@@ -115,6 +116,7 @@ class PedidosController extends Controller
     	$vendedor_nome = $data[0];
     	$vendedor_id   = $data[1];
 
+		//insere um pedido DEFAULT para ter o ID 
 		$pedido 				   = new Pedidos;
 		$pedido->CNPJ_CLIFOR       = '00000000000000';
 		$pedido->ID_VENDEDOR	   = $vendedor_id;
@@ -130,10 +132,6 @@ class PedidosController extends Controller
 
 	public static function store(Request $request) {
 
-		if (!$request->id_pedido) {
-
-		}
-
 		$pedido 				   = Pedidos::findOrFail($request->id_pedido);
 		$pedido->CNPJ_CLIFOR       = $request->pesquisa_cliente;
 		$pedido->ID_VENDEDOR	   = $request->id_vendedor;
@@ -145,31 +143,80 @@ class PedidosController extends Controller
 		if ($pedido->save()) {
 			return redirect()->route('pedidos')->with('cad_pedido_msg', 'Pedido cadastrado com sucesso!');
 		} 	
-
-		
 		
 	}
 
 	public static function addItem(Request $request) {
 
-		
+		//ADICIONA ITEM 
 		$item       			= new PedidosItens;
 		$item->ID_PRODUTO 		= $request->id_produto;
 		$item->ID_PEDIDO  		= $request->id_pedido;
 		$item->TAMANHO    		= $request->tamanho;
 		$item->PRECO_UNITARIO   = $request->preco;
 		$item->QUANTIDADE       = $request->quantidade;
-		$item->PRECO_TOTAL      = ($request->quantidade * $request->preco);
+		$item->PRECO_TOTAL      = ( $request->quantidade * $request->preco );
 		
 		if ( $item->save() ) {
+
+			//se adicionar SOMA NO TOTAL DO PEDIDO
+			$total_ped        = Pedidos::findOrFail($item->ID_PEDIDO);
+			$total_ped->TOTAL = ( $total_ped->TOTAL + $item->PRECO_TOTAL) ;
+			$total_ped->save();
+
+			//FORMATANDO VALORES POR AQUI
+			//adiciona o TOTAL do pedido no JSON
+			array_add( $item, 'TOTAL_PEDIDO', number_format( $total_ped->TOTAL     , 2, ',', '.') );
+			array_add( $item, 'TOTAL_ITEM'  , number_format( $item->PRECO_TOTAL    , 2, ',', '.') );
+			array_add( $item, 'PRECO_UNT'   , number_format( $item->PRECO_UNITARIO , 2, ',', '.') );
+
 			return $item->toJson();	
+
 		} else {
-			return 'Erro incluindo este produto!';
+			
+			return response(['STATUS' => 'ERRO']);
+
 		}
 
-		
+	}
+
+	public static function removeItem(Request $request) {
+
+		//PK's
+		$id_pedido  = $request->id_pedido;
+		$id_produto = $request->id_produto;
+		$tamanho    = $request->tamanho;
+
+		try
+		{
+			// pega o valor deste registro
+			$total = PedidosItens::where( 'ID_PEDIDO' , $id_pedido  )
+			                     ->where( 'ID_PRODUTO', $id_produto )
+			                     ->where( 'TAMANHO'   , $tamanho    )
+			                     ->value('PRECO_TOTAL');
+
+			                     
+			// procura pelo item e deleta
+			$item = PedidosItens::where( 'ID_PEDIDO' , $id_pedido  )
+			                    ->where( 'ID_PRODUTO', $id_produto )
+			                    ->where( 'TAMANHO'   , $tamanho    )
+			                    ->delete();
+
+			
+			//se remover SUBTRAI NO TOTAL DO PEDIDO
+			$total_ped        = Pedidos::findOrFail($id_pedido);
+			$total_ped->TOTAL = ( $total_ped->TOTAL - $total) ;
+			$total_ped->save();
+			
+			return response( ['STATUS' => 'OK', 'TOTAL' => number_format( $total_ped->TOTAL , 2, ',', '.')] );
+
+		} catch ( Exception $e ) {
+
+			return response( ['STATUS' => 'ERRO', 'ERRO' => $e->getMessage()] );
+		}
 
 	}
+		
 
 	
 } // classe PedidosCONTROLLER

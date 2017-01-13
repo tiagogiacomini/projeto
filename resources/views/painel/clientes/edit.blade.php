@@ -122,7 +122,7 @@
 					<div class="row">
 						<div class="col-md-12">
 							<label for="edit_tabpreco">Tabela de Preços</label>	
-							{{ \Form::select('edit_tabpreco', $tabelaPrecos, $cliente->ID_TABELA, array('class' => 'edit_tabpreco form-control', 'id' => 'edit_tabpreco')) }}
+							{{ \Form::select('edit_tabpreco', $tabelaPrecos, $cliente->ID_TABELA, array('class' => 'edit_tabpreco form-control', 'id' => 'edit_tabpreco', 'disabled' => 'disabled')) }}
 						</div>
 					</div>
 				</div>				

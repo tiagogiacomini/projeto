@@ -167,38 +167,49 @@
 
                 
                 <p class="titulo-gbox invisivel">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspItens do Pedido</p>         
-                <div class="form-group form-group-style invisivel" id="gbox_itens">
+                <div class="form-group form-group-style invisivel listagem" id="gbox_itens">
                        
                     <table class="table table-hover table-striped invisivel" id="tabela_itens">
                         <thead> 
                             <tr>
                                 <th class="col-sm-1 col-md-1">MODELO</th>
                                 <th class="col-sm-1 col-md-1 text-center">TAMANHO</th>
-                                <th class="col-sm-7 col-md-6">DESCRIÇÃO</th>
+                                <th class="hidden-xs col-md-5">DESCRIÇÃO</th>
                                 <th class="hidden-xs col-md-1 text-right">PREÇO</th>
                                 <th class="hidden-xs col-md-1 text-right">QUANTIDADE</th>
                                 <th class="col-sm-3 col-md-2 text-right">TOTAL</th>
+                                <th class="col-sm-1 col-md-1 text-center"><i class="fa fa-trash-o"></i></th>
                             </tr>
                         </thead>
                         <tbody>
 
                         </tbody>
                     </table>
-                    TOTALLIZAAAAAAAAAAAAAAAAAAAAAAAR                
-
+                    
                     <div class="center_obj">
                         <button type="button" style="border: none; background-color: transparent;" id="btn_additem" data-toggle="modal" data-target="#modalItens"><i class="fa fa-plus fa-3x"></i></button>
                     </div>
 
                 </div>   
 
-                </br>
-
 
                 <input type="hidden" name="id_vendedor"     value="{!! $vendedor_id !!}" class="id_vendedor" id="id_vendedor">
                 <input type="hidden" name="id_tabela_preco" class="id_tabela_preco" id="id_tabela_preco">
                 <input type="hidden" name="id_pedido"       id="id_pedido" value="{!! $id_pedido !!}">
                 
+                </br>
+                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-usd"></i>&nbspTotal do Pedido</p>         
+
+                <div class="form-group-style" id="gbox_total_pedido">
+                    <div class="input-group">
+                        <input type="text" class="p_total form-control input-lg text-right" id="total_pedido" disabled>
+                        <div class="input-group-addon"> 
+                            <i class="fa fa-usd fa-2x"></i>
+                        </div>                   
+                    </div>
+                </div>
+
+
                 <div class="form-group-style">
                     <div class="row">
                         <div class="col-md-6">
@@ -287,9 +298,11 @@
                                     <label for="edit-preco">Preço Unitário</label>
                                     <input id="edit_preco" name="edit_preco" class="form-control input-lg" disabled>
                                 </div>
-                                <div class="col-md-4">
-                                    <label for="edit-quantidade">Quantidade</label>
-                                    <input id="edit_quantidade" name="edit_quantidade" class="form-control input-lg" type="number">
+                                <div class="form-group" id="gbox_quantidade">
+                                    <div class="col-md-4">
+                                        <label for="edit-quantidade">Quantidade</label>
+                                        <input id="edit_quantidade" name="edit_quantidade" class="form-control input-lg" type="number">
+                                    </div>
                                 </div>
                             </div>
 

@@ -88,19 +88,19 @@
 
 			<div class="center_obj">
 				<center>
-					@if ((isset($clientes_count) && ($clientes_count == 0)) && (!Session::has('msg_pesquisa'))) 
+					@if ($clientes->total() == 0) 
 					<p><strong>Nenhum registro encontrado</strong></p>
 					@endif
-					@if ((isset($clientes_count) && ($clientes_count == 1)) && (!Session::has('msg_pesquisa'))) 
+					@if ($clientes->total() == 1) 
 					<p>Exibindo <strong>1</strong> registro.</p>
 					@endif
-					@if ((isset($clientes_count) && ($clientes_count > 1)) && (!Session::has('msg_pesquisa'))) 
-					<p>Exibindo <strong>{!! $clientes->count() !!} </strong>registros, num total de <strong>{!! $clientes_count !!}</strong> registros encontrados.</p>
+					@if ($clientes->total() > 1) 
+					<p>Exibindo <strong>{!! $clientes->count() !!} </strong> clientes, num total de <strong>{!! $clientes->total() !!}</strong> clientes cadastrados.</p>
 					@endif
 				</center>
 			</div>
 						
-			<div class="center_obj">
+			<div class="center_obj paginador">
 			@if(isset($clientes))
 			{!! $clientes->render() !!}
 			@endif

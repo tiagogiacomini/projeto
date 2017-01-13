@@ -46,16 +46,24 @@
 			<table class="table table-hover table-striped">
 	  			<thead> 
 		  			<tr class="row">
-		  				<th class="col-xs-4 col-md-2">MODELO</th>
-		  				<th class="col-xs-8 col-md-10">DESCRIÇÃO</th>
+		  				<th class="col-sm-4 col-md-2">MODELO</th>
+		  				<th class="hidden-xs col-md-1 text-center">UNIDADE</th>
+		  				<th class="col-sm-8 col-md-4">DESCRIÇÃO</th>
+		  				<th class="hidden-xs col-md-2">GRUPO</th>
+		  				<th class="hidden-xs col-md-2">COR</th>
+		  				<th class="hidden-xs col-md-1">GÊNERO</th>
 		  			</tr>
 		  		</thead>
 
 	  			<tbody>
 	  			@foreach($produtos as $produto)
 		  			<tr class="row listagem">
-		  				<td class="col-xs-4 col-md-2">{!! $produto->MODELO !!}</td>
-						<td class="col-xs-8 col-md-10">{!! $produto->DESCRICAO !!}</td>
+		  				<td class="col-sm-4 col-md-2">{!! $produto->MODELO !!}</td>
+						<td class="hidden-xs col-md-1 text-center">{!! $produto->UNIDADE !!}</td>
+						<td class="col-sm-8 col-md-4">{!! $produto->DESCRICAO !!}</td>
+						<td class="hidden-xs col-md-2">{!! $produto->GRUPO !!}</td>
+						<td class="hidden-xs col-md-2">{!! $produto->COR !!}</td>
+						<td class="hidden-xs col-md-1">{!! $produto->GENERO !!}</td>
 				  	</tr>
 		  		@endforeach
 		  		</tbody>
@@ -67,14 +75,14 @@
 
 			<div class="center_obj">
 				<center>
-					@if ((isset($produtos_count) && ($produtos_count == 0)) && (!Session::has('msg_pesquisa'))) 
+					@if (($produtos->total() == 0) && (!Session::has('msg_pesquisa'))) 
 					<p><strong>Nenhum registro encontrado</strong></p>
 					@endif
-					@if ((isset($produtos_count) && ($produtos_count == 1)) && (!Session::has('msg_pesquisa'))) 
+					@if (($produtos->total() == 1) && (!Session::has('msg_pesquisa'))) 
 					<p>Exibindo <strong>1</strong> registro.</p>
 					@endif
-					@if ((isset($produtos_count) && ($produtos_count > 1)) && (!Session::has('msg_pesquisa'))) 
-					<p>Exibindo <strong>{!! $produtos->count() !!}</strong> registros, num total de <strong>{!! $produtos_count !!}</strong> registros encontrados.</p>
+					@if (($produtos->total() > 1) && (!Session::has('msg_pesquisa'))) 
+					<p>Exibindo <strong>{!! $produtos->count() !!}</strong> produtos, num total de <strong>{!! $produtos->total() !!}</strong> produtos encontrados.</p>
 					@endif	
 				</center>
 			</div>

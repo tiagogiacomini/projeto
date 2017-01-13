@@ -56,6 +56,7 @@ Route::get( 'painel/pedidos', 'Painel\pedidosController@index')->name('pedidos')
 	Route::get('painel/pedidos/busca_prod_descr/{descricao}', 'Painel\pedidosController@buscaProdDescr');	
 	Route::get('painel/pedidos/busca_prod_tamanho/{id_produto}/{tabela_preco}', 'Painel\pedidosController@buscaProdTamanhos');		
 	
-
+	//remove item do pedido
+	Route::delete('painel/pedidos/removeitem', 'Painel\pedidosController@removeItem');
 
 
