@@ -30,9 +30,16 @@ class PedidosController extends Controller
     	$vendedor_nome = $data[0];
     	$vendedor_id   = $data[1];	
 
+    	// vai APAGAR os PEDIDOS que não foram concluidos
+    	// FLG_CONCLUIDO = 0;
+    	$delecao = Pedidos::where('FLG_CONCLUIDO', 0)
+    	                  ->where('ID_VENDEDOR', $vendedor_id)
+    	                  ->delete();
+
     	
     	//VAI LISTAR APENAS PEDIDOS DO VENDEDOR LOGADO NO SISTEMA
     	$pedidos = Pedidos::where('ID_VENDEDOR', $vendedor_id)
+    	                  ->where('FLG_CONCLUIDO', 1)
     	                  ->orderBy('DATA_EMISSAO', 'DESC')
 						  ->orderBy('ID_PEDIDO', 'DESC')    	                  
     	                  ->join('CLIENTES', 'CLIENTES.CNPJ' ,'=', 'PEDIDOS.CNPJ_CLIFOR')
@@ -92,6 +99,7 @@ class PedidosController extends Controller
     	//VAI LISTAR APENAS PEDIDOS DO VENDEDOR LOGADO NO SISTEMA
     	$pedidos = Pedidos::where([['ID_VENDEDOR', '=', $vendedor_id ], 
     		                       ['ID_PEDIDO'  , 'LIKE', '%' . $request->pesquisa . '%']])
+    	                  ->where('FLG_CONCLUIDO', 1)
     	                  ->orderBy('DATA_EMISSAO', 'DESC')
 					   	  ->orderBy('ID_PEDIDO', 'DESC')    	                      	                  
     	                  ->join('CLIENTES', 'CLIENTES.CNPJ' ,'=', 'PEDIDOS.CNPJ_CLIFOR')
@@ -122,6 +130,7 @@ class PedidosController extends Controller
 		$pedido->ID_VENDEDOR	   = $vendedor_id;
 		$pedido->DATA_EMISSAO	   = date('Y-m-d');
 		$pedido->PREVISAO_ENTREGA  = date('Y-m-d');
+		$pedido->FLG_CONCLUIDO     = 0;
 		$pedido->save();
 
 		$id_pedido = $pedido->ID_PEDIDO;
@@ -139,11 +148,22 @@ class PedidosController extends Controller
 		$pedido->PREVISAO_ENTREGA  = $request->edit_dataentrega;
 		$pedido->CONDICAO_PAGTO	   = $request->edit_formapagto;
 		$pedido->OBSERVACAO		   = $request->edit_obs;
+		$pedido->FLG_CONCLUIDO	   = 1;
 
 		if ($pedido->save()) {
 			return redirect()->route('pedidos')->with('cad_pedido_msg', 'Pedido cadastrado com sucesso!');
 		} 	
 		
+	}
+
+	public static function delete($id) {
+
+		//deleção de PEDIDO
+		$pedido = Pedidos::where('ID_PEDIDO', $id)
+		                 ->delete();
+
+		return redirect()->route('pedidos')->with('cad_pedido_msg', 'Pedido excluído com sucesso!');
+
 	}
 
 	public static function addItem(Request $request) {
@@ -188,7 +208,7 @@ class PedidosController extends Controller
 		$tamanho    = $request->tamanho;
 
 		try
-		{
+		{ 
 			// pega o valor deste registro
 			$total = PedidosItens::where( 'ID_PEDIDO' , $id_pedido  )
 			                     ->where( 'ID_PRODUTO', $id_produto )
@@ -217,6 +237,88 @@ class PedidosController extends Controller
 
 	}
 		
+
+	public static function show($id) {
+
+    	// decifra os dados DO USUARIO(VENDEDOR)
+    	$data          = explode('|', session()->get('userdata'));
+    	$vendedor_nome = $data[0];
+
+		$pedido  = Pedidos::findOrFail($id);
+		
+		$itens   = PedidosItens::where('ID_PEDIDO', $id)
+		                       ->join('PRODUTOS', 'PRODUTOS.ID_PRODUTO', '=', 'PEDIDOS_ITENS.ID_PRODUTO')
+		                       ->get();
+		
+		$cliente = Clientes::where('CNPJ', $pedido->CNPJ_CLIFOR)
+		                   ->first();
+
+		return view('painel/pedidos/show', compact('pedido', 'itens', 'cliente', 'vendedor_nome'));
+
+	}
+
+	public static function print($id) {
+		
+		// decifra os dados DO USUARIO(VENDEDOR)
+    	$data          = explode('|', session()->get('userdata'));
+    	$vendedor_nome = $data[0];
+
+		$pedido  = Pedidos::findOrFail($id);
+		
+		$itens = PedidosItens::where('ID_PEDIDO', $id)
+		                     ->join('PRODUTOS', 'PRODUTOS.ID_PRODUTO', '=', 'PEDIDOS_ITENS.ID_PRODUTO')
+		                     ->get();
+
+		
+		$cliente = Clientes::where('CNPJ', $pedido->CNPJ_CLIFOR)
+		                   ->first();
+
+			
+
+		$produtos = [];
+		$grade    = array(
+			 '34' => 0,
+			 '36' => 0,
+			 '38' => 0,
+			 '40' => 0,
+			 '42' => 0,
+			 '44' => 0,
+			 '46' => 0,
+			 '48' => 0,
+			 '50' => 0,
+			 '52' => 0,
+			 '54' => 0
+			);
+		
+		foreach($itens as $item){
+
+
+			$produtos[$item->ID_PRODUTO]['ID_PRODUTO'] = $item->ID_PRODUTO;
+			$produtos[$item->ID_PRODUTO]['ID_PEDIDO' ] = $item->ID_PEDIDO;
+			$produtos[$item->ID_PRODUTO]['PRECO'	 ] = $item->PRECO_UNITARIO;
+			$produtos[$item->ID_PRODUTO]['TOTAL' 	 ] = $item->PRECO_TOTAL;
+			$produtos[$item->ID_PRODUTO]['MODELO'	 ] = $item->MODELO . ' ' . substr( $item->DESCRICAO, 0, 6);
+
+			
+			// Atribui a grade completa e vazia para o produto caso nao exista
+			if (!isset($produtos[$item->ID_PRODUTO]['GRADE'])) {
+				$produtos[$item->ID_PRODUTO]['GRADE'] = $grade;
+			}
+	
+			// Atribui quantidades a grade (e soma caso exista 2 registros com o mesmo tamanho validar modelo se isso acontecera)
+			$produtos[$item->ID_PRODUTO]['GRADE'][$item->TAMANHO] += $item->QUANTIDADE;
+
+		}	
+
+
+
+//		dd($produtos);
+
+
+
+		return view('painel/pedidos/print', compact('pedido', 'produtos', 'cliente', 'vendedor_nome'));
+
+	}
 
 	
 } // classe PedidosCONTROLLER

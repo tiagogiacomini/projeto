@@ -22,10 +22,14 @@
             
             <div class="form-group form-group-style">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
+                        <label for="edit_nrpedido">Nº Pedido (provisório)</label>
+                        <input type="text" class="form-control input-lg text-right" value="{!! sprintf('%06d', $id_pedido)  !!}" disabled>
+                    </div>
+
+                    <div class="col-md-6">
                         <label for="edit_vendedor">Vendedor Responsável</label>
-                        <input type="text" class="form-control" value="{!! $vendedor_nome !!}" disabled>
-                        
+                        <input type="text" class="form-control input-lg" value="{!! $vendedor_nome !!}" disabled>
                     </div>
                 </div>
             </div>
@@ -202,7 +206,7 @@
 
                 <div class="form-group-style" id="gbox_total_pedido">
                     <div class="input-group">
-                        <input type="text" class="p_total form-control input-lg text-right" id="total_pedido" disabled>
+                        <input type="text" class="form-control input-lg text-right" id="total_pedido" disabled>
                         <div class="input-group-addon"> 
                             <i class="fa fa-usd fa-2x"></i>
                         </div>                   

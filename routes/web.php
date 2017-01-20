@@ -48,6 +48,11 @@ Route::get( 'painel/pedidos', 'Painel\pedidosController@index')->name('pedidos')
 	Route::get('painel/pedidos/busca', 'Painel\pedidosController@getBuscaPedido');
 	Route::get( 'painel/pedidos/create', 'Painel\pedidosController@create');
 	Route::post('painel/pedidos/store', 'Painel\pedidosController@store');
+	Route::get('painel/pedidos/delete_pedido/{id}', 'Painel\pedidosController@delete')->name('delete_pedido');
+	Route::get('painel/pedidos/show_pedido/{id}', 'Painel\pedidosController@show')->name('show_pedido');
+	Route::get('painel/pedidos/print_pedido/{id}', 'Painel\pedidosController@print')->name('print_pedido');
+
+	Route::get('painel/pedidos/grade/{id_pedido}/{id_produto}', 'Painel\pedidosController@pegaTamanhos');
 
 	Route::post('painel/pedidos/additem', 'Painel\pedidosController@addItem');
 	

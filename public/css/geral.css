@@ -175,6 +175,9 @@
 	    border-radius: 5px;
 	    padding: 10px;
 	    margin: 0px 10px 10px 10px;
+	    border-bottom: 3px solid #ccc;
+		
+
 	}
 
 
@@ -195,15 +198,6 @@
 	    border-color: #1e496f;
 	    border-style: solid;
 
-	}
-
-	.footer-total {
-		margin-bottom: 0px; !important;
-	}
-
-	.p_total {
-
-		font-size: 20px;
 	}
 
 
@@ -299,14 +293,7 @@
 
 	}
 
-	.vcenter {
-    	
-	    display: flex;
-    	align-items: center;
 
-	}
-
-	
 	/* DESKTOP */
 	/* PARA devices MAIORES QUE 768*/
 	@media all and (min-width: 768px) {

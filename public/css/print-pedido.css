@@ -1,0 +1,240 @@
+	@media print {    
+	    
+	    .no-print {
+	        display: none !important;
+	    }
+
+	    table { 
+    	 	page-break-inside:avoid; 
+    	}
+		
+	}
+
+	body {
+	  background: rgb(204,204,204); 
+	  color: #666;
+      font-family: 'Abel', sans-serif;
+
+	}
+
+	.round-rect {
+
+    	border: 1px solid #666;
+    	border-radius: 5px;
+
+    }
+
+    .logo {
+    	
+    	position: relative;
+    	width: 120px;
+    	top: 20px;
+    	left: 20px;
+    }
+
+  	page {
+  		background: white;
+  		display: block;
+  		margin: 0 auto; 
+  		margin-bottom: 0.5cm;
+  		margin-top: 0.5cm;
+  		padding: 10px;
+  	    box-shadow: 0 0 0.5cm rgba(0,0,0,0.5); 
+	}
+
+	page[size="A4"] {  
+  		width: 21cm;
+  		height: 29.7cm; 
+	}
+
+	.titulo {
+	    
+	    position: relative;
+	    top: 26px;
+	    right: 20px;
+	    float: right;
+	    color: #990000;
+	    font-size: 22px;
+	    font-weight: 600;
+
+	}
+
+	.provisorio {
+
+	    position: relative;
+	    top: 52px;
+	    right: -117px;
+	    float: right;
+
+	}
+
+	.cabecalho {
+
+		height: 100px;
+	}
+
+	.titulos-gbox {
+
+		margin-top: 8px;
+		margin-bottom: 3px;
+	}
+
+	.datas {
+		height: 20px;
+	}
+
+	.cliente {
+
+		height: 88px;
+	}
+
+	.nome-vendedor {
+
+		position: relative;
+		
+		left: 10px;
+		width: 500px;
+	}
+
+	.data-emissao {
+
+		position: relative;
+		left: 250px;
+		width: 230px;
+	}
+
+	.data-entrega {
+
+		position: relative;
+		float: right;
+		right: 10px;
+	}
+
+	.razao-cliente {
+		position: relative;
+		top: 3px;
+		left:10px;
+
+	}	
+	
+	.nome-cliente {
+		position: relative;
+		top: 3px;
+		left:10px;
+
+	}
+
+	.cnpj-cliente {
+
+		position: relative;
+		top: -17px;
+		float: right;
+		right: 10px;
+
+	}
+
+	.ierg-cliente {
+
+		position: relative;
+		top: -17px;
+		float: right;
+		right: 10px;
+	}
+
+	.end-cliente {
+		position: relative;
+		top: 4px;
+		left: 10px;
+	}
+
+	.bairro-cliente {
+		position: relative;
+		top: 4px;
+		left: 10px;
+	}
+
+	.cep-cliente {
+		position: relative;
+		top: -17px;
+		left: 335px;
+	}
+
+	.cidest-cliente {
+
+		position: relative;
+		float: right;
+		right: 10px;
+		top: -37px;
+	}
+
+	.forma-pgto {
+		position: relative;
+		left: 10px;
+	}
+
+	.obs-pedido {
+		position: relative;
+		padding: 10px;
+		height: 100px;
+	}
+
+	.table {
+		margin-bottom: 0px; !important;
+
+	}
+
+	.itens {
+
+		height: 450px;
+		border-radius: 5px 5px 0px 0px;
+	}
+
+	.total {
+		position: relative;
+		height: 30px;
+		border-top: 0px;
+		background-color: #eee;
+		border-radius: 0px 0px 5px 5px;
+		border-bottom: 2px solid #666;
+	}
+
+	.total_pedido {
+		position: relative;
+		float: right;
+		right: -60px;
+		top: 5px;
+	}
+
+	th {
+		background-color: #eee;
+    }
+
+	.total_pecas {
+
+	    position: relative;
+	    float: right;
+	    right: 199px;
+	    top: 5px;
+	    border-right: 1px solid #ddd;
+	    padding-right: 10px;
+	}
+
+	.cli_assinatura {
+
+	    position: relative;
+	    top: 104px;
+	    border-top: 1px solid #666;
+	    text-align: center;
+	    width: 500px;
+	    right: 10px;
+	    float: right;
+	}
+
+	.data_assinatura {
+
+	    position: relative;
+	    top: 50px;
+	    right: 10px;
+	    float: right;
+	}
+

@@ -324,16 +324,16 @@ $(document).ready(function() {
 	 			     	console.log(data);
 
 	 			     				
-	 			     	$("#tabela_itens").append('<tr><td class="col-sm-1 col-md-1">' + $("#edit_busca_prod" ).val() + '</td>' + 
+	 			     	$("#tabela_itens").append('<tr><td class="col-sm-1 col-md-1">' + $("#edit_busca_prod" ).val() 			      + '</td>' + 
 	 			     		 						  '<td class="col-sm-1 col-md-1 text-center">'     + data.TAMANHO                 + '</td>' + 			     		 						  
-	 			     		 						  '<td class="hidden-xs col-md-5">' 		           + $("#edit_descricao"  ).val() + '</td>' +
+	 			     		 						  '<td class="hidden-xs col-md-5">' 		       + $("#edit_descricao"  ).val() + '</td>' +
 													  '<td class="hidden-xs col-md-1 text-right">R$ '  + data.PRECO_UNT               + '</td>' +
 													  '<td class="hidden-xs col-md-1 text-right">'     + data.QUANTIDADE   	  	      + '</td>' + 			     		                          
 													  '<td class="col-sm-3 col-md-2 text-right">R$ '   + data.TOTAL_ITEM 	          + '</td>' +
 													  '<td class="col-sm-1 col-md-1 text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
-													  											     ' data-idprod="'+ id_produto + '"' + 
-													                                                 ' data-idped="' + id_pedido  + '"' + 
-													                                                 ' data-tam="'+ data.TAMANHO + '">' + 
+													  											     ' data-idprod="'+ id_produto   + '"' + 
+													                                                 ' data-idped="' + id_pedido    + '"' + 
+													                                                 ' data-tam="'   + data.TAMANHO + '">' + 
 													                                                 '<i class="fa fa-trash-o"></i></button></td></tr>'
 													  );
 
@@ -424,6 +424,7 @@ $(document).ready(function() {
 		});
 			
 	});
+
 
 	//BTN CANCELAR
 	$(".btn_cancelar").click(function() {

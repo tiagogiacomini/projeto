@@ -45,7 +45,7 @@
 				        {!! Session::get('cad_pedido_msg') !!}
 				    </div>
 				@endif
-				<table class="table table-hover table-striped">
+				<table class="table table-striped">
 		  			<thead> 
 			  			<tr class="row">
 			  				<th class="col-sm-2 col-md-2">Nº PEDIDO</th>
@@ -66,9 +66,10 @@
 			  				<td class="col-sm-6 col-md-5">{!! $pedido->RAZAO !!}</td>
 			  				<td class="col-sm-1 col-md-1 text-right">R$ {!! number_format( $pedido->TOTAL, 2, ',', '.') !!}</td>
 			  				<td class="col-sm-2 col-md-2 text-center">
-			  					<a href="@{!! route('show_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-success"><i class="fa fa-eye"></i></a>
+			  					<a href="{!! route('show_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-success"><i class="fa fa-eye"></i></a>
 			  				    <a href="@{!! route('edit_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
-			  				    <a href="@{!! route('delete_pedido', $pedido->ID_PEDIDO) !!}" class="btn btn-danger" ><i class="fa fa-trash-o"></i></a>
+			  				    <a href="{!! route('print_pedido',  $pedido->ID_PEDIDO) !!}" class="btn btn-warning"><i class="fa fa-print"></i></a>
+			  				    <a href="{!! route('delete_pedido', $pedido->ID_PEDIDO) !!}" class="btn btn-danger" ><i class="fa fa-trash-o"></i></a>
 			  				 </td>
 
 
