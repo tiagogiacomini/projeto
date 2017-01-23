@@ -1,6 +1,7 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
+<title>SpartumWEB - Pedidos</title>
 
 </head>
 	<body>
@@ -48,11 +49,12 @@
 				<table class="table table-striped">
 		  			<thead> 
 			  			<tr class="row">
-			  				<th class="col-sm-2 col-md-2">Nº PEDIDO</th>
-			  				<th class="hidden-xs col-md-2">DATA EMISSÃO</th>
-			  				<th class="col-sm-6 col-md-5">CLIENTE</th>
+			  				<th class="col-sm-1 col-md-1">Nº PEDIDO</th>
+			  				<th class="hidden-xs col-md-1">DATA EMISSÃO</th>
+			  				<th class="hidden-xs col-md-1">DATA ENTREGA</th>
+			  				<th class="col-sm-6 col-md-6">CLIENTE</th>
 			  				<th class="col-sm-1 col-md-1 text-right">TOTAL</th>
-			  				<th class="col-sm-2 col-md-2 text-center">AÇÕES</th>
+			  				<th class="col-sm-3 col-md-2 text-center">AÇÕES</th>
 			  			</tr>
 			  		</thead>
 
@@ -61,13 +63,14 @@
 		  			@foreach($pedidos as $pedido)
 			  			<tr class="row listagem">
 			  				
-			  		 		<td class="col-sm-2 col-md-2">{!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</td>
-							<td class="hidden-xs col-md-2">{!! \Carbon\Carbon::parse($pedido->DATA_EMISSAO)->format('d/m/Y') !!}</td>			  		 		
-			  				<td class="col-sm-6 col-md-5">{!! $pedido->RAZAO !!}</td>
-			  				<td class="col-sm-1 col-md-1 text-right">R$ {!! number_format( $pedido->TOTAL, 2, ',', '.') !!}</td>
-			  				<td class="col-sm-2 col-md-2 text-center">
+			  		 		<td >{!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</td>
+							<td class="hidden-xs">{!! \Carbon\Carbon::parse($pedido->DATA_EMISSAO)->format('d/m/Y') !!}</td>			  		 		
+							<td class="hidden-xs">{!! \Carbon\Carbon::parse($pedido->PREVISAO_ENTREGA)->format('d/m/Y') !!}</td>			  		 		
+			  				<td>{!! $pedido->RAZAO !!}</td>
+			  				<td class="text-right">R$ {!! number_format( $pedido->TOTAL, 2, ',', '.') !!}</td>
+			  				<td class="text-center">
 			  					<a href="{!! route('show_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-success"><i class="fa fa-eye"></i></a>
-			  				    <a href="@{!! route('edit_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+			  				    <a href="{!! route('edit_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
 			  				    <a href="{!! route('print_pedido',  $pedido->ID_PEDIDO) !!}" class="btn btn-warning"><i class="fa fa-print"></i></a>
 			  				    <a href="{!! route('delete_pedido', $pedido->ID_PEDIDO) !!}" class="btn btn-danger" ><i class="fa fa-trash-o"></i></a>
 			  				 </td>

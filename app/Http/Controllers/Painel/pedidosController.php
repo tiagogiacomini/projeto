@@ -257,6 +257,42 @@ class PedidosController extends Controller
 
 	}
 
+
+	public static function edit($id) {
+
+    	// decifra os dados DO USUARIO(VENDEDOR)
+    	$data          = explode('|', session()->get('userdata'));
+    	$vendedor_nome = $data[0];
+
+		$pedido  = Pedidos::findOrFail($id);
+		
+		$itens   = PedidosItens::where('ID_PEDIDO', $id)
+		                       ->join('PRODUTOS', 'PRODUTOS.ID_PRODUTO', '=', 'PEDIDOS_ITENS.ID_PRODUTO')
+		                       ->get();
+		
+		$cliente = Clientes::where('CNPJ', $pedido->CNPJ_CLIFOR)
+		                   ->first();
+
+		return view('painel/pedidos/edit', compact('pedido', 'itens', 'cliente', 'vendedor_nome'));
+
+	}
+
+	public static function update(Request $request) {
+		
+		$pedido 				   = Pedidos::findOrFail($request->id_pedido);
+		$pedido->DATA_EMISSAO	   = $request->edit_dataemissao;
+		$pedido->PREVISAO_ENTREGA  = $request->edit_dataentrega;
+		$pedido->CONDICAO_PAGTO	   = $request->edit_formapagto;
+		$pedido->OBSERVACAO		   = $request->edit_obs;
+		$pedido->FLG_CONCLUIDO	   = 1;
+
+		if ($pedido->save()) {
+			return redirect()->route('pedidos')->with('cad_pedido_msg', 'Pedido atualizado com sucesso!');
+		} 	
+		
+	}
+
+
 	public static function print($id) {
 		
 		// decifra os dados DO USUARIO(VENDEDOR)
@@ -287,8 +323,14 @@ class PedidosController extends Controller
 			 '48' => 0,
 			 '50' => 0,
 			 '52' => 0,
-			 '54' => 0
+			 '54' => 0,
+			 '56' => 0,
+			 '58' => 0,
+			 '60' => 0,
+			 '62' => 0
 			);
+
+		$tamanho = '';
 		
 		foreach($itens as $item){
 
@@ -297,7 +339,9 @@ class PedidosController extends Controller
 			$produtos[$item->ID_PRODUTO]['ID_PEDIDO' ] = $item->ID_PEDIDO;
 			$produtos[$item->ID_PRODUTO]['PRECO'	 ] = $item->PRECO_UNITARIO;
 			$produtos[$item->ID_PRODUTO]['TOTAL' 	 ] = $item->PRECO_TOTAL;
-			$produtos[$item->ID_PRODUTO]['MODELO'	 ] = $item->MODELO . ' ' . substr( $item->DESCRICAO, 0, 6);
+			$produtos[$item->ID_PRODUTO]['MODELO'	 ] = $item->MODELO . ' ' . substr( $item->DESCRICAO, 0, 5);
+			$produtos[$item->ID_PRODUTO]['QTD_TOTAL' ] = $item->PRECO_UNITARIO;
+
 
 			
 			// Atribui a grade completa e vazia para o produto caso nao exista
@@ -306,7 +350,22 @@ class PedidosController extends Controller
 			}
 	
 			// Atribui quantidades a grade (e soma caso exista 2 registros com o mesmo tamanho validar modelo se isso acontecera)
-			$produtos[$item->ID_PRODUTO]['GRADE'][$item->TAMANHO] += $item->QUANTIDADE;
+			if ($item->TAMANHO == 'P') {
+				$tamanho = '56';
+			} else 
+				if ($item->TAMANHO == 'M') {
+					$tamanho = '58';
+				} else 
+					if ($item->TAMANHO == 'G') {
+						$tamanho = '60';
+					} else 
+						if ($item->TAMANHO == 'GG') {
+							$tamanho = '62';
+						} else
+							$tamanho = $item->TAMANHO;
+
+
+			$produtos[$item->ID_PRODUTO]['GRADE'][$tamanho] += $item->QUANTIDADE;
 
 		}	
 

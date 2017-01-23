@@ -1,7 +1,7 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
-
+<title>SpartumWEB - Produtos</title>
 </head>
 	<body>
 		<div class="container_painel">
@@ -43,7 +43,7 @@
 			<div class="container-fluid form-group-style">
 
 			@if (isset($produtos))
-			<table class="table table-hover table-striped">
+			<table class="table table-striped">
 	  			<thead> 
 		  			<tr class="row">
 		  				<th class="col-sm-4 col-md-2">MODELO</th>

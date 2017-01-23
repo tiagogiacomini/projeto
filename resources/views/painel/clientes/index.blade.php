@@ -1,7 +1,7 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
-
+<title>SpartumWEB - Clientes</title>
 </head>
 	<body>
 		<div class="container_painel">
@@ -52,7 +52,7 @@
 				        {!! Session::get('cad_cliente_msg') !!}
 				    </div>
 				@endif
-				<table class="table table-hover table-striped">
+				<table class="table table-striped">
 		  			<thead> 
 
 			  			<tr class="row">

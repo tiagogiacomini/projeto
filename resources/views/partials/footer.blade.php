@@ -1,5 +1,5 @@
         
             <div class="botton_bar center_obj">
-                <p>Infinitysoft© - Copyright {!! date('Y') !!} - Todos os direitos reservados.</p>
+                Infinitysoft© - Copyright {!! date('Y') !!} - Todos os direitos reservados.
             </div>
         

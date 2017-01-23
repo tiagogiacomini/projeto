@@ -15,7 +15,7 @@
 	<title>Impressão de Pedido</title> 
 </head> 
 <body> 
-	<page size="A4">
+	<div class="page">
 
 		<div class="round-rect cabecalho">
 			<img src="/img/loofting.bmp" class="logo">
@@ -81,6 +81,10 @@
 						<th width="20" class="text-right">50</th>
 						<th width="20" class="text-right">52</th>
 						<th width="20" class="text-right">54</th>
+						<th width="20" class="text-right">P</th>
+						<th width="20" class="text-right">M</th>
+						<th width="20" class="text-right">G</th>
+						<th width="20" class="text-right">GG</th>
 						<th width="20" class="text-right">QTD.</th>
 						<th width="30" class="text-right">UNIT.</th>
 						<th width="30" class="text-right">TOTAL</th>
@@ -101,16 +105,17 @@
 								$quant_total = 0;
 							@endphp			
 
-							@for($i=34; $i<=54; $i+=2)
+
+							@for($i=34; $i<=62; $i+=2)
 								
 								@if ( $item['GRADE'][ strval($i) ] > 0 )				     	
 									<td class="text-right" data-idx="{!! $i !!}">{!! $item['GRADE'][ strval($i) ] !!}</td>		
 								@else
-									<td></td>
+									<td data-idx="{!! $i !!}"></td>
 								@endif								
 											
 								@php 
-									$quant_total       = $quant_total + $item['GRADE'][ strval($i) ];
+									$quant_total = $quant_total + $item['GRADE'][ strval($i) ];
 								@endphp 
 
 							@endfor
@@ -121,7 +126,7 @@
 
 							<td class="text-right">{!! $quant_total !!}</td>
 							<td class="text-right">{!! number_format( $item['PRECO'] , 2, ',', '.') !!}</td>
-							<td class="text-right">{!! number_format( $item['TOTAL'] , 2, ',', '.') !!}</td>
+							<td class="text-right">{!! number_format( ($item['PRECO'] * $quant_total) , 2, ',', '.') !!}</td>
 
 						</tr>
 					
@@ -152,7 +157,7 @@
 
 		</div>
 
-	</page>
+	</div>
 
 </body>
 </hmtl>

@@ -134,12 +134,18 @@ $(document).ready(function() {
 
 	$("#edit_busca_prod").keyup(function() {
 		
-		if ( $(this).val().length === 1 )
+		if ( $(this).val().length === 1 ) {
 
 		    if  ( !$("#gbox_nenhum_resultado").hasClass('invisivel')) {
 
-			$("#gbox_nenhum_resultado").addClass('invisivel');
+				$("#gbox_nenhum_resultado").addClass('invisivel');
+			}
 
+			if  ( !$("#gbox_nenhuma_tabela").hasClass('invisivel')) {
+
+				$("#gbox_nenhuma_tabela").addClass('invisivel');
+
+			}
 		}
 
  	});
@@ -162,12 +168,12 @@ $(document).ready(function() {
 		//pesquisar por modelo
 		if ($("#sel_pesquisa_por").val() == 'MODELO') {
 
-			var url = 'busca_prod_modelo/' + valor;
+			var url = '/painel/pedidos/busca_prod_modelo/' + valor;
 		} 
 
 		if ($("#sel_pesquisa_por").val() == 'DESCRICAO') {
 
-			var url = 'busca_prod_descr/' + valor;		
+			var url = '/painel/pedidos/busca_prod_descr/' + valor;		
 		}
 
 		Pace.track(function(){
@@ -182,7 +188,7 @@ $(document).ready(function() {
 				     	var id_produto = data.ID_PRODUTO;
 						
 						//preenche os tamanhos do produto
-						$.ajax({ url     : 'busca_prod_tamanho/' + id_produto + '/' + id_tabela_preco ,
+						$.ajax({ url     : '/painel/pedidos/busca_prod_tamanho/' + id_produto + '/' + id_tabela_preco ,
 					             dataType: 'json'  ,
 
 					            success : function(data_tam) {
@@ -193,7 +199,7 @@ $(document).ready(function() {
 					            	if (!$.isArray(data_tam) || !data_tam.length)  {
 
 					            		$("#gbox_resultado").addClass('invisivel');
-										$("#gbox_nenhum_resultado").removeClass('invisivel');
+										$("#gbox_nenhuma_tabela").removeClass('invisivel');
 						        	
 						        		return false;	
 					            	}
@@ -207,7 +213,9 @@ $(document).ready(function() {
 					            		
 					            	});
 
+					            	$("#edit_quantidade").val(1);
 					            	$("#edit_tamanhos").focus();
+
 					            },
 
 					            error : function() {
@@ -244,6 +252,7 @@ $(document).ready(function() {
 				     	$("#gbox_resultado").removeClass('invisivel');
 				     	$("#btn_add_prod").removeClass('invisivel');
 		    	     	$("#gbox_nenhum_resultado").addClass('invisivel');
+		    	     	$("#gbox_nenhuma_tabela").addClass('invisivel');
 		    	     		    	     	
 		     					     	
 				    },
@@ -324,13 +333,13 @@ $(document).ready(function() {
 	 			     	console.log(data);
 
 	 			     				
-	 			     	$("#tabela_itens").append('<tr><td class="col-sm-1 col-md-1">' + $("#edit_busca_prod" ).val() 			      + '</td>' + 
-	 			     		 						  '<td class="col-sm-1 col-md-1 text-center">'     + data.TAMANHO                 + '</td>' + 			     		 						  
-	 			     		 						  '<td class="hidden-xs col-md-5">' 		       + $("#edit_descricao"  ).val() + '</td>' +
-													  '<td class="hidden-xs col-md-1 text-right">R$ '  + data.PRECO_UNT               + '</td>' +
-													  '<td class="hidden-xs col-md-1 text-right">'     + data.QUANTIDADE   	  	      + '</td>' + 			     		                          
-													  '<td class="col-sm-3 col-md-2 text-right">R$ '   + data.TOTAL_ITEM 	          + '</td>' +
-													  '<td class="col-sm-1 col-md-1 text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
+	 			     	$("#tabela_itens").append('<tr><td >' + $("#edit_busca_prod" ).val() + '</td>' + 
+	 			     		 						  '<td class="text-center">' + data.TAMANHO  + '</td>' + 			     		 						  
+	 			     		 						  '<td class="hidden-xs">' + $("#edit_descricao"  ).val()  + '</td>' +
+													  '<td class="hidden-xs text-right">R$ '  + data.PRECO_UNT + '</td>' +
+													  '<td class="hidden-xs text-right">' + data.QUANTIDADE  + '</td>' + 			     		                          
+													  '<td class="text-right">R$ '+ data.TOTAL_ITEM + '</td>' +
+													  '<td class="text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
 													  											     ' data-idprod="'+ id_produto   + '"' + 
 													                                                 ' data-idped="' + id_pedido    + '"' + 
 													                                                 ' data-tam="'   + data.TAMANHO + '">' + 
@@ -429,8 +438,6 @@ $(document).ready(function() {
 	//BTN CANCELAR
 	$(".btn_cancelar").click(function() {
 		
-		
-
 		history.back();
 		return false;
 	});	

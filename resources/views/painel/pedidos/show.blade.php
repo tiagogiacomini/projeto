@@ -3,6 +3,7 @@
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
 <script type="text/javascript" src="/js/pace.min.js"></script>
 <script type="text/javascript" src="/js/pedidos.js"></script>
+<title>SpartumWEB - Exibindo Pedido Nº {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</title>
 
 </head>
 <body>
@@ -13,7 +14,7 @@
                 <i class="fa fa-chevron-left fa-2x btn_cancelar"></i>
             </div>
             <div class="top_bar center_obj">
-                <i class="fa fa-user-circle-o fa-2x"></i><h1>&nbspPedido</h1>
+                <i class="fa fa-shopping-basket fa-2x"></i><h1>&nbspPedido {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</h1>
             </div>
         </div>
 

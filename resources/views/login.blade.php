@@ -1,6 +1,7 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/login.css">
+<title>SpartumWEB - Login</title>
 
 </head>
     <body>

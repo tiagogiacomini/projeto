@@ -1,11 +1,11 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
-<script type="text/javascript" src="/js/jsmask.js"></script>
 <script type="text/javascript" src="/js/pace.min.js"></script>
 <script type="text/javascript" src="/js/pedidos.js"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>SpartumWEB - Novo Pedido {!! sprintf('%06d', $id_pedido) !!}</title>
+<title>SpartumWEB - Editando Pedido Nº {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</title>
+
 </head>
 <body>
 
@@ -15,7 +15,7 @@
                 <i class="fa fa-chevron-left fa-2x btn_cancelar"></i>
             </div>
             <div class="top_bar center_obj">
-                <i class="fa fa-user-circle-o fa-2x"></i><h1>&nbspPedidoWEB</h1>
+                <i class="fa fa-shopping-basket fa-2x"></i><h1>&nbspPedido {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</h1>
             </div>
         </div>
 
@@ -25,7 +25,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="edit_nrpedido">Nº Pedido (provisório)</label>
-                        <input type="text" class="form-control input-lg text-right" value="{!! sprintf('%06d', $id_pedido)  !!}" disabled>
+                        <input type="text" class="form-control input-lg text-right" value="{!! sprintf('%06d', $pedido->ID_PEDIDO) !!}" disabled>
                     </div>
 
                     <div class="col-md-6">
@@ -38,76 +38,67 @@
 
             <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-id-card-o"></i>&nbspInformações do Cliente</p>            
 
-            <form id="form_pedido" method="POST" action="/painel/pedidos/store">
+            <form id="form_pedido" method="POST" action="/painel/pedidos/update">
                 {{ csrf_field() }}
                 <div class="content">
                     <div class="form-group form-group-style" >
-                                            
-                        <div class="alert alert-danger invisivel" id="alerta-cnpj">
-                            
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="pesquisa_cliente">CPF/CNPJ do Cliente</label>                                                                   
+                                <input type="text" class="form-control input-lg" value="{!! $cliente->CNPJ !!}" disabled>
+                            </div>
                         </div>
-                        
-                        <div class="alert alert-warning invisivel" id="alerta-nao-encontrado">
-                            
-                        </div>                  
-
-                        <label for="pesquisa_cliente">Informe o CPF/CNPJ do Cliente</label>                                                                   
-                        <div class="input-group" id="gbox_pesquisa_cliente">
-                            
-                            <input type="text" class="form-control input-lg" id="edit_busca_cliente" name="pesquisa_cliente" value="{!! \Request::input('pesquisa_cliente') !!}" placeholder="Informe o CPF ou CNPJ do cliente" autofocus>
-
-                            <div class="input-group-addon"><button type="button" style="border: none; background-color: transparent;" id="btn_buscacliente"><i class="fa fa-search fa-2x"></i></button></div> 
-                        </div>                          
-                                                                         
+                                                                                                                         
                         <div class="collapse" id="gbox_endereco">
 
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="edit_razao"><small>Razão Social</small></label>
-                                    <input type="text" class="form-control input-sm" id="edit_razao" name="edit_razao" disabled>                        
+                                    <input type="text" class="form-control input-sm"  value="{!! $cliente->RAZAO !!}" disabled>                        
                                 </div>
 
                                 <div class="col-md-4">
                                     <label for="edit_fantasia"><small>Nome Fantasia</small></label>
-                                    <input type="text" class="form-control input-sm" id="edit_fantasia" name="edit_fantasia" disabled>
+                                    <input type="text" class="form-control input-sm"  value="{!! $cliente->NOME_FANTASIA !!}" disabled>
                                 </div>
 
                                 <div class="col-md-2">
                                     <label for="edit_telefone"><small>Telefone</small></label>
-                                    <input type="text" class="form-control input-sm phone" id="edit_telefone" name="edit_telefone" disabled>
+                                    <input type="text" class="form-control input-sm phone" value="{!! $cliente->TELEFONE !!}" disabled>
                                 </div>                                
                             </div>
 
                             <div class="row">
                                 <div class="col-md-10">
                                     <label for="edit_endereco"><small>Endereço</small></label>
-                                    <input type="text" class="form-control input-sm" id="edit_endereco" name="edit_endereco" disabled>
+                                    <input type="text" class="form-control input-sm" value="{!! $cliente->ENDERECO !!}" disabled>
                                 </div>
                                 <div class="col-md-2">
                                     <label for="edit_numero"><small>Número</small></label>
-                                    <input type="text" class="form-control input-sm" id="edit_numero" name="edit_numero" disabled>
+                                    <input type="text" class="form-control input-sm" value="{!! $cliente->NUMERO !!}" disabled>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="edit_bairro"><small>Bairro</small></label>
-                                    <input type="text" class="form-control input-sm" id="edit_bairro" name="edit_bairro" disabled>                        
+                                    <input type="text" class="form-control input-sm" value="{!! $cliente->BAIRRO !!}" disabled>                        
                                 </div>
                                 
                                 <div class="col-md-4">
                                     <label for="edit_cidade"><small>Cidade</small></label>
-                                    <input type="text" class="form-control input-sm" id="edit_cidade" name="edit_cidade" disabled>                        
+                                    <input type="text" class="form-control input-sm" value="{!! $cliente->CIDADE !!}" disabled>                        
                                 </div>
                                 
                                 <div class="col-md-2">
                                     <label for="edit_estado"><small>Estado</small></label>
-                                    <input type="text" class="form-control input-sm" id="edit_estado" name="edit_estado" disabled>                        
+                                    <input type="text" class="form-control input-sm" value="{!! $cliente->ESTADO !!}" disabled>                        
                                 </div>
 
                                 <div class="col-md-2">
                                     <label for="edit_cep"><small>CEP</small></label>
-                                    <input type="text" class="form-control input-sm" id="edit_cep" name="edit_cep" disabled>                        
+                                    <input type="text" class="form-control input-sm" value="{!! $cliente->CEP !!}" disabled>                        
                                 </div>
                             </div>
                         </div>
@@ -124,11 +115,11 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="edit_dataemissao">Data de Emissão</label>
-                            <input type="date" class="form-control input-lg" id="edit_dataemissao" name="edit_dataemissao" value="{!! date('Y-m-d') !!}" >
+                            <input type="date" class="form-control input-lg" name="edit_dataemissao" value="{!! $pedido->DATA_EMISSAO !!}" >
                         </div>
                         <div class="col-md-6">
                             <label for="edit_dataentrega">Data de Entrega (previsão)</label>
-                            <input type="date" class="form-control input-lg" id="edit_dataentrega" name="edit_dataentrega" value="{!! date('Y-m-d', strtotime('+1 month')) !!}" >
+                            <input type="date" class="form-control input-lg" name="edit_dataentrega" value="{!! $pedido->PREVISAO_ENTREGA !!}" >
                         </div>
                     </div>
                 </div>   
@@ -139,31 +130,18 @@
 
                 <div class="form-group form-group-style">
                     <label for="edit_formapagto">Forma de pagamento</label>
-                    <input type="text" class="form-control input-lg uppercase" maxlength="30" id="edit_formapagto" name="edit_formapagto" value="" placeholder="Ex: 30/60/90 ou A VISTA...">
+                    <input type="text" class="form-control input-lg uppercase" name="edit_formapagto" value="{!! $pedido->CONDICAO_PAGTO !!}" >
                 </div>   
 
                 </br>
                 
-                {{--
-                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspInformações dos produtos</p>         
-                
-                <div class="form-group form-group-style">
-                    <label for="edit_busca">Clique em "+" para adicionar um produto</label>
-                    <div class="input-group">   
-                        <div class="input-group-addon"><a href="{!! url('/painel/clientes/adiciona') !!}"><i class="fa fa-plus fa-2x"></i></a></div>
-                        <input type="text" class="form-control inputs_form" name="pesquisa" id="edit_busca" placeholder="Inserir produto..." value="">
-                    </div>
-                </div>
-
-                --}}
-
 
                 <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-commenting"></i>&nbspObservações</p>         
 
                 <div class="form-group form-group-style">
                     <div class="row">
                         <div class="col-md-12">
-                            <textarea style="resize:none;" rows="5" maxlength="255" class="form-control" id="edit_obs" name="edit_obs" value=""></textarea>
+                            <textarea style="resize:none;" rows="5" name="edit_obs" class="form-control"> {!! $pedido->OBSERVACAO !!} </textarea>
                         </div>
                     </div>
                 </div>   
@@ -171,10 +149,10 @@
                 </br>
 
                 
-                <p class="titulo-gbox invisivel">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspItens do Pedido</p>         
-                <div class="form-group form-group-style invisivel listagem" id="gbox_itens">
+                <p class="titulo-gbox ">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspItens do Pedido</p>         
+                <div class="form-group form-group-style  listagem" id="gbox_itens">
                        
-                    <table class="table table-hover table-striped invisivel" id="tabela_itens">
+                    <table class="table table-striped table-bordered" id="tabela_itens">
                         <thead> 
                             <tr>
                                 <th class="col-sm-1 col-md-1">MODELO</th>
@@ -187,6 +165,18 @@
                             </tr>
                         </thead>
                         <tbody>
+                            
+                            @foreach($itens as $item) 
+                            <tr>
+                                <td>{!! $item->MODELO !!}</td>
+                                <td class="text-center">{!! $item->TAMANHO !!}</td>
+                                <td class="hidden-xs">{!! $item->DESCRICAO !!}</td>
+                                <td class="hidden-xs text-right">R$ {!! number_format( $item->PRECO_UNITARIO , 2, ',', '.') !!}</td>
+                                <td class="hidden-xs text-right">{!! $item->QUANTIDADE !!}</td>
+                                <td class="text-right">R$ {!! number_format( $item->PRECO_TOTAL , 2, ',', '.') !!}</td>
+                                <td class="text-center"><button type="button" class="btn btn-danger btn_exclui_prod" data-idprod="{!! $item->ID_PRODUTO !!}" data-idped="{!! $pedido->ID_PEDIDO !!}" data-tam="{!! $item->TAMANHO !!}"><i class="fa fa-trash-o"></i></button></td></tr>
+                            </tr>
+                            @endforeach
 
                         </tbody>
                     </table>
@@ -195,30 +185,30 @@
                         <button type="button" style="border: none; background-color: transparent;" id="btn_additem" data-toggle="modal" data-target="#modalItens"><i class="fa fa-plus fa-3x"></i></button>
                     </div>
 
+
+                <input type="hidden" name="id_vendedor"     value="{!! $pedido->ID_VENDEDOR !!}" class="id_vendedor" id="id_vendedor">
+                <input type="hidden" name="id_tabela_preco" class="id_tabela_preco" id="id_tabela_preco" value="{!! $cliente->ID_TABELA !!}">
+                <input type="hidden" name="id_pedido"       id="id_pedido" value="{!! $pedido->ID_PEDIDO !!}">
+
+
                 </div>   
-
-
-                <input type="hidden" name="id_vendedor"     value="{!! $vendedor_id !!}" class="id_vendedor" id="id_vendedor">
-                <input type="hidden" name="id_tabela_preco" class="id_tabela_preco" id="id_tabela_preco">
-                <input type="hidden" name="id_pedido"       id="id_pedido" value="{!! $id_pedido !!}">
                 
                 </br>
                 <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-usd"></i>&nbspTotal do Pedido</p>         
 
                 <div class="form-group-style" id="gbox_total_pedido">
                     <div class="input-group">
-                        <input type="text" class="form-control input-lg text-right" id="total_pedido" disabled>
+                        <input type="text" class="p_total form-control input-lg text-right" id="total_pedido" value="R$ {!! number_format( $pedido->TOTAL , 2, ',', '.')  !!}" disabled>
                         <div class="input-group-addon"> 
                             <i class="fa fa-usd fa-2x"></i>
                         </div>                   
                     </div>
                 </div>
-
-
+                
                 <div class="form-group-style">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="submit" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Concluir Pedido">
+                            <input type="submit" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Salvar Edição">
                         </div>
                         
                         <div class="col-md-6">
@@ -227,7 +217,6 @@
                     </div>
                 </div>
 
-
             </form>
         </div>
 
@@ -235,7 +224,8 @@
 
 
 
-    {{-- MODAL PARA INSERCAO DE ITENS --}}
+
+       {{-- MODAL PARA INSERCAO DE ITENS --}}
     <div id="modalItens" class="modal fade" tabindex="-1" role="document" data-keyboard="false" data-backdrop="static" aria-labelledby="myModalLabel">
 
         <div class="modal-dialog modal-lg" role="document">
@@ -313,7 +303,7 @@
 
 
                             <input type="hidden" name="id_produto" id="id_produto">
-                            <input type="hidden" name="id_pedido"  id="id_pedido" value="{!! $id_pedido !!}">
+                            <input type="hidden" name="id_pedido"  id="id_pedido" value="{!! $pedido->ID_PEDIDO !!}">
                             <input type="hidden" name="preco_unitario" id="preco_unitario">     
 
                         </form>
@@ -361,4 +351,3 @@
         </div>
 
     </div>
-

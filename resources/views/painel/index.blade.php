@@ -1,6 +1,7 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
+<title>SpartumWEB - Home</title>
 <script type="text/javascript">
    
     $(document).ready(function() {
@@ -30,7 +31,7 @@
                     <a class="links_icones" href="{!! route('pedidos') !!}" >
                         <i class="fa fa-shopping-basket fa-3x"></i>
                     </a>
-                <br><p>Pedido</p></span>
+                <br><p>Pedidos</p></span>
                                 
                 <span class="btn_painel" data-toggle="tooltip" title="Permite incluir ou exibir clientes!">
                     <a class="links_icones" href="{!! route('clientes') !!}">
