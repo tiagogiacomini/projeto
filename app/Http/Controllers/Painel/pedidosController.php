@@ -240,6 +240,11 @@ class PedidosController extends Controller
 
 	public static function show($id) {
 
+    	// verifica LOGIN
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
+
     	// decifra os dados DO USUARIO(VENDEDOR)
     	$data          = explode('|', session()->get('userdata'));
     	$vendedor_nome = $data[0];
@@ -259,6 +264,11 @@ class PedidosController extends Controller
 
 
 	public static function edit($id) {
+
+		// verifica LOGIN
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
 
     	// decifra os dados DO USUARIO(VENDEDOR)
     	$data          = explode('|', session()->get('userdata'));
@@ -295,6 +305,11 @@ class PedidosController extends Controller
 
 	public static function print($id) {
 		
+		// verifica LOGIN
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
+
 		// decifra os dados DO USUARIO(VENDEDOR)
     	$data          = explode('|', session()->get('userdata'));
     	$vendedor_nome = $data[0];
@@ -370,10 +385,7 @@ class PedidosController extends Controller
 		}	
 
 
-
 //		dd($produtos);
-
-
 
 		return view('painel/pedidos/print', compact('pedido', 'produtos', 'cliente', 'vendedor_nome'));
 

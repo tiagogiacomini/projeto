@@ -53,7 +53,7 @@
 			  				<th class="hidden-xs col-md-1">DATA EMISSÃO</th>
 			  				<th class="hidden-xs col-md-1">DATA ENTREGA</th>
 			  				<th class="col-sm-6 col-md-6">CLIENTE</th>
-			  				<th class="col-sm-1 col-md-1 text-right">TOTAL</th>
+			  				<th class="hidden-xs col-md-1 text-right">TOTAL</th>
 			  				<th class="col-sm-3 col-md-2 text-center">AÇÕES</th>
 			  			</tr>
 			  		</thead>
@@ -67,7 +67,7 @@
 							<td class="hidden-xs">{!! \Carbon\Carbon::parse($pedido->DATA_EMISSAO)->format('d/m/Y') !!}</td>			  		 		
 							<td class="hidden-xs">{!! \Carbon\Carbon::parse($pedido->PREVISAO_ENTREGA)->format('d/m/Y') !!}</td>			  		 		
 			  				<td>{!! $pedido->RAZAO !!}</td>
-			  				<td class="text-right">R$ {!! number_format( $pedido->TOTAL, 2, ',', '.') !!}</td>
+			  				<td class="hidden-xs text-right">R$ {!! number_format( $pedido->TOTAL, 2, ',', '.') !!}</td>
 			  				<td class="text-center">
 			  					<a href="{!! route('show_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-success"><i class="fa fa-eye"></i></a>
 			  				    <a href="{!! route('edit_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-primary"><i class="fa fa-edit"></i></a>

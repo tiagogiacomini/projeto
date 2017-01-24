@@ -42,6 +42,9 @@ Route::get( 'painel/clientes', 'Painel\clientesController@index' )->name('client
 	Route::post('painel/clientes/update/{cnpj}', 'Painel\clientesController@update');	
 	Route::get('painel/clientes/create', 'Painel\clientesController@create');	
 	Route::post('painel/clientes/store', 'Painel\clientesController@store');
+	Route::get('painel/clientes/teste', function() {
+		return phpinfo();
+	});
 
 // PEDIDOS
 Route::get( 'painel/pedidos', 'Painel\pedidosController@index')->name('pedidos');

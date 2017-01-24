@@ -197,7 +197,7 @@
                 <div class="form-group-style">
                     <div class="row">
                         <div class="col-md-12">
-                            <input type="button" class="form-control btn btn-primary input-lg" id="btn_cancelar" value="Voltar">
+                            <input type="button" class="form-control btn btn-primary input-lg btn_cancelar" value="Voltar">
                         </div>
                     </div>
                 </div>

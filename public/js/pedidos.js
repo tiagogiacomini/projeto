@@ -22,20 +22,8 @@ $(document).ready(function() {
        	}
     });
 
-	// NAO DEIXA O FORM SER SUBMETIDO SE PRESSIONAR ENTER
-	$('#form_pedido').on('keyup keypress', function(e) {
-	  	var keyCode = e.keyCode || e.which;
-	  		
-	  		if (keyCode === 13) { 
-	    		e.preventDefault();
-	    		return false;
-	        }
-
-	});
-
-
-	// FAZ A BUSCA POR CLIENTE e PREENCHE OS CAMPOS NO FORM
-	$('#btn_buscacliente').click(function () {
+	//
+    function BuscaCliente() {
 
 		var valor = $("#edit_busca_cliente").val();
 
@@ -121,8 +109,18 @@ $(document).ready(function() {
 
 			});
 		});
+
+    }
+
+
+	// clique na lupa busca CLIENTE
+	$('#btn_buscacliente').click(function () {
+
+		BuscaCliente();
+		
 	});
 
+	
 	
 	//ONSHOW DO MODAL DE INSERÇÂO DE ITENS
 	$('#modalItens').on('shown.bs.modal', function () {
@@ -434,10 +432,15 @@ $(document).ready(function() {
 			
 	});
 
+	$("#btn_salvar").click(function() {
+		
+		$("#form_pedido").submit();
+			
+	});
+
 
 	//BTN CANCELAR
 	$(".btn_cancelar").click(function() {
-		
 		history.back();
 		return false;
 	});	

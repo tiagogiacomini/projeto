@@ -174,7 +174,7 @@
                 <p class="titulo-gbox invisivel">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspItens do Pedido</p>         
                 <div class="form-group form-group-style invisivel listagem" id="gbox_itens">
                        
-                    <table class="table table-hover table-striped invisivel" id="tabela_itens">
+                    <table class="table table-striped invisivel" id="tabela_itens">
                         <thead> 
                             <tr>
                                 <th class="col-sm-1 col-md-1">MODELO</th>
@@ -218,7 +218,7 @@
                 <div class="form-group-style">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="submit" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Concluir Pedido">
+                            <input type="button" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Concluir Pedido">
                         </div>
                         
                         <div class="col-md-6">
