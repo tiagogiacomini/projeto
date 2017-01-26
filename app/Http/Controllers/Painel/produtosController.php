@@ -14,6 +14,12 @@ class ProdutosController extends Controller
 	
 	public static function index(Request $request) {
 
+		// verifica LOGIN
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
+
+
 		if (!empty($request->user)) {
 			$user = $request->user;
 		}

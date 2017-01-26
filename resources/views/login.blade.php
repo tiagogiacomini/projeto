@@ -1,6 +1,8 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/login.css">
+<script type="text/javascript" src="/js/pace.min.js"></script>
+
 <title>SpartumWEB - Login</title>
 
 </head>

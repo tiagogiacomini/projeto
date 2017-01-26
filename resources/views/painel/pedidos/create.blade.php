@@ -15,7 +15,7 @@
                 <i class="fa fa-chevron-left fa-2x btn_cancelar"></i>
             </div>
             <div class="top_bar center_obj">
-                <i class="fa fa-user-circle-o fa-2x"></i><h1>&nbspPedidoWEB</h1>
+                <h2>&nbspPedido</h2>
             </div>
         </div>
 
@@ -54,7 +54,7 @@
                         <label for="pesquisa_cliente">Informe o CPF/CNPJ do Cliente</label>                                                                   
                         <div class="input-group" id="gbox_pesquisa_cliente">
                             
-                            <input type="text" class="form-control input-lg" id="edit_busca_cliente" name="pesquisa_cliente" value="{!! \Request::input('pesquisa_cliente') !!}" placeholder="Informe o CPF ou CNPJ do cliente" autofocus>
+                            <input type="number" class="form-control input-lg" id="edit_busca_cliente" name="pesquisa_cliente" value="{!! \Request::input('pesquisa_cliente') !!}" placeholder="Informe o CPF ou CNPJ do cliente" autofocus>
 
                             <div class="input-group-addon"><button type="button" style="border: none; background-color: transparent;" id="btn_buscacliente"><i class="fa fa-search fa-2x"></i></button></div> 
                         </div>                          
@@ -214,14 +214,16 @@
                     </div>
                 </div>
 
+                </br>
+
 
                 <div class="form-group-style">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-6 col-md-6">
                             <input type="button" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Concluir Pedido">
                         </div>
                         
-                        <div class="col-md-6">
+                        <div class="col-xs-6 col-md-6">
                             <input type="button" class="form-control btn btn-danger input-lg btn_cancelar" value="Cancelar">
                         </div>
                     </div>
@@ -321,25 +323,25 @@
 
                     <div class="form-group invisivel" id="gbox_nenhum_resultado">
                         <div class="alert alert-warning">
-                            <p><strong>Nenhum resultado encontrado para o critério informado!</strong></p>
+                            <p><strong>Ops!</strong> Nenhum resultado encontrado para o critério informado!</p>
                         </div>
                     </div>
 
                     <div class="form-group invisivel" id="gbox_nenhuma_tabela">
                         <div class="alert alert-warning">
-                            <p><strong>O produto foi encontrado, porém não existe tabela de preços vinculada ao cliente selecionado. Verifique com a gerência financeira para corrigir! </strong></p>
+                            <p><strong>Atenção!</strong> O produto foi encontrado, porém não existe tabela de preços vinculada ao cliente selecionado. Verifique com a gerência financeira para corrigir!</p>
                         </div>
                     </div>
 
                     <div class="form-group invisivel" id="gbox_item_incluso">
-                        <div class="alert alert-info">
-                            <p><strong>Produto incluído com sucesso!</strong></p>
+                        <div class="alert alert-success">
+                            <p><strong>Ok!</strong> Produto incluído com sucesso!</p>
                         </div>
                     </div>
 
                     <div class="form-group invisivel" id="gbox_item_erro">
                         <div class="alert alert-danger">
-                            <p><strong>Não foi possível incluir este produto! </strong></p>
+                            <p><strong>Atenção!</strong> Não foi possível incluir este produto! É provável que este produto/grade já tenha sido incluído!</p>
                         </div>
                     </div>
                 

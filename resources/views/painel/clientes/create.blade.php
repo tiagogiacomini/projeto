@@ -4,7 +4,7 @@
 <script type="text/javascript" src="/js/jsmask.js"></script>
 <script type="text/javascript" src="/js/pace.min.js"></script>
 <script type="text/javascript" src="/js/clientes.js"></script>
-
+<title>SpartumWEB - Novo Cliente</title>
 
 </head>
 	<body>
@@ -13,7 +13,7 @@
 				<i class="fa fa-chevron-left fa-2x btn_cancelar"></i>
 			</div>
 			<div class="top_bar center_obj">
-				<i class="fa fa-users fa-2x"></i><h2>&nbspInclusão de Cliente</h2>
+				<i class="fa fa-user-plus"></i><h2>&nbspCliente</h2>
 			</div>
 		</div>
 
@@ -137,11 +137,11 @@
 
                 <div class="form-group-style">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-6 col-md-6">
                             <input type="submit" class="form-control btn btn-primary input-lg" value="Salvar">
                         </div>
                         
-                        <div class="col-md-6">
+                        <div class="col-xs-6 col-md-6">
                             <input type="button" class="form-control btn btn-danger input-lg btn_cancelar" value="Cancelar">
                         </div>
                     </div>

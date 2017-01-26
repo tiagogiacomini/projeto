@@ -27,7 +27,8 @@ class ClientesController extends Controller
 			$request->session()->forget('status');
 		}	
 
-		$clientes       = Clientes::orderBy('CNPJ')->paginate(10);
+		$clientes       = Clientes::orderBy('CNPJ')
+								  ->paginate(10);
 		$clientes_count = $clientes->total();
 
 
@@ -184,6 +185,14 @@ class ClientesController extends Controller
 
 		}
 
+
+	}
+
+
+	public static function listClientes() {
+
+		$clientes = Clientes::all();
+		return $clientes->toJson();
 
 	}
 

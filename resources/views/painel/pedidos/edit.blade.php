@@ -15,7 +15,7 @@
                 <i class="fa fa-chevron-left fa-2x btn_cancelar"></i>
             </div>
             <div class="top_bar center_obj">
-                <i class="fa fa-shopping-basket fa-2x"></i><h1>&nbspPedido {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</h1>
+                <i class="fa fa-shopping-basket"></i><h2>&nbspPedido {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</h2>
             </div>
         </div>
 
@@ -130,7 +130,7 @@
 
                 <div class="form-group form-group-style">
                     <label for="edit_formapagto">Forma de pagamento</label>
-                    <input type="text" class="form-control input-lg uppercase" name="edit_formapagto" value="{!! $pedido->CONDICAO_PAGTO !!}" >
+                    <input type="text" class="form-control input-lg uppercase" maxlength="30" name="edit_formapagto" value="{!! $pedido->CONDICAO_PAGTO !!}" >
                 </div>   
 
                 </br>
@@ -141,7 +141,7 @@
                 <div class="form-group form-group-style">
                     <div class="row">
                         <div class="col-md-12">
-                            <textarea style="resize:none;" rows="5" name="edit_obs" class="form-control"> {!! $pedido->OBSERVACAO !!} </textarea>
+                            <textarea style="resize:none;" rows="5" name="edit_obs" maxlength="255" class="form-control">{!! $pedido->OBSERVACAO !!}</textarea>
                         </div>
                     </div>
                 </div>   
@@ -204,14 +204,14 @@
                         </div>                   
                     </div>
                 </div>
-                
+                </br>
                 <div class="form-group-style">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-xs-6 col-md-6">
                             <input type="submit" class="form-control btn btn-primary input-lg" id="btn_salvar" value="Salvar Edição">
                         </div>
                         
-                        <div class="col-md-6">
+                        <div class="col-xs-6 col-md-6">
                             <input type="button" class="form-control btn btn-danger input-lg btn_cancelar" value="Cancelar">
                         </div>
                     </div>

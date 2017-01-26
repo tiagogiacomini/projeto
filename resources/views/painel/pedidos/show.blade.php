@@ -14,7 +14,7 @@
                 <i class="fa fa-chevron-left fa-2x btn_cancelar"></i>
             </div>
             <div class="top_bar center_obj">
-                <i class="fa fa-shopping-basket fa-2x"></i><h1>&nbspPedido {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</h1>
+                <i class="fa fa-shopping-basket"></i><h2>&nbspPedido {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</h2>
             </div>
         </div>
 
@@ -192,6 +192,8 @@
                         </div>                   
                     </div>
                 </div>
+
+                </br>
 
 
                 <div class="form-group-style">

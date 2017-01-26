@@ -4,7 +4,7 @@ $(document).ready(function() {
 	//////////////////////////////////////////////////////////////////////////
     //  P E D I D O S
     //////////////////////////////////////////////////////////////////////////
-    
+
     //faz o collapse dos dados do cliente no PEDIDO
     $("#gbox_endereco").on("hide.bs.collapse", function(){
 	  $(".btn_collapse").html('<i class="fa fa-chevron-down fa-2x"></i>');
@@ -192,6 +192,8 @@ $(document).ready(function() {
 					            success : function(data_tam) {
 					             	
 					            	console.log(data_tam);
+									
+									var primeiro_preco;
 
 					            	//se nao houver tamanhos
 					            	if (!$.isArray(data_tam) || !data_tam.length)  {
@@ -205,12 +207,14 @@ $(document).ready(function() {
 					            	// eche o select com os tamanhos
 		  			            	$("#edit_tamanhos").html('');
 
-					            	$.each(data_tam, function() {
+					            	$.each(data_tam, function(index) {
 
 					            		$("#edit_tamanhos").append('<option value=' + this.TAMANHO + ' data-preco=' + this.PRECO_VENDA +'>' + this.TAMANHO + '</option>');
-					            		
+					            		if ( index == 0 )
+					            		     primeiro_preco = this.PRECO_VENDA;
 					            	});
 
+					            	$("#edit_preco").val(primeiro_preco);
 					            	$("#edit_quantidade").val(1);
 					            	$("#edit_tamanhos").focus();
 
@@ -247,6 +251,7 @@ $(document).ready(function() {
 						}
 
 
+
 				     	$("#gbox_resultado").removeClass('invisivel');
 				     	$("#btn_add_prod").removeClass('invisivel');
 		    	     	$("#gbox_nenhum_resultado").addClass('invisivel');
@@ -272,12 +277,17 @@ $(document).ready(function() {
 	});
 
 	// PEGA O PREÇO DE VENDA DO TAMANHO ESCOLHIDO
-	$("#edit_tamanhos").blur(function() {
-		
+	function AlteraPreco() {
+
 		$("#edit_preco").val( $("#edit_tamanhos").children('option:selected').data('preco') );
 		$("#preco_unitario").val( $("#edit_tamanhos").children('option:selected').data('preco') );
+	}
 
-	});
+	$("#edit_tamanhos").on('change blur', (function() {
+		
+		AlteraPreco();
+
+	}));
 
 
 	//ADICIONA PRODUTO NO PEDIDO VIA AJAX (POST)
@@ -369,8 +379,8 @@ $(document).ready(function() {
 	 			    	$("#gbox_item_erro").removeClass('invisivel');
 	 			    	$("#gbox_quantidade").removeClass('has-error');
 
- 						$("#gbox_item_erro").fadeTo(2000, 500).slideUp(500, function(){		
-	    					$("#gbox_item_erro").slideUp(500);
+ 						$("#gbox_item_erro").fadeTo(3000, 3000).slideUp(500, function(){		
+	    					$("#gbox_item_erro").slideUp(3000);
 						});
 
 	 			    }

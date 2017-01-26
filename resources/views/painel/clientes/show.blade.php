@@ -5,6 +5,7 @@
 <script type="text/javascript" src="/js/pace.min.js"></script>
 <script type="text/javascript" src="/js/clientes.js"></script>
 
+<title>SpartumWEB - Exibindo Cliente</title>
 
 </head>
 	<body>
@@ -13,7 +14,7 @@
 				<i class="fa fa-chevron-left fa-2x btn_cancelar"></i>
 			</div>
 			<div class="top_bar center_obj">
-				<i class="fa fa-users fa-2x"></i><h2>&nbspExibição do Cliente</h2>
+				<i class="fa fa-user"></i><h2>&nbspCliente</h2>
 			</div>
 		</div>
 

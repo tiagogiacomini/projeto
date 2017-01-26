@@ -4,30 +4,26 @@
 <title>SpartumWEB - Produtos</title>
 </head>
 	<body>
-		<div class="container_painel">
-			<div class="btn_menu">
-				<a href="{!! route('home') !!}" class="links_icones"><i class="fa fa-home fa-2x"></i></a>
+		<div id="barra_topo">
+			<div>
+				<div class="btn_menu">
+					<a href="{!! route('home') !!}" class="links_icones"><i class="fa fa-home fa-2x"></i></a>
+				</div>
+				<div class="top_bar center_obj">
+					<i class="fa fa-puzzle-piecefa-2x"></i><h1>&nbspProdutos</h1>
+				</div>
 			</div>
-			<div class="top_bar center_obj">
-				<i class="fa fa-puzzle-piecefa-2x"></i><h1>&nbspProdutos</h1>
-			</div>
-		</div>
-		
-		<div class="container_listagem">
-			
-			<div class="container-fluid form-group-style">
-				<form method="GET" action="/painel/produtos/busca">
-					{{-- csrf_field() --}}
-					
-					<p>Pesquisa</p>
 
+					
+			<div class="form-group-style barra_pesquisa">
+				<form method="GET" action="/painel/produtos/busca">
+				
 					@if(Session::has('msg_pesquisa'))
 					    <div class="alert alert-warning">
 					        {!! Session::get('msg_pesquisa') !!}
 					    </div>
 					@endif
-
-					    <label class="sr-only" for="edit_busca">Pesquisa</label>
+					    
 						<div class="input-group">	
 						    @if ((isset($pesquisa)) && (!empty($pesquisa)))
 	  						<input type="text" class="form-control inputs_form" name="pesquisa" id="edit_busca" placeholder="Insira o MODELO ou DESCRIÇÃO..." value="{!! $pesquisa !!}" autofocus>
@@ -38,9 +34,12 @@
 	  					</div>			
 				</form>
 			</div>
-			</br>
+		</div>
+		</br>
 		
-			<div class="container-fluid form-group-style">
+		<div class="container_listagem">
+
+			<div class="form-group-style">
 
 			@if (isset($produtos))
 			<table class="table table-striped">
@@ -72,6 +71,7 @@
 			
 
 			</div>
+			</br>
 
 			<div class="center_obj">
 				<center>

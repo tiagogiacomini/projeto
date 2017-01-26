@@ -16,6 +16,11 @@ use Illuminate\Http\Request;
 Route::get('/', 'Auth\AuthController@showLogin')->name('login');
 
 
+Route::get('phpinfo', function() {
+		return phpinfo();
+	});
+
+
 // Authentication routes...
 //Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
@@ -42,10 +47,7 @@ Route::get( 'painel/clientes', 'Painel\clientesController@index' )->name('client
 	Route::post('painel/clientes/update/{cnpj}', 'Painel\clientesController@update');	
 	Route::get('painel/clientes/create', 'Painel\clientesController@create');	
 	Route::post('painel/clientes/store', 'Painel\clientesController@store');
-	Route::get('painel/clientes/teste', function() {
-		return phpinfo();
-	});
-
+	
 // PEDIDOS
 Route::get( 'painel/pedidos', 'Painel\pedidosController@index')->name('pedidos');
 	Route::get('painel/pedidos/busca', 'Painel\pedidosController@getBuscaPedido');
@@ -69,4 +71,6 @@ Route::get( 'painel/pedidos', 'Painel\pedidosController@index')->name('pedidos')
 	Route::get('painel/pedidos/busca_prod_tamanho/{id_produto}/{tabela_preco}', 'Painel\pedidosController@buscaProdTamanhos');		
 	
 	
+//END POINTS TESTE
 
+	Route::get('list_clientes', 'Painel\clientesController@listClientes');

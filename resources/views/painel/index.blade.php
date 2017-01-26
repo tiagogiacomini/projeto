@@ -1,6 +1,8 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
+<script type="text/javascript" src="/js/pace.min.js"></script>
+
 <title>SpartumWEB - Home</title>
 <script type="text/javascript">
    
@@ -21,11 +23,11 @@
                 <a href="{!! route('logout') !!}" class="links_icones"><i class="fa fa-power-off fa-2x"></i></a>
             </div>
             <div class="top_bar center_obj">
-                <i class="fa fa-user-circle-o fa-2x"></i><h1>&nbsp{!! config('app.name') !!}</h1>
+                <h2>&nbsp{!! config('app.name') !!}</h2>
             </div>
         </div>
 
-        <div class="container_botoes full_height flex_center center_obj">
+        <div class="container_botoes">
             <div>
                 <span class="btn_painel" data-toggle="tooltip" title="Permite incluir, editar ou excluir pedidos!">
                     <a class="links_icones" href="{!! route('pedidos') !!}" >
