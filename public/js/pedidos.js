@@ -84,8 +84,8 @@ $(document).ready(function() {
 
 				     	$("#gbox_pesquisa_cliente").addClass('has-success');
 				     	$("#gbox_itens").removeClass('invisivel');
-				     	$('.titulo-gbox').removeClass('invisivel');
-		     			$("#alerta-nao-encontrado").addClass("invisivel");
+				     	$("#btn_additem").removeClass('invisivel');
+				     	$("#alerta-nao-encontrado").addClass("invisivel");
 				     	
 				    },
 
@@ -104,7 +104,7 @@ $(document).ready(function() {
 
 						$("#gbox_pesquisa_cliente").removeClass('has-success');
 						$("#alerta-nao-encontrado").removeClass("invisivel");
-						$("#alerta-nao-encontrado").html("<p>Nenhum cliente encontrado!<strong><a href=\"clientes/create/?edit_cnpj=" + $("#edit_busca_cliente").val() + "\"> Cadastrar</strong></a> agora?</p>");
+						$("#alerta-nao-encontrado").html("<p>Nenhum cliente encontrado!<strong><a href=\"/painel/clientes/create/?edit_cnpj=" + $("#edit_busca_cliente").val() + "\"> Cadastrar</strong></a> agora?</p>");
 					}	
 
 			});
@@ -251,7 +251,7 @@ $(document).ready(function() {
 						}
 
 
-
+						$("#gbox_itens").removeClass('invisivel');
 				     	$("#gbox_resultado").removeClass('invisivel');
 				     	$("#btn_add_prod").removeClass('invisivel');
 		    	     	$("#gbox_nenhum_resultado").addClass('invisivel');
@@ -302,7 +302,7 @@ $(document).ready(function() {
 
 		if ( $("#edit_tamanhos").val() == null ) {
 
- 			$("#edit_tamanhos").addClass('bg-danger');
+
  			$("#edit_tamanhos").focus();
  			return false;
  		}  

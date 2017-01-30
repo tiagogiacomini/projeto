@@ -170,11 +170,10 @@
 
                 </br>
 
-                
-                <p class="titulo-gbox invisivel">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspItens do Pedido</p>         
-                <div class="form-group form-group-style invisivel listagem" id="gbox_itens">
+                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspItens do Pedido</p>         
+                <div class="form-group form-group-style listagem">
                        
-                    <table class="table table-striped invisivel" id="tabela_itens">
+                    <table class="table table-striped" id="tabela_itens">
                         <thead> 
                             <tr>
                                 <th class="col-sm-1 col-md-1">MODELO</th>
@@ -190,12 +189,9 @@
 
                         </tbody>
                     </table>
-                    
-                    <div class="center_obj">
-                        <button type="button" style="border: none; background-color: transparent;" id="btn_additem" data-toggle="modal" data-target="#modalItens"><i class="fa fa-plus fa-3x"></i></button>
-                    </div>
 
                 </div>   
+                
 
 
                 <input type="hidden" name="id_vendedor"     value="{!! $vendedor_id !!}" class="id_vendedor" id="id_vendedor">
@@ -215,6 +211,11 @@
                 </div>
 
                 </br>
+
+                <div class="btn_additem invisivel" id="btn_additem">
+                    <button type="button" style="border: none; background-color: transparent;" data-toggle="modal" data-target="#modalItens"><i class="fa fa-plus fa-2x plus"></i></button>
+                </div>
+
 
 
                 <div class="form-group-style">
@@ -252,7 +253,7 @@
                             <label for="sel_pesquisa_por">Pesquisar por</label>
                             <select id="sel_pesquisa_por" class="form-control input-lg">                                
                                 <option value="MODELO">MODELO</option>
-                                <option value="DESCRICAO">DESCRIÇÃO</option>                                    
+                                
                             </select>
                         </div>    
                         

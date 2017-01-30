@@ -67,7 +67,7 @@
 		position: absolute;
 			left: 10px;
 		 	 top: 10px;
-		 z-index: 999;
+		 z-index: 99993;
   	  	   color: #fff;
 	
 	}
@@ -273,23 +273,33 @@
 
 			    width: 40px;
 		border-radius: 0px; !important;
-		margin: 0px; !important;
+			   margin: 0px; !important;
 
 	}
 
-	.btn_up {
+	.btn_additem {
 				
 				position: fixed;
 		background-color: #1777D9;
 		   border-radius: 50px;
 		           float: right;
-				  bottom: 25px;
-				   right: 25px;
+				  bottom: 50px;
+				   right: 40px;
 		           width: 70px;
 		          height: 70px;
-
+		         z-index: 275;
+		      text-align: center;
+		           color: #fff;
+		      box-shadow: 2px 2px 7px 0px #53A4F5;
+		         
 	}
 
+	.plus {
+		
+		position: relative;
+			 top: 18px;
+		    
+	}
 
 	.pace {
   
