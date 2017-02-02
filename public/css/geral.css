@@ -296,8 +296,9 @@
 
 	.plus {
 		
-		position: relative;
-			 top: 18px;
+    	position: relative;
+    		 top: 4px;
+       font-size: 44px;
 		    
 	}
 

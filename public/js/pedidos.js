@@ -163,6 +163,10 @@ $(document).ready(function() {
 			return false;
 		}
 
+		$("#gbox_nenhum_resultado").addClass('invisivel');
+		$("#gbox_nenhuma_tabela").addClass('invisivel');
+
+
 		//pesquisar por modelo
 		if ($("#sel_pesquisa_por").val() == 'MODELO') {
 
@@ -211,7 +215,7 @@ $(document).ready(function() {
 
 					            		$("#edit_tamanhos").append('<option value=' + this.TAMANHO + ' data-preco=' + this.PRECO_VENDA +'>' + this.TAMANHO + '</option>');
 					            		if ( index == 0 )
-					            		     primeiro_preco = this.PRECO_VENDA;
+					            		    primeiro_preco = this.PRECO_VENDA;
 					            	});
 
 					            	$("#edit_preco").val(primeiro_preco);

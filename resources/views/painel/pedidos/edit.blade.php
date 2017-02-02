@@ -126,13 +126,16 @@
 
                                 
                 </br>
-                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-money"></i>&nbspInformações sobre a Forma de Pagamento</p>         
+                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-money"></i>&nbspInformações sobre o Prazo de Pagamento</p>         
 
-                <div class="form-group form-group-style">
-                    <label for="edit_formapagto">Forma de pagamento</label>
-                    <input type="text" class="form-control input-lg uppercase" maxlength="30" name="edit_formapagto" value="{!! $pedido->CONDICAO_PAGTO !!}" >
-                </div>   
-
+                <div class="form-group-style">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="edit_prazopagto">Prazo de Pagamento</label> 
+                            {{ \Form::select('edit_prazopagto', $prazoPagto, $pedido->ID_PRAZO, array('class' => 'edit_prazopagto form-control uppercase input-lg', 'id' => 'edit_prazopagto')) }}
+                        </div>
+                    </div>
+                </div>      
                 </br>
                 
 
@@ -182,7 +185,7 @@
                     </table>
                     
                     <div class="btn_additem" id="btn_additem">
-                        <button type="button" style="border: none; background-color: transparent;" data-toggle="modal" data-target="#modalItens"><i class="fa fa-plus fa-2x plus"></i></button>
+                        <button type="button" style="border: none; background-color: transparent;" data-toggle="modal" data-target="#modalItens"><p class="plus">+</p></button>
                     </div>
 
                 <input type="hidden" name="id_vendedor"     value="{!! $pedido->ID_VENDEDOR !!}" class="id_vendedor" id="id_vendedor">

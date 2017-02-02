@@ -102,9 +102,6 @@
 			</div>
 		</div>
 
-		<div class="btn_up text-center">
-			<i class="fa fa-angle-double-up"></i>
-		</div>
 		
 	</body>
 </html>			

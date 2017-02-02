@@ -135,28 +135,18 @@
 
                                 
                 </br>
-                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-money"></i>&nbspInformações sobre a Forma de Pagamento</p>         
+                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-money"></i>&nbspInformações sobre o Prazo de Pagamento</p>         
 
-                <div class="form-group form-group-style">
-                    <label for="edit_formapagto">Forma de pagamento</label>
-                    <input type="text" class="form-control input-lg uppercase" maxlength="30" id="edit_formapagto" name="edit_formapagto" value="" placeholder="Ex: 30/60/90 ou A VISTA...">
-                </div>   
-
-                </br>
-                
-                {{--
-                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspInformações dos produtos</p>         
-                
-                <div class="form-group form-group-style">
-                    <label for="edit_busca">Clique em "+" para adicionar um produto</label>
-                    <div class="input-group">   
-                        <div class="input-group-addon"><a href="{!! url('/painel/clientes/adiciona') !!}"><i class="fa fa-plus fa-2x"></i></a></div>
-                        <input type="text" class="form-control inputs_form" name="pesquisa" id="edit_busca" placeholder="Inserir produto..." value="">
+                <div class="form-group-style">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="edit_prazopagto">Prazo de Pagamento</label> 
+                            {{ \Form::select('edit_prazopagto', $prazoPagto, null, array('class' => 'edit_prazopagto form-control uppercase input-lg', 'id' => 'edit_prazopagto')) }}
+                        </div>
                     </div>
                 </div>
 
-                --}}
-
+                </br>
 
                 <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-commenting"></i>&nbspObservações</p>         
 
@@ -213,7 +203,7 @@
                 </br>
 
                 <div class="btn_additem invisivel" id="btn_additem">
-                    <button type="button" style="border: none; background-color: transparent;" data-toggle="modal" data-target="#modalItens"><i class="fa fa-plus fa-2x plus"></i></button>
+                    <button type="button" style="border: none; background-color: transparent;" data-toggle="modal" data-target="#modalItens"><p class="plus">+</p></button>
                 </div>
 
 

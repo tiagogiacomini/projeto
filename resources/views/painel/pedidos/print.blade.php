@@ -58,7 +58,7 @@
 		</div>
 
 		<div class="round-rect forma-pagto">
-			<div class="forma-pgto">Condição de Pagamento: <strong>{!! $pedido->CONDICAO_PAGTO !!}</strong></div>
+			<div class="forma-pgto">Condição de Pagamento: <strong>{!! $prazoPagto->DESCRICAO !!}</strong></div>
 		</div>
 
 		<div class="titulos-gbox">

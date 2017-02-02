@@ -125,12 +125,16 @@
 
                                 
                 </br>
-                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-money"></i>&nbspInformações sobre a Forma de Pagamento</p>         
+                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-money"></i>&nbspInformações sobre o Prazo de Pagamento</p>         
 
-                <div class="form-group form-group-style">
-                    <label for="edit_formapagto">Forma de pagamento</label>
-                    <input type="text" class="form-control input-lg uppercase"  value="{!! $pedido->CONDICAO_PAGTO !!}" disabled >
-                </div>   
+                <div class="form-group-style">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="edit_prazopagto">Prazo de Pagamento</label> 
+                            {{ \Form::select('edit_prazopagto', $prazoPagto, $pedido->ID_PRAZO, array('class' => 'edit_prazopagto form-control uppercase input-lg', 'id' => 'edit_prazopagto', 'disabled' => 'disabled')) }}
+                        </div>
+                    </div>
+                </div>  
 
                 </br>
                 

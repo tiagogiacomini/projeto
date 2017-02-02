@@ -9,6 +9,7 @@ use Illuminate\Support\Facades;
 use App\Models\Pedidos;
 use App\Models\Produtos;
 use App\Models\Clientes;
+use App\Models\PrazoPagamentos;
 use App\Models\TabelaPrecosItens;
 use App\Models\PedidosItens;
 use DB;
@@ -43,6 +44,7 @@ class PedidosController extends Controller
     	                  ->orderBy('DATA_EMISSAO', 'DESC')
 						  ->orderBy('ID_PEDIDO', 'DESC')    	                  
     	                  ->join('CLIENTES', 'CLIENTES.CNPJ' ,'=', 'PEDIDOS.CNPJ_CLIFOR')
+    	                  ->join('PRAZO_PAGAMENTOS', 'PRAZO_PAGAMENTOS.ID_PRAZO', '=', 'PEDIDOS.ID_PRAZO')
     	                  ->paginate(10)
     	                  ->appends(['pesquisa' => $request->pesquisa]);
 
@@ -103,6 +105,7 @@ class PedidosController extends Controller
     	                  ->orderBy('DATA_EMISSAO', 'DESC')
 					   	  ->orderBy('ID_PEDIDO', 'DESC')    	                      	                  
     	                  ->join('CLIENTES', 'CLIENTES.CNPJ' ,'=', 'PEDIDOS.CNPJ_CLIFOR')
+    	                  ->join('PRAZO_PAGAMENTOS', 'PRAZO_PAGAMENTOS.ID_PRAZO', '=', 'PEDIDOS.ID_PRAZO')
     	                  ->paginate(10)
     	                  ->appends(['pesquisa' => $request->pesquisa]);
 
@@ -119,6 +122,9 @@ class PedidosController extends Controller
 			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
     	}
 
+    	// monta o selectbox (combobox) com os prazos de pagamento
+		$prazoPagto = PrazoPagamentos::pluck('DESCRICAO', 'ID_PRAZO');
+
     	// decifra os dados DO USUARIO(VENDEDOR)
     	$data          = explode('|', session()->get('userdata'));
     	$vendedor_nome = $data[0];
@@ -128,6 +134,7 @@ class PedidosController extends Controller
 		$pedido 				   = new Pedidos;
 		$pedido->CNPJ_CLIFOR       = '00000000000000';
 		$pedido->ID_VENDEDOR	   = $vendedor_id;
+		$pedido->ID_PRAZO    	   = -1;
 		$pedido->DATA_EMISSAO	   = date('Y-m-d');
 		$pedido->PREVISAO_ENTREGA  = date('Y-m-d');
 		$pedido->FLG_CONCLUIDO     = 0;
@@ -135,7 +142,7 @@ class PedidosController extends Controller
 
 		$id_pedido = $pedido->ID_PEDIDO;
 
-		return view('painel/pedidos/create', compact('vendedor_nome', 'vendedor_id', 'id_pedido'));
+		return view('painel/pedidos/create', compact('vendedor_nome', 'vendedor_id', 'id_pedido', 'prazoPagto'));
 
 	}
 
@@ -144,9 +151,9 @@ class PedidosController extends Controller
 		$pedido 				   = Pedidos::findOrFail($request->id_pedido);
 		$pedido->CNPJ_CLIFOR       = $request->pesquisa_cliente;
 		$pedido->ID_VENDEDOR	   = $request->id_vendedor;
+		$pedido->ID_PRAZO	       = $request->edit_prazopagto;
 		$pedido->DATA_EMISSAO	   = $request->edit_dataemissao;
 		$pedido->PREVISAO_ENTREGA  = $request->edit_dataentrega;
-		$pedido->CONDICAO_PAGTO	   = $request->edit_formapagto;
 		$pedido->OBSERVACAO		   = $request->edit_obs;
 		$pedido->FLG_CONCLUIDO	   = 1;
 
@@ -249,8 +256,13 @@ class PedidosController extends Controller
     	$data          = explode('|', session()->get('userdata'));
     	$vendedor_nome = $data[0];
 
-		$pedido  = Pedidos::findOrFail($id);
 		
+		$pedido  = Pedidos::findOrFail($id);
+
+	 	// monta o selectbox (combobox) com os prazos de pagamento
+		$prazoPagto = PrazoPagamentos::pluck('DESCRICAO', 'ID_PRAZO');
+
+		// monta o array dos itens
 		$itens   = PedidosItens::where('ID_PEDIDO', $id)
 		                       ->join('PRODUTOS', 'PRODUTOS.ID_PRODUTO', '=', 'PEDIDOS_ITENS.ID_PRODUTO')
 		                       ->get();
@@ -258,7 +270,7 @@ class PedidosController extends Controller
 		$cliente = Clientes::where('CNPJ', $pedido->CNPJ_CLIFOR)
 		                   ->first();
 
-		return view('painel/pedidos/show', compact('pedido', 'itens', 'cliente', 'vendedor_nome'));
+		return view('painel/pedidos/show', compact('pedido', 'itens', 'cliente', 'vendedor_nome', 'prazoPagto'));
 
 	}
 
@@ -275,7 +287,11 @@ class PedidosController extends Controller
     	$vendedor_nome = $data[0];
 
 		$pedido  = Pedidos::findOrFail($id);
+
+		// monta o selectbox (combobox) com os prazos de pagamento
+		$prazoPagto = PrazoPagamentos::pluck('DESCRICAO', 'ID_PRAZO');
 		
+		//monta os itens 
 		$itens   = PedidosItens::where('ID_PEDIDO', $id)
 		                       ->join('PRODUTOS', 'PRODUTOS.ID_PRODUTO', '=', 'PEDIDOS_ITENS.ID_PRODUTO')
 		                       ->get();
@@ -283,7 +299,7 @@ class PedidosController extends Controller
 		$cliente = Clientes::where('CNPJ', $pedido->CNPJ_CLIFOR)
 		                   ->first();
 
-		return view('painel/pedidos/edit', compact('pedido', 'itens', 'cliente', 'vendedor_nome'));
+		return view('painel/pedidos/edit', compact('pedido', 'itens', 'cliente', 'vendedor_nome', 'prazoPagto'));
 
 	}
 
@@ -291,8 +307,8 @@ class PedidosController extends Controller
 		
 		$pedido 				   = Pedidos::findOrFail($request->id_pedido);
 		$pedido->DATA_EMISSAO	   = $request->edit_dataemissao;
+		$pedido->ID_PRAZO	       = $request->edit_prazopagto;		
 		$pedido->PREVISAO_ENTREGA  = $request->edit_dataentrega;
-		$pedido->CONDICAO_PAGTO	   = $request->edit_formapagto;
 		$pedido->OBSERVACAO		   = $request->edit_obs;
 		$pedido->FLG_CONCLUIDO	   = 1;
 
@@ -315,7 +331,12 @@ class PedidosController extends Controller
     	$vendedor_nome = $data[0];
 
 		$pedido  = Pedidos::findOrFail($id);
-		
+
+		// traz o prazo de pagamento 
+		$prazoPagto = PrazoPagamentos::where('ID_PRAZO', $pedido->ID_PRAZO)->first();
+
+
+		// traz os itens
 		$itens = PedidosItens::where('ID_PEDIDO', $id)
 		                     ->join('PRODUTOS', 'PRODUTOS.ID_PRODUTO', '=', 'PEDIDOS_ITENS.ID_PRODUTO')
 		                     ->get();
@@ -387,7 +408,7 @@ class PedidosController extends Controller
 
 //		dd($produtos);
 
-		return view('painel/pedidos/print', compact('pedido', 'produtos', 'cliente', 'vendedor_nome'));
+		return view('painel/pedidos/print', compact('pedido', 'produtos', 'cliente', 'vendedor_nome', 'prazoPagto'));
 
 	}
 
