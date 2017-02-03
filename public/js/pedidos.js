@@ -5,6 +5,9 @@ $(document).ready(function() {
     //  P E D I D O S
     //////////////////////////////////////////////////////////////////////////
 
+    //tooltip
+    $('[data-toggle="tooltip"]').tooltip();
+
     //faz o collapse dos dados do cliente no PEDIDO
     $("#gbox_endereco").on("hide.bs.collapse", function(){
 	  $(".btn_collapse").html('<i class="fa fa-chevron-down fa-2x"></i>');
@@ -14,13 +17,6 @@ $(document).ready(function() {
 	    $(".btn_collapse").html('<i class="fa fa-chevron-up fa-2x"></i>');
 	});
 
-
-	// HEADERS DO AJAX
-    $.ajaxSetup({
-       	headers: {
-           	'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-       	}
-    });
 
 	//
     function BuscaCliente() {
@@ -295,8 +291,8 @@ $(document).ready(function() {
 
 
 	//ADICIONA PRODUTO NO PEDIDO VIA AJAX (POST)
- 	$("#submit_form_item").click(function() {
- 		
+ 	$("#submit_form_item").on('click touch', (function() {
+
  		if (( $("#edit_quantidade").val() == 0 ) || ( $("#edit_quantidade").val() == null )) {
 
  			$("#gbox_quantidade").addClass('has-error');
@@ -306,7 +302,6 @@ $(document).ready(function() {
 
 		if ( $("#edit_tamanhos").val() == null ) {
 
-
  			$("#edit_tamanhos").focus();
  			return false;
  		}  
@@ -315,25 +310,29 @@ $(document).ready(function() {
 
  			return false;
  		}  
+ 		
 
 
  		var id_pedido  = $("#id_pedido").val(); 
  		var id_produto = $("#id_produto").val(); 
  		var formURL    = '/painel/pedidos/additem';
+
+ 		 console.log(formURL + ' - ' + 'PRODUTO: ' + id_produto + ' - PEDIDO: ' + id_pedido);
+ 		 
  	
  		//monta JSON dos dados na UNHA
  		var dados 	   = '{  "id_produto": ' + '"' + id_produto 			         + '"' + ',' +
  		                    '"id_pedido": '  + '"' + id_pedido 				         + '"' + ',' +
  		                    '"tamanho": '    + '"' + $("#edit_tamanhos").val() 	     + '"' + ',' +
  		                    '"quantidade": ' + '"' + $("#edit_quantidade").val()     + '"' + ',' +
- 		                    '"preco": '   	 + '"' + $("#edit_preco").val() 	     + '"' + ',' + 
- 		                    '"_token": '     + '"' + $("input[name='_token'").val()  + '"' + ' }';
+ 		                    '"preco": '   	 + '"' + $("#edit_preco").val() 	     + '"' + ' }';
+
+
 
  		//parsea
  		var jsonobj = JSON.parse(dados);                   
 
-
-		Pace.track(function(){
+ 		Pace.track(function(){
 	 		
 	 		$.ajax({ url      : formURL,
 	 			     type     : 'POST' ,
@@ -392,7 +391,7 @@ $(document).ready(function() {
 
 	 		});
 		});
- 	});
+ 	}));
 
 
 	//EXCLUI ITEM DO PEDIDO 

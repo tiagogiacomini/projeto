@@ -235,3 +235,11 @@
 	    float: right;
 	}
 
+	.pedido-importado {
+
+		position: relative;
+		top: 130px;
+		left: 10px;
+		color: red;
+	}
+

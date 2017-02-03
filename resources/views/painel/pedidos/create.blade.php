@@ -4,7 +4,7 @@
 <script type="text/javascript" src="/js/jsmask.js"></script>
 <script type="text/javascript" src="/js/pace.min.js"></script>
 <script type="text/javascript" src="/js/pedidos.js"></script>
-<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <title>SpartumWEB - Novo Pedido {!! sprintf('%06d', $id_pedido) !!}</title>
 </head>
 <body>
@@ -39,7 +39,7 @@
             <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-id-card-o"></i>&nbspInformações do Cliente</p>            
 
             <form id="form_pedido" method="POST" action="/painel/pedidos/store">
-                {{ csrf_field() }}
+                
                 <div class="content">
                     <div class="form-group form-group-style" >
                                             
@@ -187,6 +187,7 @@
                 <input type="hidden" name="id_vendedor"     value="{!! $vendedor_id !!}" class="id_vendedor" id="id_vendedor">
                 <input type="hidden" name="id_tabela_preco" class="id_tabela_preco" id="id_tabela_preco">
                 <input type="hidden" name="id_pedido"       id="id_pedido" value="{!! $id_pedido !!}">
+                <input type="hidden" name="_token"          id="_token" >
                 
                 </br>
                 <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-usd"></i>&nbspTotal do Pedido</p>         
@@ -260,8 +261,8 @@
                     <div class="form-group invisivel" id="gbox_resultado">
 
                     <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspDetalhes do Produto Encontrado</p>         
-                        <form id="form_additem" method="POST" >
-                            {{ csrf_field() }}
+                        <form id="form_additem"  >
+                            
                             <div class="row">
                                 <div class="col-md-9">
                                     <label for="edit_descricao">Descrição do Produto</label>

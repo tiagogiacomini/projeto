@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
 <script type="text/javascript" src="/js/pace.min.js"></script>
 <script type="text/javascript" src="/js/pedidos.js"></script>
-<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <title>SpartumWEB - Editando Pedido Nº {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</title>
 
 </head>
@@ -39,7 +39,6 @@
             <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-id-card-o"></i>&nbspInformações do Cliente</p>            
 
             <form id="form_pedido" method="POST" action="/painel/pedidos/update">
-                {{ csrf_field() }}
                 <div class="content">
                     <div class="form-group form-group-style" >
 
@@ -259,8 +258,7 @@
                     <div class="form-group invisivel" id="gbox_resultado">
 
                     <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspDetalhes do Produto Encontrado</p>         
-                        <form id="form_additem" method="POST" >
-                            {{ csrf_field() }}
+                        <form id="form_additem" >
                             <div class="row">
                                 <div class="col-md-9">
                                     <label for="edit_descricao">Descrição do Produto</label>

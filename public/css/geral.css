@@ -290,7 +290,7 @@
 		         z-index: 275;
 		      text-align: center;
 		           color: #fff;
-		      box-shadow: 2px 2px 7px 0px #53A4F5;
+		      box-shadow: 2px 2px 7px 0px #53A4F5
 		         
 	}
 
@@ -300,6 +300,11 @@
     		 top: 4px;
        font-size: 44px;
 		    
+	}
+
+	#submit_form_item {
+
+		cursor: pointer;
 	}
 
 	.pace {

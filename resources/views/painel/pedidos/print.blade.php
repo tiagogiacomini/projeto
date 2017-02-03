@@ -151,6 +151,14 @@
 			<div class="obs-pedido"><strong>{!! $pedido->OBSERVACAO !!}</strong></div>
 		</div>
 
+
+		@if (!is_null($pedido->ID_USUARIO_IMP))
+		<div class="pedido-importado">
+			<div><i class="fa fa-share-square-o"></i> Pedido importado para o sistema da empresa em: {!! \Carbon\Carbon::parse($pedido->DATA_IMPORTACAO)->format('d/m/Y H:i') !!} por {!! $pedido->NOME_USUARIO_IMP !!}.</div>
+		</div>
+		@endif
+
+
 		<div class="assinaturas">
 			<div class="data_assinatura">{!! $cliente->CIDADE . '/' . $cliente->ESTADO . ', ' . date('d/m/Y', strtotime($pedido->DATA_EMISSAO)) !!}.</div>
 			<div class="cli_assinatura"><strong>{!! $cliente->RAZAO !!}</strong></div>

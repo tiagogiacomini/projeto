@@ -4,6 +4,16 @@
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
 <title>SpartumWEB - Pedidos</title>
 
+<script type="text/javascript">
+   
+    $(document).ready(function() {
+
+        $('[data-toggle="tooltip"]').tooltip({html: true});
+
+    });
+
+</script>
+
 </head>
 	<body>
 		<div id="barra_topo">
@@ -45,8 +55,8 @@
 		  			<thead> 
 			  			<tr class="row">
 			  				<th class="col-sm-1 col-md-1">Nº</th>
-			  				<th class="hidden-xs col-md-1">DATA EMISSÃO</th>
-			  				<th class="hidden-xs col-md-1">DATA ENTREGA</th>
+			  				<th class="hidden-xs col-md-1">EMISSÃO</th>
+			  				<th class="hidden-xs col-md-1">ENTREGA</th>
 			  				<th class="col-sm-6 col-md-6">CLIENTE</th>
 			  				<th class="hidden-xs col-md-1 text-right">TOTAL</th>
 			  				<th class="col-sm-3 col-md-2 text-center">AÇÕES</th>
@@ -56,8 +66,11 @@
 		  			<tbody>
 		  			
 		  			@foreach($pedidos as $pedido)
+			  			@if (is_null($pedido->ID_USUARIO_IMP)) 
 			  			<tr class="row listagem">
-			  				
+			  			@else
+			  			<tr class="row listagem info" data-toggle="tooltip" title="<p>Pedido já importado pelo CAPPELLUS!</p><p>Importado em: {!! \Carbon\Carbon::parse($pedido->DATA_IMPORTACAO)->format('d/m/Y H:i') !!} por {!! $pedido->NOME_USUARIO_IMP !!}.</p>">
+			  			@endif			  				
 			  		 		<td >{!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</td>
 							<td class="hidden-xs">{!! \Carbon\Carbon::parse($pedido->DATA_EMISSAO)->format('d/m/Y') !!}</td>			  		 		
 							<td class="hidden-xs">{!! \Carbon\Carbon::parse($pedido->PREVISAO_ENTREGA)->format('d/m/Y') !!}</td>			  		 		
@@ -65,11 +78,12 @@
 			  				<td class="hidden-xs text-right">R$ {!! number_format( $pedido->TOTAL, 2, ',', '.') !!}</td>
 			  				<td class="text-center">
 			  					<a href="{!! route('show_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-success btn_acao"><i class="fa fa-eye"></i></a>
+			  				    @if (is_null($pedido->ID_USUARIO_IMP)) 
 			  				    <a href="{!! route('edit_pedido'  , $pedido->ID_PEDIDO) !!}" class="btn btn-primary btn_acao"><i class="fa fa-edit"></i></a>
-			  				    <a href="{!! route('print_pedido',  $pedido->ID_PEDIDO) !!}" class="btn btn-warning btn_acao"><i class="fa fa-print"></i></a>
 			  				    <a href="{!! route('delete_pedido', $pedido->ID_PEDIDO) !!}" class="btn btn-danger  btn_acao"><i class="fa fa-trash-o"></i></a>
+			  				    @endif
+			  				    <a href="{!! route('print_pedido',  $pedido->ID_PEDIDO) !!}" class="btn btn-warning btn_acao"><i class="fa fa-print"></i></a>
 			  				 </td>
-
 
 			  			</tr>
 			  		@endforeach

@@ -19,7 +19,14 @@
         </div>
 
         <div style="position: relative; top: 70px;">
-            
+
+            <div class="form-group-style text-center">
+                    <i class="fa fa-warning fa-2x"></i><h1>Atenção</h1>
+                    
+                    <p>Este pedido já foi importado pelo sistema interno da empresa em {!! \Carbon\Carbon::parse($pedido->DATA_IMPORTACAO)->format('d/m/Y H:i') !!} por {!! $pedido->NOME_USUARIO_IMP !!}.</p>
+  
+            </div>
+            </br>            
             <div class="form-group form-group-style">
                 <div class="row">
                     <div class="col-md-6">

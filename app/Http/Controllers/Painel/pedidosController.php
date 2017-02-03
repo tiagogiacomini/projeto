@@ -184,6 +184,7 @@ class PedidosController extends Controller
 		$item->QUANTIDADE       = $request->quantidade;
 		$item->PRECO_TOTAL      = ( $request->quantidade * $request->preco );
 		
+		
 		if ( $item->save() ) {
 
 			//se adicionar SOMA NO TOTAL DO PEDIDO
@@ -196,6 +197,8 @@ class PedidosController extends Controller
 			array_add( $item, 'TOTAL_PEDIDO', number_format( $total_ped->TOTAL     , 2, ',', '.') );
 			array_add( $item, 'TOTAL_ITEM'  , number_format( $item->PRECO_TOTAL    , 2, ',', '.') );
 			array_add( $item, 'PRECO_UNT'   , number_format( $item->PRECO_UNITARIO , 2, ',', '.') );
+
+			
 
 			return $item->toJson();	
 

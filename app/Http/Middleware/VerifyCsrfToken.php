@@ -13,7 +13,11 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
 
-    	'auth/login'
+    	'auth/login',
+    	'painel/pedidos/additem',
+    	'painel/pedidos/store'
+
+
 	        
     ];
 }
