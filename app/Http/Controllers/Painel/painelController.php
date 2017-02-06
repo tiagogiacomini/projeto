@@ -41,6 +41,8 @@ class PainelController extends Controller
 		$resultado = Clientes::where('CNPJ', addslashes($pesquisa))		                    
 		                     ->first();
 
+
+
 		return $resultado->toJson();
 
 	}

@@ -95,6 +95,7 @@
 
 			</div>
 
+			@if(isset($pedidos))
 			<div class="center_obj">
 				<center>
 					@if ($pedidos->total() == 0) 
@@ -104,10 +105,11 @@
 					<p>Exibindo <strong>1</strong> registro.</p>
 					@endif
 					@if ($pedidos->total() > 1) 
-					<p>Exibindo <strong>{!! $pedidos->count() !!} </strong> pedidos, num total de <strong>{!! $pedidos->total() !!}</strong> pedidos encontrados.</p>
+					<p>Exibindo <strong>{!! $pedidos->count() !!} </strong> pedidos num total de <strong>{!! $pedidos->total() !!}</strong> pedidos encontrados.</p>
 					@endif
 				</center>
 			</div>
+			@endif
 						
 			<div class="center_obj">
 			@if(isset($pedidos))

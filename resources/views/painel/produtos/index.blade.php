@@ -73,6 +73,7 @@
 			</div>
 			</br>
 
+			@if(isset($produtos))
 			<div class="center_obj">
 				<center>
 					@if (($produtos->total() == 0) && (!Session::has('msg_pesquisa'))) 
@@ -82,10 +83,11 @@
 					<p>Exibindo <strong>1</strong> registro.</p>
 					@endif
 					@if (($produtos->total() > 1) && (!Session::has('msg_pesquisa'))) 
-					<p>Exibindo <strong>{!! $produtos->count() !!}</strong> produtos, num total de <strong>{!! $produtos->total() !!}</strong> produtos encontrados.</p>
+					<p>Exibindo <strong>{!! $produtos->count() !!}</strong> produtos num total de <strong>{!! $produtos->total() !!}</strong> produtos encontrados.</p>
 					@endif	
 				</center>
 			</div>
+			@endif
 
 			<div class="center_obj">
 			@if(isset($produtos))

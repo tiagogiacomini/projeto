@@ -124,11 +124,11 @@
                     <div class="row">
                         <div class="col-md-6">
                             <label for="edit_dataemissao">Data de Emissão</label>
-                            <input type="date" class="form-control input-lg" id="edit_dataemissao" name="edit_dataemissao" value="{!! date('Y-m-d') !!}" >
+                            <input type="date" class="form-control input-lg" id="edit_dataemissao" name="edit_dataemissao" value="{!! date('d/m/Y') !!}" >
                         </div>
                         <div class="col-md-6">
                             <label for="edit_dataentrega">Data de Entrega (previsão)</label>
-                            <input type="date" class="form-control input-lg" id="edit_dataentrega" name="edit_dataentrega" value="{!! date('Y-m-d', strtotime('+1 month')) !!}" >
+                            <input type="date" class="form-control input-lg" id="edit_dataentrega" name="edit_dataentrega" value="{!! date('d/m/Y', strtotime('+1 month')) !!}" >
                         </div>
                     </div>
                 </div>   

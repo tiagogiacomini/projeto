@@ -34,12 +34,12 @@ class PedidosController extends Controller
     	// vai APAGAR os PEDIDOS que não foram concluidos
     	// FLG_CONCLUIDO = 0;
     	$delecao = Pedidos::where('FLG_CONCLUIDO', 0)
-    	                  ->where('ID_VENDEDOR', $vendedor_id)
+    	                  ->where('PEDIDOS.ID_VENDEDOR', $vendedor_id)
     	                  ->delete();
 
     	
     	//VAI LISTAR APENAS PEDIDOS DO VENDEDOR LOGADO NO SISTEMA
-    	$pedidos = Pedidos::where('ID_VENDEDOR', $vendedor_id)
+    	$pedidos = Pedidos::where('PEDIDOS.ID_VENDEDOR', $vendedor_id)
     	                  ->where('FLG_CONCLUIDO', 1)
     	                  ->orderBy('DATA_EMISSAO', 'DESC')
 						  ->orderBy('ID_PEDIDO', 'DESC')    	                  
@@ -99,7 +99,7 @@ class PedidosController extends Controller
 
 
     	//VAI LISTAR APENAS PEDIDOS DO VENDEDOR LOGADO NO SISTEMA
-    	$pedidos = Pedidos::where([['ID_VENDEDOR', '=', $vendedor_id ], 
+    	$pedidos = Pedidos::where([['PEDIDOS.ID_VENDEDOR', '=', $vendedor_id ], 
     		                       ['ID_PEDIDO'  , 'LIKE', '%' . $request->pesquisa . '%']])
     	                  ->where('FLG_CONCLUIDO', 1)
     	                  ->orderBy('DATA_EMISSAO', 'DESC')

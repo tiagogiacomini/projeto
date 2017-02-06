@@ -21,7 +21,7 @@
 
             <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-id-card-o"></i>&nbspInformações do Cliente</p>            
 
-			<form method="POST" action="/painel/clientes/store">
+			<form method="POST" action="/painel/clientes/store" id="form_cliente">
 				{{ csrf_field() }}
 
                 <div class="form-group form-group-style">	
@@ -30,7 +30,12 @@
                         
                     </div>
 
+					<div class="alert alert-warning invisivel" id="alerta-cliente">
+	                
+	                </div>
+
 					<div class="row">
+
 						<div class="col-md-6">
 							<label for="edit_cnpj">CPF/CNPJ</label>	
 							<input class="form-control input-lg" type="number"  name="edit_cnpj" id="edit_cnpj" value="{!! \Request::input('edit_cnpj') !!}" placeholder="Somente números ">
@@ -59,7 +64,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label for="edit_telefone">Telefone</label>	
-							<input class="form-control" type="text" class="edit_telefone" name="edit_telefone" id="edit_telefone" value="{!! \Request::input('edit_telefone') !!}" placeholder="Somente números">
+							<input class="form-control phone" type="text" name="edit_telefone" id="edit_telefone" >
 						</div>
 
 						<div class="col-md-6">
@@ -78,11 +83,15 @@
 
 				<div class="form-group form-group-style">
 
+					<div class="alert alert-warning invisivel" id="alerta-cep">
+	                
+	                </div>
+
 					<div class="row">
 						<div class="col-md-3">	
 							<label for="edit_cep">CEP</label>	
 							<div class="input-group">
-								<input class="form-control input-lg" type="number" value="{!! \Request::input('edit_cep') !!}" name="edit_cep" id="edit_cep" placeholder="Insira o CEP (sem pontos ou traços)">
+								<input class="form-control input-lg" type="number" value="{!! \Request::input('edit_cep') !!}" name="edit_cep" id="edit_cep">
 								<div class="input-group-addon"><button type="button" id="btn_buscacep" style="border: none; background-color: #eee;"><i class="fa fa-search"></i></div>
 							</div>
 						</div>
@@ -121,7 +130,10 @@
 	            <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-dollar"></i>&nbspInformações da Tabela de Preços</p>            
 
 				<div class="form-group-style">
-					<div class="row">
+					<div class="alert alert-warning invisivel" id="alerta-tabpreco">
+	                
+	                </div>
+	                <div class="row">
 						<div class="col-md-12">
 							<label for="edit_tabpreco">Tabela de Preços</label>	
 							{{ \Form::select('edit_tabpreco', $tabelaPrecos, null, array('class' => 'edit_tabpreco form-control uppercase', 'id' => 'edit_tabpreco')) }}

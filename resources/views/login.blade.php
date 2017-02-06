@@ -17,7 +17,7 @@
                            @if ($falha_login)
                            
                             <div class="alert alert-warning">
-                                <strong>Atenção! </strong>Usuário ou senha estão incorretos, verifique!
+                                <strong>Atenção! </strong>Usuário ou senha estão incorretos. Verifique!
                             </div>
 
                            @endif

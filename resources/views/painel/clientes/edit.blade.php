@@ -22,7 +22,7 @@
 
             <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-id-card-o"></i>&nbspInformações do Cliente</p>            
 
-			<form method="POST" action="/painel/clientes/update/{!! $cliente->CNPJ !!}" >
+			<form method="POST" action="/painel/clientes/update/{!! $cliente->CNPJ !!}" id="form_cliente" >
 				{{ csrf_field() }}
 
                 <div class="form-group form-group-style">	
@@ -30,6 +30,11 @@
 				    <div class="alert alert-danger invisivel" id="alerta-cnpj">
                         
                     </div>
+
+					<div class="alert alert-warning invisivel" id="alerta-cliente">
+	                
+	                </div>
+
 
 					<div class="row">
 						<div class="col-md-6">
@@ -39,7 +44,7 @@
 
 						<div class="col-md-6">
 							<label for="edit_ierg">IE/RG</label>	
-							<input class="form-control input-lg" type="number" name="edit_ierg" id="edit_ierg" value="{!! $cliente->IERG !!}"  disabled>
+							<input class="form-control input-lg" type="number" name="edit_ierg" id="edit_ierg" value="{!! $cliente->IERG !!}" >
 						</div>
 					</div>
 
@@ -60,7 +65,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label for="edit_telefone">Telefone</label>	
-							<input class="form-control" type="text" name="edit_telefone" id="edit_telefone" value="{!! $cliente->TELEFONE !!}">
+							<input class="form-control phone" type="text" name="edit_telefone" id="edit_telefone" value="{!! $cliente->TELEFONE !!}">
 						</div>
 
 						<div class="col-md-6">
@@ -77,11 +82,16 @@
 
 				<div class="form-group form-group-style">
 
+   					<div class="alert alert-warning invisivel" id="alerta-cep">
+                
+	                </div>
+
+
 					<div class="row">
 						<div class="col-md-3">	
 							<label for="edit_cep">CEP</label>	
 							<div class="input-group">
-								<input class="form-control input-lg" type="number" value="{!! $cliente->CEP !!}" name="edit_cep" id="edit_cep">
+								<input class="form-control input-lg cep" type="number" value="{!! $cliente->CEP !!}" name="edit_cep" id="edit_cep">
 								<div class="input-group-addon"><button type="button" id="btn_buscacep" style="border: none; background-color: #eee;"><i class="fa fa-search"></i></div>
 							</div>
 						</div>
@@ -129,11 +139,11 @@
 				</div>				
 
 				<input type="hidden" name="edit_cnpj" class="edit_cnpj" id="edit_cnpj" value="{!! $cliente->CNPJ !!}"> 
-				<input type="hidden" name="edit_ierg" class="edit_ierg" id="edit_ierg" value="{!! $cliente->IERG !!}">
 				<input type="hidden" name="edit_endereco" class="edit_endereco" id="edit_endereco" value="{!! $cliente->ENDERECO !!}">  
 				<input type="hidden" name="edit_bairro" class="edit_bairro" id="edit_bairro" value="{!! $cliente->BAIRRO !!}">
 				<input type="hidden" name="edit_cidade" class="edit_cidade" id="edit_cidade" value="{!! $cliente->CIDADE !!}" >
 				<input type="hidden" name="edit_estado" class="edit_estado" id="edit_estado" value="{!! $cliente->ESTADO !!}">
+				<input type="hidden" name="edit_tabpreco" class="edit_tabpreco" id="edit_tabpreco" value="{!! $cliente->ID_TABELA !!}">
 				
 				</br>
 

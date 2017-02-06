@@ -38,10 +38,10 @@
 				</form>
 			</div>
 		</div>
-
-		</br>
+		
 		
 		<div class="container_listagem">
+
 			<div class="container-fluid form-group-style">
 
 			@if (isset($clientes))
@@ -63,7 +63,11 @@
 		  			<tbody>
 		  			
 		  			@foreach($clientes as $cliente)
+			  			@if (($cliente->FLG_ALTERADO == 1) && ($cliente->FLG_IMPORTADO == 0))
+			  			<tr class="row listagem success">
+			  			@else
 			  			<tr class="row listagem">
+			  			@endif
 			  				@if (strlen($cliente->CNPJ) == 14)
 			  		 		<td class="col-sm-2 col-md-2 cnpj">{!! Helpers::mask($cliente->CNPJ, '##.###.###/####-##') !!}</td>
 			  				@else
@@ -85,6 +89,7 @@
 			</div>
 			</br>
 
+			@if (isset($cliente))
 			<div class="center_obj">
 				<center>
 					@if ($clientes->total() == 0) 
@@ -94,10 +99,11 @@
 					<p>Exibindo <strong>1</strong> registro.</p>
 					@endif
 					@if ($clientes->total() > 1) 
-					<p>Exibindo <strong>{!! $clientes->count() !!} </strong> clientes, num total de <strong>{!! $clientes->total() !!}</strong> clientes cadastrados.</p>
+					<p>Exibindo <strong>{!! $clientes->count() !!} </strong> clientes num total de <strong>{!! $clientes->total() !!}</strong> clientes cadastrados.</p>
 					@endif
 				</center>
 			</div>
+			@endif
 						
 			<div class="center_obj">
 			@if(isset($clientes))

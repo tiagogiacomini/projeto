@@ -27,8 +27,10 @@ class ClientesController extends Controller
 			$request->session()->forget('status');
 		}	
 
-		$clientes       = Clientes::orderBy('CNPJ')
-								  ->paginate(10);
+		$clientes       = Clientes::where('CNPJ', '<>', '00000000000000')
+		                           ->orderBy('RAZAO')
+		                           ->orderBy('FLG_ALTERADO')
+		                           ->paginate(10);
 		$clientes_count = $clientes->total();
 
 
@@ -54,9 +56,11 @@ class ClientesController extends Controller
 		}
 
 		// passsou dos 5 chars e do campo vazio
-	    $clientes = Clientes::where('RAZAO', 'like', '%' . $request->pesquisa .'%')
+	    $clientes = Clientes::where('CNPJ', '<>', '00000000000000')
+	    					->where('RAZAO', 'like', '%' . $request->pesquisa .'%')
 	                        ->orWhere('CNPJ', 'like', '%' . $request->pesquisa .'%' )
-	                        ->orderBy('CNPJ')
+	                        ->orderBy('RAZAO')
+	                        ->orderBy('FLG_ALTERADO')
 	                        ->paginate(10)
 	                        ->appends(['pesquisa' => $request->pesquisa]);
 
@@ -116,7 +120,7 @@ class ClientesController extends Controller
 
 		$cliente = Clientes::findOrFail($cnpj);
 
-	//	dd($request);
+		//dd($request);
 
 		try  {
 
@@ -133,6 +137,7 @@ class ClientesController extends Controller
 			$cliente->TELEFONE      = $request->edit_telefone;			
 			$cliente->PFPJ 			= mb_strtoupper($request->edit_tipopessoa);
 			$cliente->ID_TABELA		= $request->edit_tabpreco;			
+			$cliente->FLG_ALTERADO	= date('Y-m-d H:i');
 
 			$cliente->save();
 
@@ -171,7 +176,8 @@ class ClientesController extends Controller
 			$cliente->TELEFONE      = $request->edit_telefone;			
 			$cliente->PFPJ 			= mb_strtoupper($request->edit_tipopessoa);
 			$cliente->ID_TABELA		= $request->edit_tabpreco;			
-		
+			$cliente->FLG_ALTERADO	= date('Y-m-d H:i');
+
 			$cliente->save();
 			
 		
