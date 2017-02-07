@@ -62,12 +62,20 @@
 
 
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-4">
 							<label for="edit_telefone">Telefone</label>	
 							<input class="form-control phone" type="text" name="edit_telefone" id="edit_telefone" >
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-4">
+							<label for="edit_email">Email</label>	
+								<div class="input-group gbox_email">			  	
+									<span class="input-group-addon">@</span>
+									<input class="form-control" type="text" name="edit_email" id="edit_email" >
+								</div>
+						</div>
+
+						<div class="col-md-4">
 							<label for="edit_tipopessoa">Tipo Pessoa</label>	
 							<select class="form-control uppercase" type="text" class="edit_tipopessoa" name="edit_tipopessoa" id="edit_tipopessoa" value="{!! \Request::input('edit_tipopessoa') !!}">
 								<option>FÍSICA</option>

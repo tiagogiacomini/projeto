@@ -108,6 +108,7 @@ class ClientesController extends Controller
 			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
     	}
 
+
 		$cliente      = Clientes::findOrFail($cnpj);
 		$tabelaPrecos = TabelaPrecos::pluck('DESCRICAO', 'ID_TABELA');
 
@@ -120,8 +121,11 @@ class ClientesController extends Controller
 
 		$cliente = Clientes::findOrFail($cnpj);
 
-		//dd($request);
+    	// decifra os dados DO USUARIO(VENDEDOR)
+    	$data          = explode('|', session()->get('userdata'));
+    	$vendedor_id   = $data[1];	
 
+		
 		try  {
 
 			$cliente->CNPJ          = $request->edit_cnpj;
@@ -131,13 +135,16 @@ class ClientesController extends Controller
 			$cliente->ENDERECO	    = mb_strtoupper($request->edit_endereco);
 			$cliente->NUMERO	    = $request->edit_numero;
 			$cliente->BAIRRO 	    = mb_strtoupper($request->edit_bairro);		
-			$cliente->CEP           = $request->edit_cep;
+			$cliente->CEP           = preg_replace("/[^0-9]/", "", $request->edit_cep);
 			$cliente->CIDADE        = mb_strtoupper($request->edit_cidade);
 			$cliente->ESTADO        = mb_strtoupper($request->edit_estado);
-			$cliente->TELEFONE      = $request->edit_telefone;			
+			$cliente->TELEFONE      = preg_replace("/[^0-9]/", "", $request->edit_telefone);		
+			$cliente->EMAIL         = $request->edit_email;			
 			$cliente->PFPJ 			= mb_strtoupper($request->edit_tipopessoa);
 			$cliente->ID_TABELA		= $request->edit_tabpreco;			
 			$cliente->FLG_ALTERADO	= date('Y-m-d H:i');
+			$cliente->FLG_IMPORTADO	= null;
+			$cliente->ID_VENDEDOR   = $vendedor_id;
 
 			$cliente->save();
 
@@ -158,6 +165,9 @@ class ClientesController extends Controller
 	
 	public static function store(Request $request) {
 
+    	// decifra os dados DO USUARIO(VENDEDOR)
+    	$data          = explode('|', session()->get('userdata'));
+    	$vendedor_id   = $data[1];	
 
 		try {
 
@@ -170,13 +180,16 @@ class ClientesController extends Controller
 			$cliente->ENDERECO	    = mb_strtoupper($request->edit_endereco);
 			$cliente->NUMERO	    = $request->edit_numero;
 			$cliente->BAIRRO 	    = mb_strtoupper($request->edit_bairro);		
-			$cliente->CEP           = $request->edit_cep;
+			$cliente->CEP           = preg_replace("/[^0-9]/", "", $request->edit_cep);
 			$cliente->CIDADE        = mb_strtoupper($request->edit_cidade);
 			$cliente->ESTADO        = mb_strtoupper($request->edit_estado);
-			$cliente->TELEFONE      = $request->edit_telefone;			
+			$cliente->TELEFONE      = preg_replace("/[^0-9]/", "", $request->edit_telefone);		
+			$cliente->EMAIL         = $request->edit_email;			
 			$cliente->PFPJ 			= mb_strtoupper($request->edit_tipopessoa);
 			$cliente->ID_TABELA		= $request->edit_tabpreco;			
 			$cliente->FLG_ALTERADO	= date('Y-m-d H:i');
+			$cliente->FLG_IMPORTADO	= null;			
+			$cliente->ID_VENDEDOR   = $vendedor_id;
 
 			$cliente->save();
 			

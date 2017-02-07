@@ -3,6 +3,7 @@ $(document).ready(function() {
 	///////////////////////////////////////////////////////////////////////////////////
 	// C L I E N T E S
 	///////////////////////////////////////////////////////////////////////////////////
+	
 	//pega o URL pra verificar se está editando ou incluindo
 	var url = $(location).attr('href');
 	var tipoEdicao;
@@ -13,24 +14,98 @@ $(document).ready(function() {
 		tipoEdicao = 'edição'; 
 	}
 
+
+
+
+	// faz o foco na entrada
 	if (tipoEdicao == 'inclusão') {
 		$("#edit_cnpj").focus();
 	} else {
+		//foca
 		$("#edit_razao").focus();
+		//mascara o CEP
+		$("#edit_cep").attr('type', 'text');
+		$("#edit_cep").mask('00.000-000');
+
+		//mascara o TELEFONE
+		$("#edit_telefone").attr('type', 'text');
+		if ( $("#edit_telefone").val().length == 10 ) {
+			 $("#edit_telefone").mask('(00) 0000-0000');
+		}
+		if ( $("#edit_telefone").val().length == 11 ) {
+			 $("#edit_telefone").mask('(00) 00000-0000');
+		}
+
 	}
 
 
+	function validaEmail($email) {
+	  	var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+	  	return emailReg.test( $email );
+	}
 
-	var SPMaskBehavior = function (val) {
-	  return val.replace(/\D/g, '').length === 11 ? '(00) 00000-0000' : '(00) 0000-00009';
-	},
-	spOptions = {
-	  onKeyPress: function(val, e, field, options) {
-	      field.mask(SPMaskBehavior.apply({}, arguments), options);
-	    }
-	};
+	//na saida do campo email, faz a validacao
+	$("#edit_email").blur( function(){
+		
+		$(".gbox_email").removeClass('has-error');
+		
+		if ( $(this).val().length > 0 ) {
+			if (!validaEmail( $(this).val() )) {
+				$(".gbox_email").addClass('has-error');
+				$(this).focus();
+			}
+		}
 
-	$('.phone').mask(SPMaskBehavior, spOptions);
+	});
+
+
+	//mascara o telefone
+	$("#edit_telefone").focus( function() {
+		
+		$(this).unmask();
+		$(this).attr('type', 'number');
+		$(this).select();
+
+	});
+
+	$("#edit_telefone").blur(function() {
+		
+		$(this).attr('type', 'text');
+
+		if (( $(this).val().length != 10) || ( $(this).val().length != 11 )) {
+			$(this).unmask();
+		}
+
+		if ( $(this).val().length == 11 ) {
+			$(this).mask('(00) 00000-0000');
+		}
+
+		if ( $(this).val().length == 10 ) {
+			$(this).mask('(00) 0000-0000');
+		}
+
+	});
+ 
+	
+	
+	//mascara o CEP
+	$("#edit_cep").focus( function() {
+
+		$(this).unmask();
+		$(this).attr('type', 'number');
+		$(this).select();
+
+	});
+
+	$("#edit_cep").blur( function() {
+	
+		if ( $(this).val().length == 8 ) {
+			
+			$(this).attr('type', 'text');
+			$(this).mask('00.000-000');
+
+		}
+	});
 
 	// VERIFICA SE O CPF/CNPJ JA EXISTE NO BANCO E AVISA
 	$('#edit_cnpj').blur(function () {
@@ -77,10 +152,12 @@ $(document).ready(function() {
 
 
 	// FAZ A BUSCA POR CEP e PREENCHE OS CAMPOS NO FORM
-	$('#edit_cep').blur(function () {
-		if ($(this).val().length == 8) {
+	$('#btn_buscacep').click(function () {
+		
+
+		if ( $("#edit_cep").cleanVal().length == 8) {
 			
-			var url = "/painel/buscacep/" + $(this).val();
+			var url = "/painel/buscacep/" + $("#edit_cep").cleanVal();
 	
 			Pace.track(function(){
 			
@@ -173,7 +250,6 @@ $(document).ready(function() {
 				return false;
 			}
 		}
-
 
 	});
 

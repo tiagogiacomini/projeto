@@ -36,7 +36,12 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label for="edit_cnpj">CPF/CNPJ</label>	
-							<input class="form-control input-lg" type="number" name="edit_cnpj" id="edit_cnpj" value="{!! $cliente->CNPJ !!}" disabled >
+							@if ($cliente->PFPJ == 'JURÍDICA')
+							<input class="form-control input-lg" type="text" name="edit_cnpj" value="{!! Helpers::mask($cliente->CNPJ, '##.###.###/####-##') !!}" disabled >
+							@else 
+							<input class="form-control input-lg" type="text" name="edit_cnpj" value="{!! Helpers::mask($cliente->CNPJ, '###.###.###-##') !!}" disabled >
+							@endif
+
 						</div>
 
 						<div class="col-md-6">
@@ -60,12 +65,21 @@
 
 
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-4">
 							<label for="edit_telefone">Telefone</label>	
-							<input class="form-control" type="text" name="edit_telefone" id="edit_telefone" value="{!! $cliente->TELEFONE !!}" disabled>
+							<input class="form-control phone" type="text" name="edit_telefone" id="edit_telefone" value="{!! $cliente->TELEFONE !!}" disabled>
 						</div>
 
-						<div class="col-md-6">
+						<div class="col-md-4">
+							<label for="edit_email">Email</label>	
+								<div class="input-group gbox_email">			  	
+									<span class="input-group-addon">@</span>
+									<input class="form-control" type="text" name="edit_email" id="edit_email" value="{!! $cliente->EMAIL !!}" disabled>
+								</div>
+						</div>
+
+
+						<div class="col-md-4">
 							<label for="edit_tipopessoa">Tipo Pessoa</label>	
 							{{ \Form::select('edit_tipopessoa', array('FÍSICA' => 'FÍSICA', 'JURÍDICA' => 'JURÍDICA'), $cliente->PFPJ, array('class' => 'edit_tipopessoa form-control', 'id' => 'edit_tipopessoa', 'disabled' => 'disabled')) }}
 						
@@ -82,7 +96,7 @@
 					<div class="row">
 						<div class="col-md-3">	
 							<label for="edit_cep">CEP</label>	
-							<input class="form-control input-lg" type="number" value="{!! $cliente->CEP !!}" name="edit_cep" id="edit_cep" disabled>
+							<input class="form-control input-lg" type="text" value="{!! Helpers::mask($cliente->CEP, '##.###-###') !!}" name="edit_cep" id="edit_cep" disabled>
 						</div>
 								
 						<div class="col-md-6">
