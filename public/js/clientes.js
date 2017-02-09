@@ -8,13 +8,11 @@ $(document).ready(function() {
 	var url = $(location).attr('href');
 	var tipoEdicao;
 
-	if ( url.search( 'edit' ) == -1 ) {
-			tipoEdicao = 'inclusão';
+	if ( url.search( 'edit' ) == -1 )  {
+		tipoEdicao = 'inclusão';
 	} else { 
 		tipoEdicao = 'edição'; 
 	}
-
-
 
 
 	// faz o foco na entrada

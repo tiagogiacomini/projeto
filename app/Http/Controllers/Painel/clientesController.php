@@ -29,7 +29,6 @@ class ClientesController extends Controller
 
 		$clientes       = Clientes::where('CNPJ', '<>', '00000000000000')
 		                           ->orderBy('RAZAO')
-		                           ->orderBy('FLG_ALTERADO')
 		                           ->paginate(10);
 		$clientes_count = $clientes->total();
 
@@ -60,7 +59,6 @@ class ClientesController extends Controller
 	    					->where('RAZAO', 'like', '%' . $request->pesquisa .'%')
 	                        ->orWhere('CNPJ', 'like', '%' . $request->pesquisa .'%' )
 	                        ->orderBy('RAZAO')
-	                        ->orderBy('FLG_ALTERADO')
 	                        ->paginate(10)
 	                        ->appends(['pesquisa' => $request->pesquisa]);
 
@@ -142,8 +140,6 @@ class ClientesController extends Controller
 			$cliente->EMAIL         = $request->edit_email;			
 			$cliente->PFPJ 			= mb_strtoupper($request->edit_tipopessoa);
 			$cliente->ID_TABELA		= $request->edit_tabpreco;			
-			$cliente->FLG_ALTERADO	= date('Y-m-d H:i');
-			$cliente->FLG_IMPORTADO	= null;
 			$cliente->ID_VENDEDOR   = $vendedor_id;
 
 			$cliente->save();
@@ -186,9 +182,7 @@ class ClientesController extends Controller
 			$cliente->TELEFONE      = preg_replace("/[^0-9]/", "", $request->edit_telefone);		
 			$cliente->EMAIL         = $request->edit_email;			
 			$cliente->PFPJ 			= mb_strtoupper($request->edit_tipopessoa);
-			$cliente->ID_TABELA		= $request->edit_tabpreco;			
-			$cliente->FLG_ALTERADO	= date('Y-m-d H:i');
-			$cliente->FLG_IMPORTADO	= null;			
+			$cliente->ID_TABELA		= $request->edit_tabpreco;				
 			$cliente->ID_VENDEDOR   = $vendedor_id;
 
 			$cliente->save();

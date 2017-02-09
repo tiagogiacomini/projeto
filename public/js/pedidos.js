@@ -5,8 +5,7 @@ $(document).ready(function() {
     //  P E D I D O S
     //////////////////////////////////////////////////////////////////////////
 
-    //tooltip
-    $('[data-toggle="tooltip"]').tooltip();
+
 
     //faz o collapse dos dados do cliente no PEDIDO
     $("#gbox_endereco").on("hide.bs.collapse", function(){
