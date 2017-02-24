@@ -115,6 +115,18 @@ class PedidosController extends Controller
  		return view('painel/pedidos/index', compact('pedidos', 'pesquisa'));
 	}
 
+
+	static function verificaItensPedido($id) {
+
+		if (!$id) {
+			return false;
+		}
+
+		return PedidosItens::where('ID_PEDIDO', $id)->count();
+
+	}
+
+
 	public static function create() {
 
 		// verifica LOGIN
@@ -148,12 +160,26 @@ class PedidosController extends Controller
 
 	public static function store(Request $request) {
 
+	
+		// ANTES DE SALVAR, VERIFICA SE EXISTE ITENS, SE NÃO HOUVER, EXCLUI
+		if (!PedidosController::verificaItensPedido($request->id_pedido)) {
+			
+			$pedido = Pedidos::findOrFail($request->id_pedido);
+			$pedido->delete();
+
+			return redirect()->route('pedidos');
+
+		}
+
+		$dt_emissao = \DateTime::createFromFormat('d/m/Y', $request->edit_dataemissao);
+		$dt_entrega = \DateTime::createFromFormat('d/m/Y',  $request->edit_dataentrega );
+		
 		$pedido 				   = Pedidos::findOrFail($request->id_pedido);
 		$pedido->CNPJ_CLIFOR       = $request->pesquisa_cliente;
 		$pedido->ID_VENDEDOR	   = $request->id_vendedor;
 		$pedido->ID_PRAZO	       = $request->edit_prazopagto;
-		$pedido->DATA_EMISSAO	   = $request->edit_dataemissao;
-		$pedido->PREVISAO_ENTREGA  = $request->edit_dataentrega;
+		$pedido->DATA_EMISSAO	   = $dt_emissao->format('Y-m-d');
+		$pedido->PREVISAO_ENTREGA  = $dt_entrega->format('Y-m-d');
 		$pedido->OBSERVACAO		   = $request->edit_obs;
 		$pedido->FLG_CONCLUIDO	   = 1;
 
@@ -308,10 +334,13 @@ class PedidosController extends Controller
 
 	public static function update(Request $request) {
 		
+		$dt_emissao = \DateTime::createFromFormat('d/m/Y', $request->edit_dataemissao);
+		$dt_entrega = \DateTime::createFromFormat('d/m/Y',  $request->edit_dataentrega );
+		
 		$pedido 				   = Pedidos::findOrFail($request->id_pedido);
-		$pedido->DATA_EMISSAO	   = $request->edit_dataemissao;
+		$pedido->DATA_EMISSAO	   = $dt_emissao->format('Y-m-d');
+		$pedido->PREVISAO_ENTREGA  = $dt_entrega->format('Y-m-d');
 		$pedido->ID_PRAZO	       = $request->edit_prazopagto;		
-		$pedido->PREVISAO_ENTREGA  = $request->edit_dataentrega;
 		$pedido->OBSERVACAO		   = $request->edit_obs;
 		$pedido->FLG_CONCLUIDO	   = 1;
 
@@ -329,89 +358,91 @@ class PedidosController extends Controller
 			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
     	}
 
-		// decifra os dados DO USUARIO(VENDEDOR)
-    	$data          = explode('|', session()->get('userdata'));
-    	$vendedor_nome = $data[0];
-
-		$pedido  = Pedidos::findOrFail($id);
-
-		// traz o prazo de pagamento 
-		$prazoPagto = PrazoPagamentos::where('ID_PRAZO', $pedido->ID_PRAZO)->first();
-
-
-		// traz os itens
-		$itens = PedidosItens::where('ID_PEDIDO', $id)
-		                     ->join('PRODUTOS', 'PRODUTOS.ID_PRODUTO', '=', 'PEDIDOS_ITENS.ID_PRODUTO')
-		                     ->get();
-
-		
-		$cliente = Clientes::where('CNPJ', $pedido->CNPJ_CLIFOR)
-		                   ->first();
-
-			
-
-		$produtos = [];
-		$grade    = array(
-			 '34' => 0,
-			 '36' => 0,
-			 '38' => 0,
-			 '40' => 0,
-			 '42' => 0,
-			 '44' => 0,
-			 '46' => 0,
-			 '48' => 0,
-			 '50' => 0,
-			 '52' => 0,
-			 '54' => 0,
-			 '56' => 0,
-			 '58' => 0,
-			 '60' => 0,
-			 '62' => 0
-			);
-
-		$tamanho = '';
-		
-		foreach($itens as $item){
-
-
-			$produtos[$item->ID_PRODUTO]['ID_PRODUTO'] = $item->ID_PRODUTO;
-			$produtos[$item->ID_PRODUTO]['ID_PEDIDO' ] = $item->ID_PEDIDO;
-			$produtos[$item->ID_PRODUTO]['PRECO'	 ] = $item->PRECO_UNITARIO;
-			$produtos[$item->ID_PRODUTO]['TOTAL' 	 ] = $item->PRECO_TOTAL;
-			$produtos[$item->ID_PRODUTO]['MODELO'	 ] = $item->MODELO . ' ' . substr( $item->DESCRICAO, 0, 5);
-			$produtos[$item->ID_PRODUTO]['QTD_TOTAL' ] = $item->PRECO_UNITARIO;
-
-
-			
-			// Atribui a grade completa e vazia para o produto caso nao exista
-			if (!isset($produtos[$item->ID_PRODUTO]['GRADE'])) {
-				$produtos[$item->ID_PRODUTO]['GRADE'] = $grade;
-			}
 	
-			// Atribui quantidades a grade (e soma caso exista 2 registros com o mesmo tamanho validar modelo se isso acontecera)
-			if ($item->TAMANHO == 'P') {
-				$tamanho = '56';
-			} else 
-				if ($item->TAMANHO == 'M') {
-					$tamanho = '58';
+		// ANTES DE IMPRIMIR, VERIFICA SE EXISTE ITENS, SE NÃO HOUVER, NEM IMPRIMIR
+		if (PedidosController::verificaItensPedido($id)) {
+
+			// decifra os dados DO USUARIO(VENDEDOR)
+	    	$data          = explode('|', session()->get('userdata'));
+	    	$vendedor_nome = $data[0];
+
+			$pedido  = Pedidos::findOrFail($id);
+
+			// traz o prazo de pagamento 
+			$prazoPagto = PrazoPagamentos::where('ID_PRAZO', $pedido->ID_PRAZO)->first();
+
+
+			// traz os itens
+			$itens = PedidosItens::where('ID_PEDIDO', $id)
+			                     ->join('PRODUTOS', 'PRODUTOS.ID_PRODUTO', '=', 'PEDIDOS_ITENS.ID_PRODUTO')
+			                     ->get();
+
+			
+			$cliente = Clientes::where('CNPJ', $pedido->CNPJ_CLIFOR)
+			                   ->first();
+				
+
+			$produtos = [];
+			$grade    = array(
+				 '34' => 0,
+				 '36' => 0,
+				 '38' => 0,
+				 '40' => 0,
+				 '42' => 0,
+				 '44' => 0,
+				 '46' => 0,
+				 '48' => 0,
+				 '50' => 0,
+				 '52' => 0,
+				 '54' => 0,
+				 '56' => 0,
+				 '58' => 0,
+				 '60' => 0,
+				 '62' => 0
+				);
+
+			$tamanho = '';
+			
+			foreach($itens as $item){
+
+				$produtos[$item->ID_PRODUTO]['ID_PRODUTO'] = $item->ID_PRODUTO;
+				$produtos[$item->ID_PRODUTO]['ID_PEDIDO' ] = $item->ID_PEDIDO;
+				$produtos[$item->ID_PRODUTO]['PRECO'	 ] = $item->PRECO_UNITARIO;
+				$produtos[$item->ID_PRODUTO]['TOTAL' 	 ] = $item->PRECO_TOTAL;
+				$produtos[$item->ID_PRODUTO]['MODELO'	 ] = $item->MODELO . ' ' . substr( $item->DESCRICAO, 0, 5);
+				$produtos[$item->ID_PRODUTO]['QTD_TOTAL' ] = $item->PRECO_UNITARIO;
+
+
+				
+				// Atribui a grade completa e vazia para o produto caso nao exista
+				if (!isset($produtos[$item->ID_PRODUTO]['GRADE'])) {
+					$produtos[$item->ID_PRODUTO]['GRADE'] = $grade;
+				}
+		
+				// Atribui quantidades a grade (e soma caso exista 2 registros com o mesmo tamanho validar modelo se isso acontecera)
+				if ($item->TAMANHO == 'P') {
+					$tamanho = '56';
 				} else 
-					if ($item->TAMANHO == 'G') {
-						$tamanho = '60';
+					if ($item->TAMANHO == 'M') {
+						$tamanho = '58';
 					} else 
-						if ($item->TAMANHO == 'GG') {
-							$tamanho = '62';
-						} else
-							$tamanho = $item->TAMANHO;
+						if ($item->TAMANHO == 'G') {
+							$tamanho = '60';
+						} else 
+							if ($item->TAMANHO == 'GG') {
+								$tamanho = '62';
+							} else
+								$tamanho = $item->TAMANHO;
 
 
-			$produtos[$item->ID_PRODUTO]['GRADE'][$tamanho] += $item->QUANTIDADE;
+				$produtos[$item->ID_PRODUTO]['GRADE'][$tamanho] += $item->QUANTIDADE;
 
-		}	
+			}	
 
+	//		dd($produtos);
 
-//		dd($produtos);
-
-		return view('painel/pedidos/print', compact('pedido', 'produtos', 'cliente', 'vendedor_nome', 'prazoPagto'));
+			return view('painel/pedidos/print', compact('pedido', 'produtos', 'cliente', 'vendedor_nome', 'prazoPagto'));
+		}
 
 	}
 

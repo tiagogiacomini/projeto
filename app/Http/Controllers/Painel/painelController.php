@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades;
 use App\Models\CEP;
 use App\Models\Clientes;
+use App\Models\Configuracoes;
 
 
 
@@ -46,5 +47,20 @@ class PainelController extends Controller
 		return $resultado->toJson();
 
 	}
-	
+
+	public static function config() {
+
+
+		if (!session()->has('userdata')) {
+			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
+    	}
+
+		
+
+		$config = Configuracoes::where('ID_CONFIG', 1)->first();
+
+		return view('painel/config/edit', compact('config'));
+
+	}
+	 
 } // classe PainelCONTROLLER

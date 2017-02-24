@@ -109,20 +109,32 @@
 
                 </br>
                 <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-calendar"></i>&nbspInformações sobre Datas</p>         
-
+                
                 <div class="form-group form-group-style">
                     <div class="row">
-                        <div class="col-md-6">
+                        
+                        @php
+                            $dt_emis = \DateTime::createFromFormat('Y-m-d', $pedido->DATA_EMISSAO);
+                            $dt_entr = \DateTime::createFromFormat('Y-m-d', $pedido->PREVISAO_ENTREGA);
+                        @endphp
+
+                        <div class="col-md-6" >
                             <label for="edit_dataemissao">Data de Emissão</label>
-                            <input type="date" class="form-control input-lg" name="edit_dataemissao" value="{!! $pedido->DATA_EMISSAO !!}" >
+                            <div class="input-group date">
+                                <input type="text" class="form-control input-lg" id="edit_dataemissao" name="edit_dataemissao" value="{!! $dt_emis->format('d/m/Y') !!}" ><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                
+                            </div>
                         </div>
+
                         <div class="col-md-6">
                             <label for="edit_dataentrega">Data de Entrega (previsão)</label>
-                            <input type="date" class="form-control input-lg" name="edit_dataentrega" value="{!! $pedido->PREVISAO_ENTREGA !!}" >
+                            <div class="input-group date">
+                                <input type="text" class="form-control input-lg" id="edit_dataentrega" name="edit_dataentrega" value="{!! $dt_entr->format('d/m/Y') !!}" ><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                
+                            </div>
                         </div>
                     </div>
-                </div>   
-
+                </div>    
                                 
                 </br>
                 <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-money"></i>&nbspInformações sobre o Prazo de Pagamento</p>         

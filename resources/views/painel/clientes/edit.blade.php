@@ -69,7 +69,7 @@
 
 					<div class="row">
 						<div class="col-md-4">
-							<label for="edit_telefone">Telefone</label>	
+							<label for="edit_telefone">Telefone<small> (Somente Números)</small></label>	
 							<input class="form-control" type="text" name="edit_telefone" id="edit_telefone" value="{!! $cliente->TELEFONE !!}">
 						</div>
 							

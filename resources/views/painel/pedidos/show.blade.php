@@ -20,12 +20,14 @@
 
         <div style="position: relative; top: 70px;">
 
+            @if (!is_null($pedido->DATA_IMPORTACAO))
             <div class="form-group-style text-center">
-                    <i class="fa fa-warning fa-2x"></i><h1>Atenção</h1>
-                    
-                    <p>Este pedido já foi importado pelo sistema interno da empresa em {!! \Carbon\Carbon::parse($pedido->DATA_IMPORTACAO)->format('d/m/Y H:i') !!} por {!! $pedido->NOME_USUARIO_IMP !!}.</p>
+                <i class="fa fa-warning fa-2x"></i><h1>Atenção</h1>
+                <p>Este pedido já foi importado pelo sistema interno da empresa em {!! \Carbon\Carbon::parse($pedido->DATA_IMPORTACAO)->format('d/m/Y H:i') !!} por {!! $pedido->NOME_USUARIO_IMP !!}.</p>
   
             </div>
+            @endif
+
             </br>            
             <div class="form-group form-group-style">
                 <div class="row">
@@ -119,17 +121,29 @@
 
                 <div class="form-group form-group-style">
                     <div class="row">
-                        <div class="col-md-6">
+                        
+                        @php
+                            $dt_emis = \DateTime::createFromFormat('Y-m-d', $pedido->DATA_EMISSAO);
+                            $dt_entr = \DateTime::createFromFormat('Y-m-d', $pedido->PREVISAO_ENTREGA);
+                        @endphp
+
+                        <div class="col-md-6" >
                             <label for="edit_dataemissao">Data de Emissão</label>
-                            <input type="date" class="form-control input-lg" value="{!! $pedido->DATA_EMISSAO !!}" disabled>
+                            <div class="input-group date">
+                                <input type="text" class="form-control input-lg" id="edit_dataemissao" name="edit_dataemissao" value="{!! $dt_emis->format('d/m/Y') !!}" disabled><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                
+                            </div>
                         </div>
+
                         <div class="col-md-6">
                             <label for="edit_dataentrega">Data de Entrega (previsão)</label>
-                            <input type="date" class="form-control input-lg" value="{!! $pedido->PREVISAO_ENTREGA !!}" disabled>
+                            <div class="input-group date">
+                                <input type="text" class="form-control input-lg" id="edit_dataentrega" name="edit_dataentrega" value="{!! $dt_entr->format('d/m/Y') !!}" disabled><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                
+                            </div>
                         </div>
                     </div>
-                </div>   
-
+                </div>     
                                 
                 </br>
                 <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-money"></i>&nbspInformações sobre o Prazo de Pagamento</p>         

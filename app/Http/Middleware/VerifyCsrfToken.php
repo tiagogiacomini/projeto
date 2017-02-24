@@ -16,9 +16,8 @@ class VerifyCsrfToken extends BaseVerifier
     	'auth/login',
     	'painel/pedidos/additem',
     	'painel/pedidos/store',
-        '/painel/pedidos/update'
-
-
+        'painel/pedidos/update',
+        'painel/pedidos/removeitem'
 	        
     ];
 }

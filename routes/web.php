@@ -70,6 +70,8 @@ Route::get( 'painel/pedidos', 'Painel\pedidosController@index')->name('pedidos')
 	Route::get('painel/pedidos/busca_prod_descr/{descricao}', 'Painel\pedidosController@buscaProdDescr');	
 	Route::get('painel/pedidos/busca_prod_tamanho/{id_produto}/{tabela_preco}', 'Painel\pedidosController@buscaProdTamanhos');		
 	
+// PEDIDOS
+Route::get( 'painel/config', 'Painel\painelController@config')->name('configuracoes');
 	
 //END POINTS TESTE
 

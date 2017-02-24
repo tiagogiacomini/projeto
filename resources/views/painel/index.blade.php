@@ -11,7 +11,6 @@
         $('[data-toggle="tooltip"]').tooltip();
 
     });
-
 </script>
 
 </head>
@@ -29,32 +28,45 @@
 
         <div class="container_botoes">
             <div>
-                <span class="btn_painel" data-toggle="tooltip" title="Permite incluir, editar ou excluir pedidos!">
-                    <a class="links_icones" href="{!! route('pedidos') !!}" >
-                        <i class="fa fa-shopping-basket fa-3x"></i>
-                    </a>
-                <br><p>Pedidos</p></span>
-                                
-                <span class="btn_painel" data-toggle="tooltip" title="Permite incluir ou exibir clientes!">
-                    <a class="links_icones" href="{!! route('clientes') !!}">
+
+                <a class="links_icones" href="{!! route('clientes') !!}">
+                    <span class="btn_painel" data-toggle="tooltip" title="Permite incluir ou exibir clientes!">
+                    
                         <i class="fa fa-users fa-3x"></i>
-                    </a>
-                <br><p>Clientes</p></span>
-                
-                </br>                
-                
+                    
+                    </br><p>Clientes</p>
+                    </span>
+                </a>
+                                              
+                <a class="links_icones" href="{!! route('produtos') !!}">
                 <span class="btn_painel" data-placement="bottom" data-toggle="tooltip" title="Somente exibe produtos!">
-                    <a class="links_icones" href="{!! route('produtos') !!}">
+                    
                         <i class="fa fa-cubes fa-3x"></i>
-                    </a>
-                </br><p>Produtos</p></span>
                 
-                <span class="btn_painel" data-placement="bottom" data-toggle="tooltip" title="Configurações do aplicativo!">
-                    <a class="links_icones" href="#">
-                        <i class="fa fa-cogs fa-3x"></i>
-                    </a>
-                </br><p>Opções</p></span>
+                    </br><p>Produtos</p>
+                    </span>
+                </a>
                 
+                </br>
+                
+                <a class="links_icones" href="{!! route('pedidos') !!}" >
+                    <span class="btn_painel" data-toggle="tooltip" title="Permite incluir, editar ou excluir pedidos!">
+                    
+                        <i class="fa fa-shopping-basket fa-3x"></i>
+
+                    </br><p>Pedidos</p>
+                    </span>
+                </a>
+
+                <a class="links_icones" href="{!! route('configuracoes') !!}" >
+                    <span class="btn_painel" data-toggle="tooltip" title="Configurações do SpartumWEB!">
+                    
+                        <i class="fa fa-gears fa-3x"></i>
+
+                    </br><p>Configurações</p>
+                    </span>
+                </a>
+                                
             </div>
         </div>
     </div>

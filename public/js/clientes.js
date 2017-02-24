@@ -26,7 +26,7 @@ $(document).ready(function() {
 		$("#edit_cep").mask('00.000-000');
 
 		//mascara o TELEFONE
-		$("#edit_telefone").attr('type', 'text');
+		
 		if ( $("#edit_telefone").val().length == 10 ) {
 			 $("#edit_telefone").mask('(00) 0000-0000');
 		}
@@ -57,18 +57,17 @@ $(document).ready(function() {
 	});
 
 
-	//mascara o telefone
 	$("#edit_telefone").focus( function() {
-		
+
 		$(this).unmask();
-		$(this).attr('type', 'number');
 		$(this).select();
 
 	});
 
+
 	$("#edit_telefone").blur(function() {
 		
-		$(this).attr('type', 'text');
+		$(this).unmask();
 
 		if (( $(this).val().length != 10) || ( $(this).val().length != 11 )) {
 			$(this).unmask();

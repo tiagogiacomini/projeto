@@ -1,6 +1,7 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
+    
 <script type="text/javascript" src="/js/jsmask.js"></script>
 <script type="text/javascript" src="/js/pace.min.js"></script>
 <script type="text/javascript" src="/js/pedidos.js"></script>
@@ -122,13 +123,20 @@
 
                 <div class="form-group form-group-style">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" >
                             <label for="edit_dataemissao">Data de Emissão</label>
-                            <input type="date" class="form-control input-lg" id="edit_dataemissao" name="edit_dataemissao" value="{!! date('d/m/Y') !!}" >
+                            <div class="input-group date">
+                                <input type="text" class="form-control input-lg" id="edit_dataemissao" name="edit_dataemissao" value="{!! date('d/m/Y') !!}"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                
+                            </div>
                         </div>
+
                         <div class="col-md-6">
                             <label for="edit_dataentrega">Data de Entrega (previsão)</label>
-                            <input type="date" class="form-control input-lg" id="edit_dataentrega" name="edit_dataentrega" value="{!! date('d/m/Y', strtotime('+1 month')) !!}" >
+                            <div class="input-group date">
+                                <input type="text" class="form-control input-lg" id="edit_dataentrega" name="edit_dataentrega" value="{!! date('d/m/Y', strtotime('+ 1 month' )) !!}"><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                                
+                            </div>
                         </div>
                     </div>
                 </div>   

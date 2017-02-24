@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades;
 use Session;
+use App\Models\Usuarios;
 
 class AuthController extends Controller 
 {
@@ -48,7 +49,8 @@ class AuthController extends Controller
 		if (!is_null($usuario_nome)) {
 
 			// faz o select do usuário
-			$usuario = DB::select("select USUARIOS.ID_USUARIO, USUARIOS.NOME, USUARIOS.SENHA from USUARIOS where USUARIOS.NOME = '$usuario_nome'", [1]);
+			$usuario = Usuarios::where('NOME', $usuario_nome)->first();
+
 
 			// se não achar o usuário
 			if (!$usuario) {
@@ -59,17 +61,11 @@ class AuthController extends Controller
 			}
 
 			// se chegar aqui, achou o usuario, verifica chave do array do banco e atribui as senhas digitadas e do banco
-			if (array_key_exists(0, $usuario)) {
-		
-				$senha_md5_usuario = md5($usuario_senha);
-				$senha_md5_banco   = $usuario[0]->SENHA;
+			
+			$senha_md5_usuario = md5($usuario_senha);
+			$senha_md5_banco   = $usuario->SENHA;
+	
 
-			} else {
-
-				$falha_login = true;
-				return view('login', compact('nome_usuario', 'senha_usuario', 'falha_login'));
-
-			}
 		
 		// valida senhas
 		if (isset($senha_md5_usuario) && (isset($senha_md5_banco))) 
@@ -77,15 +73,17 @@ class AuthController extends Controller
 			    if (strtoupper($senha_md5_usuario) == strtoupper($senha_md5_banco)) {
 
 			    	//passou no LOGIN
+					
 
 					$falha_login = false;
 
-					session(['userdata' => $usuario_nome . '|' . $usuario[0]->ID_USUARIO]);
+					session(['userdata' => $usuario_nome . '|' . $usuario->ID_USUARIO]);
 
 					return redirect()->route('home');
    			    
 						
 				} else {
+
 
 					$falha_login = true;
 					

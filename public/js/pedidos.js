@@ -16,6 +16,17 @@ $(document).ready(function() {
 	    $(".btn_collapse").html('<i class="fa fa-chevron-up fa-2x"></i>');
 	});
 
+    
+	// parametros para o DATE PICKER
+    $('.input-group.date').datepicker({
+        
+        language: "pt-BR",
+        calendarWeeks: true,
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        daysOfWeekHighlighted: "0,6",
+
+    });
 
 	//
     function BuscaCliente() {
@@ -153,8 +164,7 @@ $(document).ready(function() {
 			return false;
 		}
  
-		if (( id_tabela_preco == 0 ) || 
-			( id_tabela_preco == null)) {
+		if ( id_tabela_preco == null) {
 			return false;
 		}
 
@@ -343,7 +353,7 @@ $(document).ready(function() {
 	 			     	console.log(data);
 
 	 			     				
-	 			     	$("#tabela_itens").append('<tr><td >' + $("#edit_busca_prod" ).val() + '</td>' + 
+	 			     	$("#tabela_itens").append('<tr><td >' + $("#edit_busca_prod" ).val().toUpperCase() + '</td>' + 
 	 			     		 						  '<td class="text-center">' + data.TAMANHO  + '</td>' + 			     		 						  
 	 			     		 						  '<td class="hidden-xs">' + $("#edit_descricao"  ).val()  + '</td>' +
 													  '<td class="hidden-xs text-right">R$ '  + data.PRECO_UNT + '</td>' +
