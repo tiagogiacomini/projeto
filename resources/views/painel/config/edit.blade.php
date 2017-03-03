@@ -2,6 +2,9 @@
 
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
 
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
 <title>SpartumWEB - Configurações</title>
 
 </head>
@@ -25,7 +28,7 @@
             </br>
             
             @php
-            	$dt_atualizacao    = new DateTime($config->ULTIMA_ATUALIZACAO_DADOS);            	
+            	$dt_atualizacao    = new DateTime($config->ULTIMA_ATUALIZACAO_DADOS);       
             @endphp
 
 			<p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-bar-chart"></i>&nbspInformações e Estatísticas</p>            
@@ -35,15 +38,32 @@
                         <label for="edit_dataatualizacao">Última vez em que o banco da dados foi atualizado</label>
 	                        <div class="input-group date">
                                <input type="text" class="form-control input-lg" id="edit_dataatualizacao" name="edit_dataatualizacao" value="{!! $dt_atualizacao->format('d/m/Y') !!}" disabled><span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
-                                
                             </div>
-                        </div>
+                    </div>
             	</div>
-	        </div>
+                <div class="col-md-6" >
+                    <div class="input-group date">
+                    	
+                    </div>
+                </div>
 
-			<p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-industry"></i>&nbspDados da Empresa Utilizadora</p>            
+	        </div>
+            </br>
+
+			<p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-photo"></i>&nbspLogotipo da Empresa Utilizadora</p>            
+
             <div class="form-group-style">
-            	<div class="content">
+                <div class="text-center">
+                    <img src="{!! $config->PATH_LOGO_EMPRESA !!}" class="img-thumbnail">
+                </div>
+            </div>
+            </br>
+
+            <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-industry"></i>&nbspDados da Empresa Utilizadora</p>            
+            <div class="form-group-style">
+
+                <div class="content">
+
                     <div class="row">
                         <div class="col-md-6">
                             <label for="edit_cnpj">CNPJ da Empresa</label>                                                                   
@@ -61,7 +81,7 @@
                         		       
                         <div class="col-md-6">
                             <label for="edit_razao"><small>Razão Social</small></label>
-                            <input type="text" class="form-control input-sm"  value="{!! $config->RAZAO !!}" disabled>                        
+                            <input type="text" class="form-control input-sm"  value="{!! $config->RAZAO_SOCIAL !!}" disabled>                        
                         </div>
 
                         <div class="col-md-4">
@@ -76,13 +96,9 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-10">
+                        <div class="col-md-12">
                             <label for="edit_endereco"><small>Endereço</small></label>
                             <input type="text" class="form-control input-sm" value="{!! $config->ENDERECO !!}" disabled>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="edit_numero"><small>Número</small></label>
-                            <input type="text" class="form-control input-sm" value="{!! $config->NUMERO !!}" disabled>
                         </div>
                     </div>
 
@@ -109,13 +125,61 @@
                     </div>
                 </div>
         </div>
+        </br>
 
-		<p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-industry"></i>&nbspDados da Empresa Utilizadora</p>            
-        <div class="form-group-style">
+		<p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-toggle-on"></i>&nbspOpções diversas</p>            
 
-        </div>
+		<form method="POST" action="/painel/config/store" id="form_config" >
+		{{ csrf_field() }}
+        
+	        <div class="form-group-style">
+
+                <table class="table">
+                    <tr>
+                        <td width="80%"><strong>Usar impressão de pedidos em formato GRADE?</strong>
+                                   </br><small>Esta opção faz com que a impressão de pedidos mostre os tamanhos dos produtos nas colunas, logo após a descrição do item.</small>
+
+                        </td>
+                        <td width="20%" class="text-right">
+                            @if ($config->FLG_IMP_PEDIDO_GRADE == 0 )
+                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_grade" data-onstyle="primary" data-offstyle="danger">
+                            @else 
+                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_grade" data-onstyle="primary" data-offstyle="danger" checked>
+                            @endif                     
+                        </td>
+                    </tr>
+                	                    
+                    <tr>
+                        <td width="80%"><strong>Mostrar coluna de TAMANHO para impressão de pedido?</strong>
+                                   </br><small>Esta opção faz com que a impressão de pedidos mostre ou não, os tamanhos dos produtos em modo lista.</small></td>
+                        <td width="20%" class="text-right">
+                            @if ($config->FLG_IMP_TAM_MODO_LISTA == 0 )
+                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_tam_modo_lista" data-onstyle="primary" data-offstyle="danger"> 
+                            @else 
+                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_tam_modo_lista" data-onstyle="primary" data-offstyle="danger" checked>
+                            @endif                      
+                        </td>
+                    </tr>
+                </table>
+            
+
+	        </div>
 
 
+            <div class="form-group-style">
+                <div class="row">
+                    <div class="col-xs-6 col-md-6">
+                        <input type="submit" class="form-control btn btn-primary input-lg" value="Salvar">
+                    </div>
+                    
+                    <div class="col-xs-6 col-md-6">
+                        <input type="button" class="form-control btn btn-danger input-lg btn_cancelar" value="Cancelar">
+                    </div>
+                </div>
+            </div>
+
+
+	    </form>
 
 
 

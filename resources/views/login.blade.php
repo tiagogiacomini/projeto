@@ -13,10 +13,6 @@
                     <div class="form-group" >
                         <form id="form_login" method="POST" action="/auth/login">
                         
-
-                           @php 
-                                echo env('DB_HOST');
-                           @endphp
                         @if (isset($falha_login))
                            @if ($falha_login)
                            

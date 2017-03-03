@@ -18,7 +18,7 @@
 	<div class="page">
 
 		<div class="round-rect cabecalho">
-			<img src="/img/loofting.bmp" class="logo">
+			<img src="{!! $config->PATH_LOGO_EMPRESA !!}" class="logo">
 
 			<div class="titulo">Pedido Nº {!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</div>
 			<p class="provisorio">* Número provisório * </p>
@@ -65,6 +65,8 @@
 			<i class="fa fa-cubes"></i><strong> Itens do Pedido</strong>
 		</div>
 
+		{{-- MODO GRADE --}}
+		@if ($config->FLG_IMP_PEDIDO_GRADE == 1)
 		<div class="round-rect itens">
 			<table class="table table-bordered">
 				<thead>
@@ -136,10 +138,55 @@
 			</table>
 		</div>
 		
+		@else
+
+		{{-- MODO LISTA --}}
+		<div class="round-rect itens">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th width="50">MODELO</th>
+						@if ($config->FLG_IMP_TAM_MODO_LISTA == 1)
+						<th width="20">TAMANHO</th>
+						@endif
+						<th width="150" class="text-center">DESCRIÇÃO</th>
+						<th width="50" class="text-right">QUANT.</th>
+						<th width="50" class="text-right">PREÇO</th>
+						<th width="80" class="text-right">TOTAL</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach($itens as $item)
+						<tr>
+							<td>{!! $item->MODELO !!}</td>
+							@if ($config->FLG_IMP_TAM_MODO_LISTA == 1)
+							<td class="text-center">{!! $item->TAMANHO !!}</td>
+							@endif
+							<td>{!! $item->DESCRICAO !!}</td>
+							<td class="text-right">{!! $item->QUANTIDADE !!}</td>
+							<td class="text-right">R$ {!! number_format( $item->PRECO_UNITARIO , 2, ',', '.') !!}</td>
+							<td class="text-right">R$ {!! number_format( $item->PRECO_TOTAL , 2, ',', '.') !!}</td>
+						</tr>
+					@endforeach
+
+				</tbody>
+
+			</table>
+		</div>
+
+   		@endif
+		
 		<div class="round-rect total">
 			
+			@if ($config->FLG_IMP_PEDIDO_GRADE == 1)
 			<span class="total_pecas">PEÇAS: <strong>{!! $quant_total_pecas !!}</strong></span>
-			<span class="total_pedido">TOTAL: <strong>R$ {!! number_format($pedido->TOTAL, 2, ',', '.') !!}</strong></span>
+			<span class="total_pedido_grade text-right">TOTAL: <strong>R$ {!! number_format($pedido->TOTAL, 2, ',', '.') !!}</strong></span>
+			@else 
+			<span class="total_pedido_lista text-right">TOTAL: <strong>R$ {!! number_format($pedido->TOTAL, 2, ',', '.') !!}</strong></span>
+			@endif			
+			
+			
 			
 		</div>
 

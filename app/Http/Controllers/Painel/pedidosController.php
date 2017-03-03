@@ -12,6 +12,7 @@ use App\Models\Clientes;
 use App\Models\PrazoPagamentos;
 use App\Models\TabelaPrecosItens;
 use App\Models\PedidosItens;
+use App\Models\Configuracoes;
 use DB;
 use Carbon\Carbon;
 
@@ -359,6 +360,14 @@ class PedidosController extends Controller
     	}
 
 	
+		//recebe dados das CONFIGURACOES PARA SABER se IMPRIME GRADE OU LISTA
+		$config = Configuracoes::findOrFail(1);
+
+		if ( $config->FLG_IMP_PEDIDO_GRADE == 1) 
+			$modo_impressao = 'GRADE'; else
+			$modo_impressao = 'LISTA';
+
+
 		// ANTES DE IMPRIMIR, VERIFICA SE EXISTE ITENS, SE NÃO HOUVER, NEM IMPRIMIR
 		if (PedidosController::verificaItensPedido($id)) {
 
@@ -367,6 +376,7 @@ class PedidosController extends Controller
 	    	$vendedor_nome = $data[0];
 
 			$pedido  = Pedidos::findOrFail($id);
+
 
 			// traz o prazo de pagamento 
 			$prazoPagto = PrazoPagamentos::where('ID_PRAZO', $pedido->ID_PRAZO)->first();
@@ -382,69 +392,79 @@ class PedidosController extends Controller
 			                   ->first();
 				
 
-			$produtos = [];
-			$grade    = array(
-				 '34' => 0,
-				 '36' => 0,
-				 '38' => 0,
-				 '40' => 0,
-				 '42' => 0,
-				 '44' => 0,
-				 '46' => 0,
-				 '48' => 0,
-				 '50' => 0,
-				 '52' => 0,
-				 '54' => 0,
-				 '56' => 0,
-				 '58' => 0,
-				 '60' => 0,
-				 '62' => 0
-				);
+			// MODO GRADE                   
+ 			if ( $modo_impressao == 'GRADE') {
 
-			$tamanho = '';
-			
-			foreach($itens as $item){
+				$produtos = [];
+				$grade    = array(
+					 '34' => 0,
+					 '36' => 0,
+					 '38' => 0,
+					 '40' => 0,
+					 '42' => 0,
+					 '44' => 0,
+					 '46' => 0,
+					 '48' => 0,
+					 '50' => 0,
+					 '52' => 0,
+					 '54' => 0,
+					 '56' => 0,
+					 '58' => 0,
+					 '60' => 0,
+					 '62' => 0
+					);
 
-				$produtos[$item->ID_PRODUTO]['ID_PRODUTO'] = $item->ID_PRODUTO;
-				$produtos[$item->ID_PRODUTO]['ID_PEDIDO' ] = $item->ID_PEDIDO;
-				$produtos[$item->ID_PRODUTO]['PRECO'	 ] = $item->PRECO_UNITARIO;
-				$produtos[$item->ID_PRODUTO]['TOTAL' 	 ] = $item->PRECO_TOTAL;
-				$produtos[$item->ID_PRODUTO]['MODELO'	 ] = $item->MODELO . ' ' . substr( $item->DESCRICAO, 0, 5);
-				$produtos[$item->ID_PRODUTO]['QTD_TOTAL' ] = $item->PRECO_UNITARIO;
-
-
+				$tamanho = '';
 				
-				// Atribui a grade completa e vazia para o produto caso nao exista
-				if (!isset($produtos[$item->ID_PRODUTO]['GRADE'])) {
-					$produtos[$item->ID_PRODUTO]['GRADE'] = $grade;
-				}
-		
-				// Atribui quantidades a grade (e soma caso exista 2 registros com o mesmo tamanho validar modelo se isso acontecera)
-				if ($item->TAMANHO == 'P') {
-					$tamanho = '56';
-				} else 
-					if ($item->TAMANHO == 'M') {
-						$tamanho = '58';
+				foreach($itens as $item){
+
+					$produtos[$item->ID_PRODUTO]['ID_PRODUTO'] = $item->ID_PRODUTO;
+					$produtos[$item->ID_PRODUTO]['ID_PEDIDO' ] = $item->ID_PEDIDO;
+					$produtos[$item->ID_PRODUTO]['PRECO'	 ] = $item->PRECO_UNITARIO;
+					$produtos[$item->ID_PRODUTO]['TOTAL' 	 ] = $item->PRECO_TOTAL;
+					$produtos[$item->ID_PRODUTO]['MODELO'	 ] = $item->MODELO . ' ' . substr( $item->DESCRICAO, 0, 5);
+					$produtos[$item->ID_PRODUTO]['QTD_TOTAL' ] = $item->PRECO_UNITARIO;
+
+
+					
+					// Atribui a grade completa e vazia para o produto caso nao exista
+					if (!isset($produtos[$item->ID_PRODUTO]['GRADE'])) {
+						$produtos[$item->ID_PRODUTO]['GRADE'] = $grade;
+					}
+			
+					// Atribui quantidades a grade (e soma caso exista 2 registros com o mesmo tamanho validar modelo se isso acontecera)
+					if ($item->TAMANHO == 'P') {
+						$tamanho = '56';
 					} else 
-						if ($item->TAMANHO == 'G') {
-							$tamanho = '60';
+						if ($item->TAMANHO == 'M') {
+							$tamanho = '58';
 						} else 
-							if ($item->TAMANHO == 'GG') {
-								$tamanho = '62';
-							} else
-								$tamanho = $item->TAMANHO;
+							if ($item->TAMANHO == 'G') {
+								$tamanho = '60';
+							} else 
+								if ($item->TAMANHO == 'GG') {
+									$tamanho = '62';
+								} else
+									$tamanho = $item->TAMANHO;
 
 
-				$produtos[$item->ID_PRODUTO]['GRADE'][$tamanho] += $item->QUANTIDADE;
+					$produtos[$item->ID_PRODUTO]['GRADE'][$tamanho] += $item->QUANTIDADE;
 
-			}	
+				}	
+	
+				return view('painel/pedidos/print', compact('pedido', 'produtos', 'cliente', 'vendedor_nome', 'prazoPagto', 'config'));
 
-	//		dd($produtos);
+			} //MODO GRADE
 
-			return view('painel/pedidos/print', compact('pedido', 'produtos', 'cliente', 'vendedor_nome', 'prazoPagto'));
-		}
 
-	}
+
+			return view('painel/pedidos/print', compact('pedido', 'itens', 'cliente', 'vendedor_nome', 'prazoPagto', 'config'));
+
+	
+ 		}
+
+
+	} //print pedido
 
 	
 } // classe PedidosCONTROLLER

@@ -57,10 +57,46 @@ class PainelController extends Controller
 
 		
 
-		$config = Configuracoes::where('ID_CONFIG', 1)->first();
-
+		$config = Configuracoes::findOrFail(1);
+		
 		return view('painel/config/edit', compact('config'));
 
 	}
+
+	public static function storeConfig(Request $request) {
+
+
+		$config = Configuracoes::findOrFail(1);
+
+
+		if (isset($request->flag_pedido_grade)) {
+
+			$config->FLG_IMP_PEDIDO_GRADE = 1;
+
+		} else {
+
+			$config->FLG_IMP_PEDIDO_GRADE = 0;			
+
+		}
+
+		if (isset($request->flag_pedido_tam_modo_lista)) {
+
+			$config->FLG_IMP_TAM_MODO_LISTA = 1;
+
+		} else {
+
+			$config->FLG_IMP_TAM_MODO_LISTA = 0;			
+
+		}
+
+
+
+		$config->save();
+
+
+		return redirect()->route('home');
+
+
+	}
 	 
-} // classe PainelCONTROLLER
+} // classe PainelCONTROLLER'

@@ -72,6 +72,7 @@ Route::get( 'painel/pedidos', 'Painel\pedidosController@index')->name('pedidos')
 	
 // PEDIDOS
 Route::get( 'painel/config', 'Painel\painelController@config')->name('configuracoes');
+	Route::post( 'painel/config/store', 'Painel\painelController@storeConfig');
 	
 //END POINTS TESTE
 
