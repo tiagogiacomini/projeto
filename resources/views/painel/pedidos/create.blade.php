@@ -149,7 +149,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="edit_prazopagto">Prazo de Pagamento</label> 
+                            @if ($config->FLG_PRAZO_PAGTO_TABELA_EXTERNA) 
                             {{ \Form::select('edit_prazopagto', $prazoPagto, null, array('class' => 'edit_prazopagto form-control uppercase input-lg', 'id' => 'edit_prazopagto')) }}
+                            @else
+                            <input class="form-control uppercase input-lg" name="edit_prazopagto">
+                            @endif
                         </div>
                     </div>
                 </div>

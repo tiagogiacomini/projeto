@@ -1,9 +1,9 @@
 @include('partials.header')
 
 <link rel="stylesheet" type="text/css" href="/css/geral.css">
-
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script type="text/javascript" src="/js/config.js"></script>
 
 <title>SpartumWEB - Configurações</title>
 
@@ -135,6 +135,45 @@
 	        <div class="form-group-style">
 
                 <table class="table">
+                            
+                    <tr><td> 
+                        <h4><i class="fa fa-shopping-basket">&nbsp&nbsp</i>Opções do PEDIDO</h4>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td width="80%"><strong>Utilizar de GRADES na venda de ITENS do PEDIDO?</strong>
+                                   </br><small>Esta opção faz com que o sistema utilize de uma tabela de grade de tamanhos para os produtos, desmarcando esta opção o sistema irá desmarcar também as opções de impressão que envolvem GRADE.</small>
+
+                        </td>
+                        <td width="20%" class="text-right">
+                            @if ($config->FLG_USA_GRADE_PEDIDO == 0 )
+                            <input type="checkbox" id="flag_usa_grade_pedido" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_usa_grade_pedido" data-onstyle="primary" data-offstyle="danger">
+                            @else 
+                            <input type="checkbox" id="flag_usa_grade_pedido" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_usa_grade_pedido" data-onstyle="primary" data-offstyle="danger" checked>
+                            @endif                     
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td width="80%"><strong>Usar PRAZOS DE PAGAMENTO de uma tabela externa?</strong>
+                                   </br><small>Esta opção faz com que o sistema utilize de uma tabela externa para exibir os prazos cadastrados num sistema retaguarda.</small>
+
+                        </td>
+                        <td width="20%" class="text-right">
+                            @if ($config->FLG_PRAZO_PAGTO_TABELA_EXTERNA == 0 )
+                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_prazo_tab_ext" data-onstyle="primary" data-offstyle="danger">
+                            @else 
+                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_prazo_tab_ext" data-onstyle="primary" data-offstyle="danger" checked>
+                            @endif                     
+                        </td>
+                    </tr>
+
+
+                    <tr> <td>
+                        <h4><i class="fa fa-print">&nbsp&nbsp</i>Opções da Impressão do PEDIDO</h4>
+                        </td>
+                    </tr>
                     <tr>
                         <td width="80%"><strong>Usar impressão de pedidos em formato GRADE?</strong>
                                    </br><small>Esta opção faz com que a impressão de pedidos mostre os tamanhos dos produtos nas colunas, logo após a descrição do item.</small>
@@ -142,9 +181,9 @@
                         </td>
                         <td width="20%" class="text-right">
                             @if ($config->FLG_IMP_PEDIDO_GRADE == 0 )
-                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_grade" data-onstyle="primary" data-offstyle="danger">
+                            <input type="checkbox" id="flag_pedido_grade" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_grade" data-onstyle="primary" data-offstyle="danger">
                             @else 
-                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_grade" data-onstyle="primary" data-offstyle="danger" checked>
+                            <input type="checkbox" id="flag_pedido_grade" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_grade" data-onstyle="primary" data-offstyle="danger" checked>
                             @endif                     
                         </td>
                     </tr>
@@ -152,20 +191,30 @@
                     <tr>
                         <td width="80%"><strong>Mostrar coluna de TAMANHO para impressão de pedido?</strong>
                                    </br><small>Esta opção faz com que a impressão de pedidos mostre ou não, os tamanhos dos produtos em modo lista.</small></td>
+
                         <td width="20%" class="text-right">
                             @if ($config->FLG_IMP_TAM_MODO_LISTA == 0 )
-                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_tam_modo_lista" data-onstyle="primary" data-offstyle="danger"> 
+                            <input type="checkbox" id="flag_pedido_tam_modo_lista" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_tam_modo_lista" data-onstyle="primary" data-offstyle="danger"> 
                             @else 
-                            <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_tam_modo_lista" data-onstyle="primary" data-offstyle="danger" checked>
+                            <input type="checkbox" id="flag_pedido_tam_modo_lista" data-toggle="toggle" data-on="Sim" data-off="Não" name="flag_pedido_tam_modo_lista" data-onstyle="primary" data-offstyle="danger" checked>
                             @endif                      
                         </td>
                     </tr>
                 </table>
-            
 
 	        </div>
 
-
+            </br>
+            <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-commenting"></i>&nbspObservação Impressa no Pedido</p>     
+            <div class="form-group-style">
+                <div class="row">
+                    <div class="col-md-12">
+                        <textarea style="resize:none;" rows="3" name="edit_obs_pedido" maxlength="255" class="form-control">{!! $config->OBS_IMPRESSAO_PEDIDO !!}</textarea>
+                    </div>
+                </div>
+            </div>
+            
+            </br>
             <div class="form-group-style">
                 <div class="row">
                     <div class="col-xs-6 col-md-6">

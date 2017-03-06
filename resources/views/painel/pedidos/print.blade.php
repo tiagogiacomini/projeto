@@ -198,6 +198,11 @@
 			<div class="obs-pedido"><strong>{!! $pedido->OBSERVACAO !!}</strong></div>
 		</div>
 
+		<div class="obs_config_pedido">
+			<div><i class="fa fa-exclamation-triangle"></i>&nbsp&nbsp{!! $config->OBS_IMPRESSAO_PEDIDO !!}</div>
+		</div>
+
+
 
 		@if (!is_null($pedido->ID_USUARIO_IMP))
 		<div class="pedido-importado">

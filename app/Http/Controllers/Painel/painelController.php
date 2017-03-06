@@ -68,6 +68,16 @@ class PainelController extends Controller
 
 		$config = Configuracoes::findOrFail(1);
 
+		if (isset($request->flag_usa_grade_pedido)) {
+
+			$config->FLG_USA_GRADE_PEDIDO = 1;
+
+		} else {
+
+			$config->FLG_USA_GRADE_PEDIDO = 0;			
+
+		}
+
 
 		if (isset($request->flag_pedido_grade)) {
 
@@ -88,6 +98,21 @@ class PainelController extends Controller
 			$config->FLG_IMP_TAM_MODO_LISTA = 0;			
 
 		}
+
+		if (isset($request->flag_prazo_tab_ext)) {
+
+			$config->FLG_PRAZO_PAGTO_TABELA_EXTERNA = 1;
+
+		} else {
+
+			$config->FLG_PRAZO_PAGTO_TABELA_EXTERNA = 0;			
+
+		}
+
+
+
+		$config->OBS_IMPRESSAO_PEDIDO = $request->edit_obs_pedido;
+
 
 
 

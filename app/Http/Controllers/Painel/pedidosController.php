@@ -135,6 +135,9 @@ class PedidosController extends Controller
 			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
     	}
 
+		// recebe as configuracoes para atribuições     	
+    	$config = Configuracoes::findOrFail(1);
+
     	// monta o selectbox (combobox) com os prazos de pagamento
 		$prazoPagto = PrazoPagamentos::pluck('DESCRICAO', 'ID_PRAZO');
 
@@ -155,7 +158,7 @@ class PedidosController extends Controller
 
 		$id_pedido = $pedido->ID_PEDIDO;
 
-		return view('painel/pedidos/create', compact('vendedor_nome', 'vendedor_id', 'id_pedido', 'prazoPagto'));
+		return view('painel/pedidos/create', compact('vendedor_nome', 'vendedor_id', 'id_pedido', 'prazoPagto', 'config'));
 
 	}
 
@@ -172,13 +175,21 @@ class PedidosController extends Controller
 
 		}
 
+		$config = Configuracoes::findOrFail(1);
+
 		$dt_emissao = \DateTime::createFromFormat('d/m/Y', $request->edit_dataemissao);
 		$dt_entrega = \DateTime::createFromFormat('d/m/Y',  $request->edit_dataentrega );
 		
 		$pedido 				   = Pedidos::findOrFail($request->id_pedido);
 		$pedido->CNPJ_CLIFOR       = $request->pesquisa_cliente;
 		$pedido->ID_VENDEDOR	   = $request->id_vendedor;
-		$pedido->ID_PRAZO	       = $request->edit_prazopagto;
+		
+		if ( $config->FLG_PRAZO_PAGTO_TABELA_EXTERNA == 1) {
+  	  		$pedido->ID_PRAZO = $request->edit_prazopagto;
+  	  	} else {
+  	  		$pedido->PRAZO_PAGTO = $request->edit_prazopagto;
+  	  	}
+
 		$pedido->DATA_EMISSAO	   = $dt_emissao->format('Y-m-d');
 		$pedido->PREVISAO_ENTREGA  = $dt_entrega->format('Y-m-d');
 		$pedido->OBSERVACAO		   = $request->edit_obs;
@@ -316,6 +327,8 @@ class PedidosController extends Controller
     	$data          = explode('|', session()->get('userdata'));
     	$vendedor_nome = $data[0];
 
+		$config  = Configuracoes::findOrFail(1);
+		
 		$pedido  = Pedidos::findOrFail($id);
 
 		// monta o selectbox (combobox) com os prazos de pagamento
@@ -329,19 +342,27 @@ class PedidosController extends Controller
 		$cliente = Clientes::where('CNPJ', $pedido->CNPJ_CLIFOR)
 		                   ->first();
 
-		return view('painel/pedidos/edit', compact('pedido', 'itens', 'cliente', 'vendedor_nome', 'prazoPagto'));
+		return view('painel/pedidos/edit', compact('pedido', 'itens', 'cliente', 'vendedor_nome', 'prazoPagto', 'config'));
 
 	}
 
 	public static function update(Request $request) {
 		
+		$config = Configuracoes::findOrFail(1);
+
 		$dt_emissao = \DateTime::createFromFormat('d/m/Y', $request->edit_dataemissao);
 		$dt_entrega = \DateTime::createFromFormat('d/m/Y',  $request->edit_dataentrega );
 		
 		$pedido 				   = Pedidos::findOrFail($request->id_pedido);
 		$pedido->DATA_EMISSAO	   = $dt_emissao->format('Y-m-d');
 		$pedido->PREVISAO_ENTREGA  = $dt_entrega->format('Y-m-d');
-		$pedido->ID_PRAZO	       = $request->edit_prazopagto;		
+		
+		if ( $config->FLG_PRAZO_PAGTO_TABELA_EXTERNA == 1) {
+  	  		$pedido->ID_PRAZO = $request->edit_prazopagto;
+  	  	} else {
+  	  		$pedido->PRAZO_PAGTO = $request->edit_prazopagto;
+  	  	}
+
 		$pedido->OBSERVACAO		   = $request->edit_obs;
 		$pedido->FLG_CONCLUIDO	   = 1;
 

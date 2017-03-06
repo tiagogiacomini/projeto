@@ -250,3 +250,13 @@
 		color: red;
 	}
 
+	.obs_config_pedido {
+
+		position: relative;
+		top: 130px;
+		left: 10px;
+		color: red;
+		font-size: 16px;
+
+	}
+
