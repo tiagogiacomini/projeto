@@ -263,8 +263,8 @@
 		background-color: #1777D9;
 		   border-radius: 50px;
 		           float: right;
-				  bottom: 50px;
-				   right: 40px;
+				  bottom: 20px;
+				   right: 20px;
 		           width: 70px;
 		          height: 70px;
 		         z-index: 275;
@@ -292,6 +292,12 @@
 
 		
 
+	}
+
+	.vcenter {
+    
+  		vertical-align:middle !important;
+	
 	}
 
 

@@ -185,7 +185,11 @@
                         <thead> 
                             <tr>
                                 <th class="col-sm-1 col-md-1">MODELO</th>
+                                
+                                @if ($config->FLG_USA_GRADE_PEDIDO == 1)
                                 <th class="col-sm-1 col-md-1 text-center">TAMANHO</th>
+                                @endif
+
                                 <th class="hidden-xs col-md-5">DESCRIÇÃO</th>
                                 <th class="hidden-xs col-md-1 text-right">PREÇO</th>
                                 <th class="hidden-xs col-md-1 text-right">QUANTIDADE</th>
@@ -198,7 +202,11 @@
                             @foreach($itens as $item) 
                             <tr>
                                 <td class="col-sm-1 col-md-1">{!! $item->MODELO !!}</td>
+                                
+                                @if ($config->FLG_USA_GRADE_PEDIDO == 1)
                                 <td class="col-sm-1 col-md-1 text-center">{!! $item->TAMANHO !!}</td>
+                                @endif
+
                                 <td class="hidden-xs col-md-5">{!! $item->DESCRICAO !!}</td>
                                 <td class="hidden-xs col-md-1 text-right">R$ {!! number_format( $item->PRECO_UNITARIO , 2, ',', '.') !!}</td>
                                 <td class="hidden-xs col-md-1 text-right">{!! $item->QUANTIDADE !!}</td>

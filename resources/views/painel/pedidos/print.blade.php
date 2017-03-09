@@ -58,7 +58,12 @@
 		</div>
 
 		<div class="round-rect forma-pagto">
-			<div class="forma-pgto">Condição de Pagamento: <strong>{!! $prazoPagto->DESCRICAO !!}</strong></div>
+			@if ($config->FLG_PRAZO_PAGTO_TABELA_EXTERNA == 1)
+			<div class="forma-pgto">Prazo: <strong>{!! $prazoPagto->DESCRICAO !!}</strong></div>
+			@else
+			<div class="forma-pgto">Prazo: <strong>{!! $pedido->PRAZO_PAGTO !!}</strong></div>
+			@endif
+
 		</div>
 
 		<div class="titulos-gbox">
@@ -127,7 +132,7 @@
 							@endphp
 
 							<td class="text-right">{!! $quant_total !!}</td>
-							<td class="text-right">{!! number_format( $item['PRECO'] , 2, ',', '.') !!}</td>
+							<td class="text-right">{!! number_format(  $item['PRECO'] , 2, ',', '.') !!}</td>
 							<td class="text-right">{!! number_format( ($item['PRECO'] * $quant_total) , 2, ',', '.') !!}</td>
 
 						</tr>
@@ -198,9 +203,12 @@
 			<div class="obs-pedido"><strong>{!! $pedido->OBSERVACAO !!}</strong></div>
 		</div>
 
+		
+		@if ($config->OBS_IMPRESSAO_PEDIDO)
 		<div class="obs_config_pedido">
 			<div><i class="fa fa-exclamation-triangle"></i>&nbsp&nbsp{!! $config->OBS_IMPRESSAO_PEDIDO !!}</div>
 		</div>
+		@endif
 
 
 

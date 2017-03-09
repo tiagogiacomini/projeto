@@ -225,8 +225,7 @@ $(document).ready(function() {
 
 					            	$("#edit_preco").val(primeiro_preco);
 					            	$("#edit_quantidade").val(1);
-					            	$("#edit_tamanhos").focus();
-
+					            	
 					            },
 
 					            error : function() {
@@ -265,6 +264,21 @@ $(document).ready(function() {
 				     	$("#btn_add_prod").removeClass('invisivel');
 		    	     	$("#gbox_nenhum_resultado").addClass('invisivel');
 		    	     	$("#gbox_nenhuma_tabela").addClass('invisivel');
+
+		    	     	// FOCO AQUI
+		    	     	if ( $("#flg_usa_grade").val() == 1 ) {
+		    	     		
+		    	     		$('#edit_tamanhos').focus();
+		    	     	
+		    	     	} else {
+
+		    	     		$('#edit_quantidade').focus();	
+
+		    	     	}
+
+
+
+
 		    	     		    	     	
 		     					     	
 				    },
@@ -285,20 +299,6 @@ $(document).ready(function() {
 
 	});
 
-	// PEGA O PREÇO DE VENDA DO TAMANHO ESCOLHIDO
-	function AlteraPreco() {
-
-		$("#edit_preco").val( $("#edit_tamanhos").children('option:selected').data('preco') );
-		$("#preco_unitario").val( $("#edit_tamanhos").children('option:selected').data('preco') );
-	}
-
-	$("#edit_tamanhos").on('change blur', (function() {
-		
-		AlteraPreco();
-
-	}));
-
-
 	//ADICIONA PRODUTO NO PEDIDO VIA AJAX (POST)
  	$("#submit_form_item").on('click touch', (function() {
 
@@ -309,30 +309,42 @@ $(document).ready(function() {
  			return false;
  		}  
 
-		if ( $("#edit_tamanhos").val() == null ) {
+		// verifica se esta utilizando grade 
+		if ( $("#flg_usa_grade").val() == 1 ) {
+			if ( $("#edit_tamanhos").val() == null ) {
 
- 			$("#edit_tamanhos").focus();
- 			return false;
- 		}  
+	 			$("#edit_tamanhos").focus();
+	 			return false;
+	 		}  
+	 	} 
 
 		if (( $("#edit_preco").val() == 0 ) || ( $("#edit_preco").val() == null )) {
 
  			return false;
  		}  
  		
+		if ( $("#flg_usa_grade").val() == 1 ) {
+ 		
+ 			var tamanho = $("#edit_tamanhos").val(); 
+ 		
+ 		} else {
+
+ 			var tamanho = 'U';	
+ 		}
 
 
  		var id_pedido  = $("#id_pedido").val(); 
  		var id_produto = $("#id_produto").val(); 
+
  		var formURL    = '/painel/pedidos/additem';
 
- 		 console.log(formURL + ' - ' + 'PRODUTO: ' + id_produto + ' - PEDIDO: ' + id_pedido);
+ 		console.log(formURL + ' - ' + 'PRODUTO: ' + id_produto + ' - PEDIDO: ' + id_pedido);
  		 
  	
  		//monta JSON dos dados na UNHA
  		var dados 	   = '{  "id_produto": ' + '"' + id_produto 			         + '"' + ',' +
  		                    '"id_pedido": '  + '"' + id_pedido 				         + '"' + ',' +
- 		                    '"tamanho": '    + '"' + $("#edit_tamanhos").val() 	     + '"' + ',' +
+ 		                    '"tamanho": '    + '"' + tamanho                  	     + '"' + ',' +
  		                    '"quantidade": ' + '"' + $("#edit_quantidade").val()     + '"' + ',' +
  		                    '"preco": '   	 + '"' + $("#edit_preco").val() 	     + '"' + ' }';
 
@@ -352,19 +364,37 @@ $(document).ready(function() {
 
 	 			     	console.log(data);
 
-	 			     				
-	 			     	$("#tabela_itens").append('<tr><td >' + $("#edit_busca_prod" ).val().toUpperCase() + '</td>' + 
-	 			     		 						  '<td class="text-center">' + data.TAMANHO  + '</td>' + 			     		 						  
-	 			     		 						  '<td class="hidden-xs">' + $("#edit_descricao"  ).val()  + '</td>' +
-													  '<td class="hidden-xs text-right">R$ '  + data.PRECO_UNT + '</td>' +
-													  '<td class="hidden-xs text-right">' + data.QUANTIDADE  + '</td>' + 			     		                          
-													  '<td class="text-right">R$ '+ data.TOTAL_ITEM + '</td>' +
-													  '<td class="text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
-													  											     ' data-idprod="'+ id_produto   + '"' + 
-													                                                 ' data-idped="' + id_pedido    + '"' + 
-													                                                 ' data-tam="'   + data.TAMANHO + '">' + 
-													                                                 '<i class="fa fa-trash-o"></i></button></td></tr>'
-													  );
+
+	 			     	// verifica se está configurado para utilizar de grade e monta de acordo com as configuracoes
+						if ( $("#flg_usa_grade").val() == 1 ) {	 			     				
+		 			     	$("#tabela_itens").append('<tr><td>' + $("#edit_busca_prod" ).val().toUpperCase() + '</td>' + 
+		 			     		 						  '<td class="text-center">' + data.TAMANHO  + '</td>' + 			     		 						  
+		 			     		 						  '<td class="hidden-xs">' + $("#edit_descricao"  ).val()  + '</td>' +
+														  '<td class="hidden-xs text-right">R$ '  + data.PRECO_UNT + '</td>' +
+														  '<td class="hidden-xs text-right">' + data.QUANTIDADE  + '</td>' + 			     		                          
+														  '<td class="text-right">R$ '+ data.TOTAL_ITEM + '</td>' +
+														  '<td class="text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
+														  											     ' data-idprod="'+ id_produto   + '"' + 
+														                                                 ' data-idped="' + id_pedido    + '"' + 
+														                                                 ' data-tam="'   + data.TAMANHO + '">' + 
+														                                                 '<i class="fa fa-trash-o"></i></button></td></tr>'
+														  );
+						} else {
+
+		 			     	$("#tabela_itens").append('<tr><td>' + $("#edit_busca_prod" ).val().toUpperCase() + '</td>' + 
+		 			     		 						  '<td class="hidden-xs">' + $("#edit_descricao"  ).val()  + '</td>' +
+														  '<td class="hidden-xs text-right">R$ '  + data.PRECO_UNT + '</td>' +
+														  '<td class="hidden-xs text-right">' + data.QUANTIDADE  + '</td>' + 			     		                          
+														  '<td class="text-right">R$ '+ data.TOTAL_ITEM + '</td>' +
+														  '<td class="text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
+														  											     ' data-idprod="'+ id_produto   + '"' + 
+														                                                 ' data-idped="' + id_pedido    + '"' + 
+														                                                 ' data-tam="'   + data.TAMANHO + '">' + 
+														                                                 '<i class="fa fa-trash-o"></i></button></td></tr>'
+														  );
+
+
+						}
 
 	                    	 			     	
 	 			     	$("#edit_quantidade").val(1);
@@ -378,10 +408,20 @@ $(document).ready(function() {
 						});
 
 			
-						$("#edit_tamanhos").focus();
+						if ( $("#flg_usa_grade").val() == 1 ) {
+							
+							$("#edit_tamanhos").focus();
+						
+						} else {
+							
+							$("#edit_quantidade").focus();
+
+						}
 						
 						$("#total_pedido").val( '' );
 						$("#total_pedido").val( 'R$ ' + data.TOTAL_PEDIDO );
+
+						ResetaModal();
 
 	 			    }, 
 
@@ -413,7 +453,7 @@ $(document).ready(function() {
 		var tamanho    = sender.data('tam'   );
 
 		var formURL    = '/painel/pedidos/removeitem';
-		var dados      = '{  "id_produto": ' + id_produto + ',' +
+		var dados      = '{  "id_produto": "' + id_produto + '",' +
  		                    '"id_pedido": '  + id_pedido  + ',' +
 					        '"tamanho": "'   + tamanho    + '" }';
  		//parsea
@@ -453,6 +493,45 @@ $(document).ready(function() {
 		});
 			
 	});
+
+	// PEGA O PREÇO DE VENDA DO TAMANHO ESCOLHIDO
+	function AlteraPreco() {
+
+		$("#edit_preco").val( $("#edit_tamanhos").children('option:selected').data('preco') );
+		$("#preco_unitario").val( $("#edit_tamanhos").children('option:selected').data('preco') );
+	}
+
+	$("#edit_tamanhos").on('change blur', (function() {
+		
+		AlteraPreco();
+
+	}));
+
+
+	// Lê as configurações dos PARAMETROS se estiver setado...
+	function ResetaModal() {
+
+		if ($('#flg_limpa_campos').val() == 1) {
+
+			$('#edit_busca_prod').val('');
+			$('#edit_descricao').val('');
+			$('#edit_unidade').val('');
+			$('#edit_grupo').val('');
+			$('#edit_genero').val('');
+			$('#edit_cor').val('');
+			$('#edit_quantidade').val(1);
+			$('#edit_tamanhos').val('');
+			$('#edit_preco').val('');
+			
+			$('#gbox_resultado').addClass('invisivel');
+			$('#btn_add_prod').addClass('invisivel');
+
+			$('#edit_busca_prod').focus();
+		}
+
+
+	}	
+
 
 	$("#btn_salvar").click(function() {
 		

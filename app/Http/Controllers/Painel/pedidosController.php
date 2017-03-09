@@ -297,6 +297,7 @@ class PedidosController extends Controller
     	$data          = explode('|', session()->get('userdata'));
     	$vendedor_nome = $data[0];
 
+    	$config  = Configuracoes::findOrFail(1);
 		
 		$pedido  = Pedidos::findOrFail($id);
 
@@ -311,7 +312,7 @@ class PedidosController extends Controller
 		$cliente = Clientes::where('CNPJ', $pedido->CNPJ_CLIFOR)
 		                   ->first();
 
-		return view('painel/pedidos/show', compact('pedido', 'itens', 'cliente', 'vendedor_nome', 'prazoPagto'));
+		return view('painel/pedidos/show', compact('pedido', 'itens', 'cliente', 'vendedor_nome', 'prazoPagto', 'config'));
 
 	}
 

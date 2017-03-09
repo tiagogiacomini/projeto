@@ -179,7 +179,11 @@
                         <thead> 
                             <tr>
                                 <th class="col-sm-1 col-md-1">MODELO</th>
+                                
+                                @if ($config->FLG_USA_GRADE_PEDIDO == 1)
                                 <th class="col-sm-1 col-md-1 text-center">TAMANHO</th>
+                                @endif
+                                
                                 <th class="hidden-xs col-md-5">DESCRIÇÃO</th>
                                 <th class="hidden-xs col-md-1 text-right">PREÇO</th>
                                 <th class="hidden-xs col-md-1 text-right">QUANTIDADE</th>
@@ -300,6 +304,10 @@
                                 </div>
                             </div>
                             <div class="row">
+                                
+                                {{-- FACO A LEITURA DOS PARAMETROS PARA VER SE UTILIZA GRADE OU NAO--}}
+                                @if($config->FLG_USA_GRADE_PEDIDO == 1)
+                                
                                 <div class="col-md-4">
                                     <label for="edit-tamanhos">Tamanhos Disponíveis</label>
                                     <select id="edit_tamanhos" name="edit_tamanhos" class="form-control input-lg">
@@ -315,12 +323,33 @@
                                         <input id="edit_quantidade" name="edit_quantidade" class="form-control input-lg" type="number">
                                     </div>
                                 </div>
+                                
+                                @else
+                                
+                                <div class="col-md-6">
+                                    <label for="edit-preco">Preço Unitário</label>
+                                    <input id="edit_preco" name="edit_preco" class="form-control input-lg" disabled>
+                                </div>
+                                <div class="form-group" id="gbox_quantidade">
+                                    <div class="col-md-6">
+                                        <label for="edit-quantidade">Quantidade</label>
+                                        <input id="edit_quantidade" name="edit_quantidade" class="form-control input-lg" type="number">
+                                    </div>
+                                </div>
+                                @endif
+
+
                             </div>
 
-
+                            {{-- INPUTS HIDDEN --}} 
                             <input type="hidden" name="id_produto" id="id_produto">
                             <input type="hidden" name="id_pedido"  id="id_pedido" value="{!! $id_pedido !!}">
-                            <input type="hidden" name="preco_unitario" id="preco_unitario">     
+                            <input type="hidden" name="preco_unitario" id="preco_unitario">    
+
+                            {{-- INPUTS HIDDEN CONFIG --}}
+                            <input type="hidden" id="flg_usa_grade"    value="{!! $config->FLG_USA_GRADE_PEDIDO !!}">
+                            <input type="hidden" id="flg_limpa_campos" value="{!! $config->FLG_LIMPA_CAMPOS_ADD_ITEM !!}">
+
 
                         </form>
                     </div>

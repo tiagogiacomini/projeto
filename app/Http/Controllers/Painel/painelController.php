@@ -68,6 +68,18 @@ class PainelController extends Controller
 
 		$config = Configuracoes::findOrFail(1);
 
+
+		if (isset($request->flag_limpa_campos_adicao_item)) {
+
+			$config->FLG_LIMPA_CAMPOS_ADD_ITEM = 1;
+
+		} else {
+
+			$config->FLG_LIMPA_CAMPOS_ADD_ITEM = 0;			
+
+		}
+
+
 		if (isset($request->flag_usa_grade_pedido)) {
 
 			$config->FLG_USA_GRADE_PEDIDO = 1;
