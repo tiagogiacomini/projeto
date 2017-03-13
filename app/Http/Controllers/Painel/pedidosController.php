@@ -22,7 +22,7 @@ class PedidosController extends Controller
 	public static function index(Request $request) {
 
 		// verifica LOGIN
-		if (!session()->has('userdata')) {
+		if ( !session()->has('userdata') ) {
 			return redirect()->route('login')->with('msg_login', 'É necessário efetuar o login para continuar!');
     	}
 
@@ -81,13 +81,11 @@ class PedidosController extends Controller
 			                                  ['ID_TABELA', '=', $tabela_preco]])
 
 									   ->orderBy('TAMANHO')
-		                               ->get();
-
+									   ->get();
 
 		return $tamanhos->toJson();
 
 	}
-
 	
 
 	public static function getBuscaPedido(Request $request) {
@@ -213,21 +211,69 @@ class PedidosController extends Controller
 
 	public static function addItem(Request $request) {
 
-		//ADICIONA ITEM 
-		$item       			= new PedidosItens;
-		$item->ID_PRODUTO 		= $request->id_produto;
-		$item->ID_PEDIDO  		= $request->id_pedido;
-		$item->TAMANHO    		= $request->tamanho;
-		$item->PRECO_UNITARIO   = $request->preco;
-		$item->QUANTIDADE       = $request->quantidade;
-		$item->PRECO_TOTAL      = ( $request->quantidade * $request->preco );
 		
+		$config = Configuracoes::findOrFail(1);
+
+		$total     = 0;
+
+		// SALVA ITENS DO AJAX VINDO EM MODO GRADE
+		if ( $config->FLG_USA_GRADE_PEDIDO == 1 ) {
+
+			$arr = $request->json();
+
+			foreach ( $arr as $item_ped ) {
+
+				
+				if ( $item_ped['quantidade']  > 0 ) {
+					//ADICIONA ITEM 
+					$item       			= new PedidosItens;
+					$item->ID_PRODUTO 		=   $item_ped[ 'id_produto' ];
+					$item->ID_PEDIDO  		=   $item_ped[ 'id_pedido'  ];
+					$item->TAMANHO    		=   $item_ped[ 'tamanho'    ];
+					$item->PRECO_UNITARIO   =   $item_ped[ 'preco'      ];
+					$item->QUANTIDADE       =   $item_ped[ 'quantidade' ];
+					$item->PRECO_TOTAL      = ( $item_ped[ 'quantidade' ] * $item_ped[ 'preco' ] );
+					
+					$id_pedido = $item_ped[ 'id_pedido'  ];	
+					$total     = ( $total + $item->PRECO_TOTAL );
+
+					$item->save();
+				}
+
+			} 
+	
+			//se adicionar SOMA NO TOTAL DO PEDIDO
+			$total_ped        = Pedidos::findOrFail( $id_pedido );
+			$total_ped->TOTAL = ( $total_ped->TOTAL + $total) ;
+			$total_ped->save();
+
+			//FORMATANDO VALORES POR AQUI
+			//adiciona o TOTAL do pedido no JSON
+			array_add( $item, 'TOTAL_PEDIDO', number_format( $total_ped->TOTAL     , 2, ',', '.') );
+	//		array_add( $item, 'TOTAL_ITEM'  , number_format( $item->PRECO_TOTAL    , 2, ',', '.') );
+	//		array_add( $item, 'PRECO_UNT'   , number_format( $item->PRECO_UNITARIO , 2, ',', '.') );			
+
+			
+		} else {
 		
-		if ( $item->save() ) {
+						
+			//ADICIONA ITEM 
+			$item       			= new PedidosItens;
+			$item->ID_PRODUTO 		= $request->id_produto;
+			$item->ID_PEDIDO  		= $request->id_pedido;
+			$item->TAMANHO    		= $request->tamanho;
+			$item->PRECO_UNITARIO   = $request->preco;
+			$item->QUANTIDADE       = $request->quantidade;
+			$item->PRECO_TOTAL      = ( $request->quantidade * $request->preco );
+
+			$id_pedido = $request->id_pedido;	
+			$total     = ( $total + $item->PRECO_TOTAL );
+
+			$item->save();
 
 			//se adicionar SOMA NO TOTAL DO PEDIDO
-			$total_ped        = Pedidos::findOrFail($item->ID_PEDIDO);
-			$total_ped->TOTAL = ( $total_ped->TOTAL + $item->PRECO_TOTAL) ;
+			$total_ped        = Pedidos::findOrFail( $id_pedido );
+			$total_ped->TOTAL = ( $total_ped->TOTAL + $total) ;
 			$total_ped->save();
 
 			//FORMATANDO VALORES POR AQUI
@@ -236,17 +282,28 @@ class PedidosController extends Controller
 			array_add( $item, 'TOTAL_ITEM'  , number_format( $item->PRECO_TOTAL    , 2, ',', '.') );
 			array_add( $item, 'PRECO_UNT'   , number_format( $item->PRECO_UNITARIO , 2, ',', '.') );
 
+		} // MODO SIMPLES (NAO GRADE)
+
 			
-
-			return $item->toJson();	
-
-		} else {
-			
-			return response(['STATUS' => 'ERRO']);
-
-		}
+		
+		return $item->toJson();	
+		
 
 	}
+
+	public static function pegaItensPedido($id) {
+
+		$itens = PedidosItens::where('ID_PEDIDO', $id)
+							 ->join('PRODUTOS', 'PRODUTOS.ID_PRODUTO', '=', 'PEDIDOS_ITENS.ID_PRODUTO')
+		                     ->get();
+
+
+
+		return $itens->toJson();	
+
+	}
+
+
 
 	public static function removeItem(Request $request) {
 
@@ -261,7 +318,7 @@ class PedidosController extends Controller
 			$total = PedidosItens::where( 'ID_PEDIDO' , $id_pedido  )
 			                     ->where( 'ID_PRODUTO', $id_produto )
 			                     ->where( 'TAMANHO'   , $tamanho    )
-			                     ->value('PRECO_TOTAL');
+			                     ->value( 'PRECO_TOTAL' );
 
 			                     
 			// procura pelo item e deleta

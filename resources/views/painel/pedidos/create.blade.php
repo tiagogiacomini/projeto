@@ -191,7 +191,7 @@
                                 <th class="col-sm-1 col-md-1 text-center"><i class="fa fa-trash-o"></i></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="grid_itens">
 
                         </tbody>
                     </table>
@@ -303,27 +303,21 @@
                                     <input id="edit_cor" class="form-control" disabled>
                                 </div>
                             </div>
+                            
+
                             <div class="row">
                                 
                                 {{-- FACO A LEITURA DOS PARAMETROS PARA VER SE UTILIZA GRADE OU NAO--}}
                                 @if($config->FLG_USA_GRADE_PEDIDO == 1)
-                                
-                                <div class="col-md-4">
-                                    <label for="edit-tamanhos">Tamanhos Disponíveis</label>
-                                    <select id="edit_tamanhos" name="edit_tamanhos" class="form-control input-lg">
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <label for="edit-preco">Preço Unitário</label>
-                                    <input id="edit_preco" name="edit_preco" class="form-control input-lg" disabled>
-                                </div>
-                                <div class="form-group" id="gbox_quantidade">
-                                    <div class="col-md-4">
-                                        <label for="edit-quantidade">Quantidade</label>
-                                        <input id="edit_quantidade" name="edit_quantidade" class="form-control input-lg" type="number">
-                                    </div>
-                                </div>
-                                
+                                </br>
+                                <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-hashtag"></i>&nbspGrade do Produto</p>      
+                                <div class="itens_grade">
+
+                                {{-- JAVASCRIPT VAI ENCHER ISSO AQUI --}}
+                                </div>                              
+
+
+
                                 @else
                                 
                                 <div class="col-md-6">
@@ -380,7 +374,7 @@
                 
                     <div class="center_obj invisivel" id="btn_add_prod">
                         <div >
-                            <button type="button" class="btn btn-primary btn-lg" id="submit_form_item">Adicionar Produto</button>
+                            <button type="button" class="btn btn-primary btn-lg" id="submit_form_item"><i class="fa fa-plus"></i> Adicionar Produto</button>
                         </div>
                     </div>
 
@@ -389,7 +383,7 @@
 
                 <div class="modal-footer">
               
-                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Concluir</button>    
+                    <button type="button" class="btn btn-danger btn-lg" data-dismiss="modal"><i class="fa fa-check"></i> Concluir</button>    
                     
                 </div>
             </div>

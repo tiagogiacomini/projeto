@@ -5,6 +5,8 @@ $(document).ready(function() {
     //  P E D I D O S
     //////////////////////////////////////////////////////////////////////////
 
+    // determina se esta em modoGRADE
+    var modoGrade =  Boolean( $("#flg_usa_grade").val() == 1);
 
 
     //faz o collapse dos dados do cliente no PEDIDO
@@ -202,9 +204,7 @@ $(document).ready(function() {
 					             	
 					            	console.log(data_tam);
 									
-									var primeiro_preco;
-
-					            	//se nao houver tamanhos
+								   	//se nao houver tamanhos
 					            	if (!$.isArray(data_tam) || !data_tam.length)  {
 
 					            		$("#gbox_resultado").addClass('invisivel');
@@ -213,19 +213,70 @@ $(document).ready(function() {
 						        		return false;	
 					            	}
 					            	
-					            	// eche o select com os tamanhos
-		  			            	$("#edit_tamanhos").html('');
+		  			            	
+		  			            	if ( modoGrade ) {
+		  			            			  			            										
+										$('.itens_grade').html('');
+										$('.itens_grade').append('<div class="row">');
 
-					            	$.each(data_tam, function(index) {
+						            	
+						            	$.each(data_tam, function(index) {
 
-					            		$("#edit_tamanhos").append('<option value=' + this.TAMANHO + ' data-preco=' + this.PRECO_VENDA +'>' + this.TAMANHO + '</option>');
-					            		if ( index == 0 )
-					            		    primeiro_preco = this.PRECO_VENDA;
-					            	});
+						            		//header do CARD GRADE	
+						            		$('.itens_grade').append('<div class="col-xs-3 col-md-2">' +
+	   				            									    '<div class="card-tamanho">' + 					            		
+									 									'	<div class="card-header">' +					            		
+																		'		<div class="text-center"><strong>' + this.TAMANHO +'</strong></div>' +
+											                            '	</div>' +
 
-					            	$("#edit_preco").val(primeiro_preco);
-					            	$("#edit_quantidade").val(1);
-					            	
+											//input para entrada de QUANTIDADE
+						            								'	<div class="card-content">' +
+																	'   	<input class="form-control input-lg campo-tamanho text-right" type="number" value="0" data-tam="' + this.TAMANHO + '" data-preco="' + this.PRECO_VENDA +'" id=input-"' + this.TAMANHO +'">' +
+																	'	</div>' +		
+
+											//footer com PREÇO
+																	'	<div class="card-footer">' + 
+																	'   	<span class="card-preco">R$ '+ this.PRECO_VENDA +'</span>' +												
+																	'	</div></div></div>');											
+
+
+
+											
+											
+
+
+						            		/*
+						            		  MODO ANTIGO ENCHENDO UM SELECTBOX
+
+						            		$("#edit_tamanhos").append('<option value=' + this.TAMANHO + ' data-preco=' + this.PRECO_VENDA +'>' + this.TAMANHO + '</option>');
+						            		if ( index == 0 )
+						            		    primeiro_preco = this.PRECO_VENDA;
+
+						            		*/
+
+						         		});
+
+
+										$('.itens_grade').append('</div>');
+										
+										$('.itens_grade :input:first').select();
+										$('.itens_grade :input:first').focus();
+
+
+									} //modo grade
+
+
+					            	if ( !modoGrade ) { 
+						            	
+						            	$("#edit_preco").val(data_tam[0].PRECO_VENDA);
+						            	$("#edit_quantidade").val(1);
+
+										$('#edit_quantidade').select();
+										$('#edit_quantidade').focus();						            	
+						            }
+						            	
+									///////////////////////////////
+
 					            },
 
 					            error : function() {
@@ -265,21 +316,7 @@ $(document).ready(function() {
 		    	     	$("#gbox_nenhum_resultado").addClass('invisivel');
 		    	     	$("#gbox_nenhuma_tabela").addClass('invisivel');
 
-		    	     	// FOCO AQUI
-		    	     	if ( $("#flg_usa_grade").val() == 1 ) {
-		    	     		
-		    	     		$('#edit_tamanhos').focus();
-		    	     	
-		    	     	} else {
 
-		    	     		$('#edit_quantidade').focus();	
-
-		    	     	}
-
-
-
-
-		    	     		    	     	
 		     					     	
 				    },
 
@@ -302,6 +339,8 @@ $(document).ready(function() {
 	//ADICIONA PRODUTO NO PEDIDO VIA AJAX (POST)
  	$("#submit_form_item").on('click touch', (function() {
 
+ 		
+	/*
  		if (( $("#edit_quantidade").val() == 0 ) || ( $("#edit_quantidade").val() == null )) {
 
  			$("#gbox_quantidade").addClass('has-error');
@@ -310,9 +349,9 @@ $(document).ready(function() {
  		}  
 
 		// verifica se esta utilizando grade 
-		if ( $("#flg_usa_grade").val() == 1 ) {
+		if ( modoGRADE ) {
+			
 			if ( $("#edit_tamanhos").val() == null ) {
-
 	 			$("#edit_tamanhos").focus();
 	 			return false;
 	 		}  
@@ -322,43 +361,82 @@ $(document).ready(function() {
 
  			return false;
  		}  
- 		
-		if ( $("#flg_usa_grade").val() == 1 ) {
- 		
- 			var tamanho = $("#edit_tamanhos").val(); 
- 		
- 		} else {
+ 		*/
 
+	
+		if ( !modoGrade ) {
+ 		
  			var tamanho = 'U';	
- 		}
 
+ 		}
 
  		var id_pedido  = $("#id_pedido").val(); 
  		var id_produto = $("#id_produto").val(); 
-
  		var formURL    = '/painel/pedidos/additem';
+ 		var dados      = '';
 
  		console.log(formURL + ' - ' + 'PRODUTO: ' + id_produto + ' - PEDIDO: ' + id_pedido);
  		 
  	
+ 		
  		//monta JSON dos dados na UNHA
- 		var dados 	   = '{  "id_produto": ' + '"' + id_produto 			         + '"' + ',' +
- 		                    '"id_pedido": '  + '"' + id_pedido 				         + '"' + ',' +
- 		                    '"tamanho": '    + '"' + tamanho                  	     + '"' + ',' +
- 		                    '"quantidade": ' + '"' + $("#edit_quantidade").val()     + '"' + ',' +
- 		                    '"preco": '   	 + '"' + $("#edit_preco").val() 	     + '"' + ' }';
+ 		if ( !modoGrade ) {
+	 		
+	 		dados = '{  "id_produto": ' + '"' + id_produto 			          + '"' + ',' +
+	 		           '"id_pedido": '  + '"' + id_pedido 				      + '"' + ',' +
+	 		           '"tamanho": '    + '"' + tamanho                  	  + '"' + ',' +
+	 		           '"quantidade": ' + '"' + $("#edit_quantidade").val()   + '"' + ',' +
+	 		           '"preco": '      + '"' + $("#edit_preco").val() 	      + '"' + ' }';
+
+	 	} else {
+
+	 		dados = '[';
+
+	 		var total_campos_grade = ( $('.campo-tamanho').length -1 );
+
+	 		$('.campo-tamanho').each(function(index) { 
+				
+				var final_str = ',';
+
+				if (index == total_campos_grade ) {
+					final_str = '';
+				}
+
+			
+				dados = dados.concat('{  "id_produto": ' + '"' + id_produto 			         + '"' + ',' +
+ 		        	       				'"id_pedido": '  + '"' + id_pedido 				         + '"' + ',' +
+ 		            	   				'"tamanho": '    + '"' + $(this).attr('data-tam')  	     + '"' + ',' +
+ 		               	   				'"quantidade": ' + '"' + $(this).val()                   + '"' + ',' +
+ 		               	   				'"preco": '   	 + '"' + $(this).attr('data-preco')      + '"' + ' }' + final_str );
+
+	 		    
+
+	 			console.log('TAMANHO>>> ' + $(this).attr('data-tam') + ' QUANT>>>' + $(this).val());
+   	
+
+			});
+
+
+	 		dados = dados.concat(']');
+	 		console.log(dados);
+	 		
+	 	}
 
 
 
  		//parsea
- 		var jsonobj = JSON.parse(dados);                   
+ 		//var jsonobj = JSON.parse(dados);   
+
+ 		//console.log(jsonobj);                
 
  		Pace.track(function(){
 	 		
-	 		$.ajax({ url      : formURL,
-	 			     type     : 'POST' ,
-	 			     data     : jsonobj  , 
-	 			     dataType : 'json',
+	 		$.ajax({ url         : formURL,
+	 			     type        : 'POST' ,
+	 			     data        : dados , 
+ 					 contentType : false,
+        			 processData : false,
+        			 async       : false,
 
 	 			    success : function (data) {
 
@@ -366,19 +444,10 @@ $(document).ready(function() {
 
 
 	 			     	// verifica se está configurado para utilizar de grade e monta de acordo com as configuracoes
-						if ( $("#flg_usa_grade").val() == 1 ) {	 			     				
-		 			     	$("#tabela_itens").append('<tr><td>' + $("#edit_busca_prod" ).val().toUpperCase() + '</td>' + 
-		 			     		 						  '<td class="text-center">' + data.TAMANHO  + '</td>' + 			     		 						  
-		 			     		 						  '<td class="hidden-xs">' + $("#edit_descricao"  ).val()  + '</td>' +
-														  '<td class="hidden-xs text-right">R$ '  + data.PRECO_UNT + '</td>' +
-														  '<td class="hidden-xs text-right">' + data.QUANTIDADE  + '</td>' + 			     		                          
-														  '<td class="text-right">R$ '+ data.TOTAL_ITEM + '</td>' +
-														  '<td class="text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
-														  											     ' data-idprod="'+ id_produto   + '"' + 
-														                                                 ' data-idped="' + id_pedido    + '"' + 
-														                                                 ' data-tam="'   + data.TAMANHO + '">' + 
-														                                                 '<i class="fa fa-trash-o"></i></button></td></tr>'
-														  );
+						if ( modoGrade ) {	 			     				
+		 			     	
+		 			     	MontaGridItens();
+
 						} else {
 
 		 			     	$("#tabela_itens").append('<tr><td>' + $("#edit_busca_prod" ).val().toUpperCase() + '</td>' + 
@@ -393,6 +462,10 @@ $(document).ready(function() {
 														                                                 '<i class="fa fa-trash-o"></i></button></td></tr>'
 														  );
 
+
+						
+							$("#total_pedido").val( '' );
+							$("#total_pedido").val( 'R$ ' + data.TOTAL_PEDIDO );
 
 						}
 
@@ -407,19 +480,6 @@ $(document).ready(function() {
 	    					$("#gbox_item_incluso").slideUp(500);
 						});
 
-			
-						if ( $("#flg_usa_grade").val() == 1 ) {
-							
-							$("#edit_tamanhos").focus();
-						
-						} else {
-							
-							$("#edit_quantidade").focus();
-
-						}
-						
-						$("#total_pedido").val( '' );
-						$("#total_pedido").val( 'R$ ' + data.TOTAL_PEDIDO );
 
 						ResetaModal();
 
@@ -494,41 +554,70 @@ $(document).ready(function() {
 			
 	});
 
-	// PEGA O PREÇO DE VENDA DO TAMANHO ESCOLHIDO
-	function AlteraPreco() {
-
-		$("#edit_preco").val( $("#edit_tamanhos").children('option:selected').data('preco') );
-		$("#preco_unitario").val( $("#edit_tamanhos").children('option:selected').data('preco') );
-	}
-
-	$("#edit_tamanhos").on('change blur', (function() {
-		
-		AlteraPreco();
-
-	}));
-
 
 	// Lê as configurações dos PARAMETROS se estiver setado...
 	function ResetaModal() {
 
-		if ($('#flg_limpa_campos').val() == 1) {
+		if ( $('#flg_limpa_campos').val() == 1 ) {
 
-			$('#edit_busca_prod').val('');
-			$('#edit_descricao').val('');
-			$('#edit_unidade').val('');
-			$('#edit_grupo').val('');
-			$('#edit_genero').val('');
-			$('#edit_cor').val('');
-			$('#edit_quantidade').val(1);
-			$('#edit_tamanhos').val('');
-			$('#edit_preco').val('');
+			$( '#edit_busca_prod'   ).val('');
+			$( '#edit_descricao'	).val('');
+			$( '#edit_unidade'		).val('');
+			$( '#edit_grupo'		).val('');
+			$( '#edit_genero'		).val('');
+			$( '#edit_cor'			).val('');
+			$( '#edit_quantidade'	).val(1);
+			$( '#edit_tamanhos'		).val('');
+			$( '#edit_preco'		).val('');
 			
-			$('#gbox_resultado').addClass('invisivel');
-			$('#btn_add_prod').addClass('invisivel');
+			$( '#gbox_resultado' ).addClass( 'invisivel' );
+			$( '#btn_add_prod'   ).addClass( 'invisivel' );
 
-			$('#edit_busca_prod').focus();
+			$( '#edit_busca_prod' ).focus();
 		}
+	}
 
+	function MontaGridItens() {
+
+		var grid = $("#grid_itens");
+
+		grid.empty();
+
+		$.ajax({ url : '/painel/pedidos/getitems/' + $("#id_pedido").val(),
+	   	     	type : 'GET' ,
+	 		dataType : 'json',
+	 		success  : function(data) {
+
+	 			console.log(data);
+
+	 			var total_pedido = 0;
+
+				$.each(data, function(index) {
+
+ 			     	grid.append('<tr><td>' + data[index].MODELO + '</td>' + 
+ 			     		 			'<td class="text-center">' + data[index].TAMANHO  + '</td>' + 			     		 						  
+ 			     		 			'<td class="hidden-xs">' + data[index].DESCRICAO  + '</td>' +
+									'<td class="hidden-xs text-right">R$ '  + data[index].PRECO_UNITARIO + '</td>' +
+									'<td class="hidden-xs text-right">' + data[index].QUANTIDADE  + '</td>' + 			     		                          
+									'<td class="text-right">R$ '+ data[index].PRECO_TOTAL + '</td>' +
+									'<td class="text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
+																						' data-idprod="'+ data[index].ID_PRODUTO   + '"' + 
+											                                            ' data-idped="' + data[index].ID_PEDIDO    + '"' + 
+												                                        ' data-tam="'   + data[index].TAMANHO      + '">' + 
+												                                        '<i class="fa fa-trash-o"></i></button></td></tr>');
+
+				
+
+
+
+ 			     	total_pedido = parseFloat(total_pedido) + parseFloat(data[index].PRECO_TOTAL);
+				
+				});
+	
+				$("#total_pedido").val( 'R$ ' + total_pedido.toFixed(2) );
+
+	 		}
+	 	});
 
 	}	
 

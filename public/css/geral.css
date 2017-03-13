@@ -288,19 +288,6 @@
 	}
 
 
-	.logo_empresa {
-
-		
-
-	}
-
-	.vcenter {
-    
-  		vertical-align:middle !important;
-	
-	}
-
-
 	.pace {
   
   -webkit-pointer-events: none;
@@ -392,6 +379,80 @@
 	    -moz-appearance: textfield;
 	    
 	}
+
+
+	.modal-header {
+
+		background-color : #1777D9;
+		border-bottom    : 1px solid #53A4F5;
+		color            : #fff;
+
+	}
+
+
+	/* CARD DAS GRADE NA INCLUSAO DE ITEM DO PEDIDO */
+
+	.card-tamanho {
+		
+		border        : 1px solid #ccc;
+		border-radius : 5px;
+		border-bottom : 3px solid #ccc;
+		font-family   : 'Abel', sans-serif;
+		margin-bottom: 15px;
+
+	}
+
+	.card-header {
+
+		border-radius    : 4px 4px 0px 0px;
+		background-color : #1777D9;
+		height           : 22px;
+		border-bottom    : 1px solid #53A4F5;
+		font-size        : 16px;
+		color            : #fff; 	
+
+	}
+
+	.card-content {
+
+		height  : 50px;
+		padding : 2px;
+
+	}
+
+	.card-footer {
+
+		height           : 20px;
+		background-color : #ddd;
+		border-radius    : 0px 0px 3px 3px;  
+
+	}
+
+	.campo-tamanho {
+
+		font-size : 25px;
+		padding: 2px !important;
+
+	}
+
+	.card-preco {
+
+		position : relative;
+		float    : right;
+		color    : #666; 
+
+	}
+
+	.icone-preco {
+
+		position : relative;
+		top      : 3px;
+		left     : 5px;
+
+	}
+
+
+ 	/* END OF CARD */	
 
 
 

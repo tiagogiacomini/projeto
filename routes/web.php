@@ -65,15 +65,25 @@ Route::get( 'painel/pedidos', 'Painel\pedidosController@index')->name('pedidos')
 	//remove item do pedido
 	Route::delete('painel/pedidos/removeitem', 'Painel\pedidosController@removeItem');
 
+	//pega os itens de um determinado pedido
+	Route::get('painel/pedidos/getitems/{id}', 'Painel\pedidosController@pegaItensPedido');
+
 	//buscas de produto
 	Route::get('painel/pedidos/busca_prod_modelo/{modelo}', 'Painel\pedidosController@buscaProdModelo');
 	Route::get('painel/pedidos/busca_prod_descr/{descricao}', 'Painel\pedidosController@buscaProdDescr');	
 	Route::get('painel/pedidos/busca_prod_tamanho/{id_produto}/{tabela_preco}', 'Painel\pedidosController@buscaProdTamanhos');		
 	
-// PEDIDOS
+// CONFIGURACOES
 Route::get( 'painel/config', 'Painel\painelController@config')->name('configuracoes');
 	Route::post( 'painel/config/store', 'Painel\painelController@storeConfig');
 	
+
 //END POINTS TESTE
+	Route::get('teste', function(){
+
+		return view('painel/teste');
+		
+	});
+
 
 	Route::get('list_clientes', 'Painel\clientesController@listClientes');
