@@ -182,39 +182,104 @@
                 <div class="form-group form-group-style  listagem" id="gbox_itens">
                        
                     <table class="table table-striped table-bordered" id="tabela_itens">
+             
+                        @if ($config->FLG_USA_GRADE_PEDIDO == 1) 
+                        <thead>
+                            <tr>
+                                <th width="50">REFERÊNCIA</th>
+                                <th width="30" class="hidden-md hidden-lg text-center"><i class="fa fa-hashtag"></i></th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">34</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">36</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">38</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">40</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">42</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">44</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">46</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">48</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">50</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">52</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">54</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">P</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">M</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">G</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">GG</th>
+                                <th width="20" class="text-right hidden-xs">QTD.</th>
+                                <th width="30" class="text-right">UNIT.</th>
+                                <th width="30" class="text-right">TOTAL</th>
+                            </tr>
+                        </thead>
+                        @else
                         <thead> 
                             <tr>
                                 <th class="col-sm-1 col-md-1">MODELO</th>
-                                
-                                @if ($config->FLG_USA_GRADE_PEDIDO == 1)
-                                <th class="col-sm-1 col-md-1 text-center">TAMANHO</th>
-                                @endif
-
                                 <th class="hidden-xs col-md-5">DESCRIÇÃO</th>
                                 <th class="hidden-xs col-md-1 text-right">PREÇO</th>
                                 <th class="hidden-xs col-md-1 text-right">QUANTIDADE</th>
                                 <th class="col-sm-3 col-md-2 text-right">TOTAL</th>
-                                
                             </tr>
                         </thead>
-                        <tbody>
+                        @endif
+
+
+                        <tbody id="grid_itens">
                             
+                        @if ($config->FLG_USA_GRADE_PEDIDO == 0)                         
                             @foreach($itens as $item) 
                             <tr>
-                                <td class="col-sm-1 col-md-1">{!! $item->MODELO !!}</td>
-                                
-                                @if ($config->FLG_USA_GRADE_PEDIDO == 1)
-                                <td class="col-sm-1 col-md-1 text-center">{!! $item->TAMANHO !!}</td>
-                                @endif
-
-                                <td class="hidden-xs col-md-5">{!! $item->DESCRICAO !!}</td>
-                                <td class="hidden-xs col-md-1 text-right">R$ {!! number_format( $item->PRECO_UNITARIO , 2, ',', '.') !!}</td>
-                                <td class="hidden-xs col-md-1 text-right">{!! $item->QUANTIDADE !!}</td>
-                                <td class="col-sm-3 col-md-2 text-right">R$ {!! number_format( $item->PRECO_TOTAL , 2, ',', '.') !!}</td>
+                                <td>{!! $item->MODELO !!}</td>
+                                <td class="hidden-xs">{!! $item->DESCRICAO !!}</td>
+                                <td class="hidden-xs text-right">R$ {!! number_format( $item->PRECO_UNITARIO , 2, ',', '.') !!}</td>
+                                <td class="hidden-xs text-right">{!! $item->QUANTIDADE !!}</td>
+                                <td class="text-right">R$ {!! number_format( $item->PRECO_TOTAL , 2, ',', '.') !!}</td>
                             </tr>
                             @endforeach
+                       
+                        @else
+
+                        @php 
+                            $quant_total_pecas = 0;
+                        @endphp
+
+                            @foreach($produtos as $item)
+
+                            <tr>
+                                <td>{!! $item['MODELO'] !!}</td>
+                                <td width="30" class="hidden-md hidden-lg text-center"><button type="button" class="btn btn-primary"><i class="fa fa-hashtag"></i></button></td>
+                                
+                                @php
+                                    $quant_total = 0;
+                                @endphp         
+
+
+                                @for($i=34; $i<=62; $i+=2)
+                                    
+                                    @if ( $item['GRADE'][ strval($i) ] > 0 )                        
+                                        <td class="hidden-xs hidden-sm text-right" data-idx="{!! $i !!}">{!! $item['GRADE'][ strval($i) ] !!}</td>      
+                                    @else
+                                        <td class="hidden-xs hidden-sm text-right" data-idx="{!! $i !!}">-</td>
+                                    @endif                              
+                                                
+                                    @php 
+                                        $quant_total = $quant_total + $item['GRADE'][ strval($i) ];
+                                    @endphp 
+
+                                @endfor
+
+                                @php 
+                                    $quant_total_pecas = $quant_total_pecas + $quant_total;
+                                @endphp
+
+                                <td class="text-right hidden-xs">{!! $quant_total !!}</td>
+                                <td class="text-right">{!! number_format(  $item['PRECO'] , 2, ',', '.') !!}</td>
+                                <td class="text-right">{!! number_format( ($item['PRECO'] * $quant_total) , 2, ',', '.') !!}</td>
+                                
+                            </tr>
+                        
+                            @endforeach
+                        @endif
 
                         </tbody>
+                    
                     </table>
                     
                 </div>   

@@ -6,7 +6,7 @@
 <script type="text/javascript" src="/js/pace.min.js"></script>
 <script type="text/javascript" src="/js/pedidos.js"></script>
 
-<title>SpartumWEB - Novo Pedido {!! sprintf('%06d', $id_pedido) !!}</title>
+<title>SpartumWEB - Novo Pedido $id_pedido !!}</title>
 </head>
 <body>
 
@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label for="edit_nrpedido">Nº Pedido (provisório)</label>
-                        <input type="text" class="form-control input-lg text-right" value="{!! sprintf('%06d', $id_pedido)  !!}" disabled>
+                        <input type="text" class="form-control input-lg text-right" value="{!!  $id_pedido  !!}" disabled>
                     </div>
 
                     <div class="col-md-6">
@@ -175,15 +175,38 @@
                 <p class="titulo-gbox">&nbsp&nbsp&nbsp&nbsp<i class="fa fa-cubes"></i>&nbspItens do Pedido</p>         
                 <div class="form-group form-group-style listagem">
                        
-                    <table class="table table-striped" id="tabela_itens">
+                    <table class="table table-bordered table-striped" id="tabela_itens">
+                       
+                        @if ($config->FLG_USA_GRADE_PEDIDO == 1) 
+                        <thead>
+                            <tr>
+                                <th width="50">REFERÊNCIA</th>
+                                <th width="30" class="hidden-md hidden-lg hidden-sm text-center"><i class="fa fa-hashtag"></i></th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">34</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">36</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">38</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">40</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">42</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">44</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">46</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">48</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">50</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">52</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">54</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">P</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">M</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">G</th>
+                                <th width="20" class="hidden-xs hidden-sm text-right">GG</th>
+                                <th width="20" class="text-right">QTD.</th>
+                                <th width="30" class="hidden-xs text-right">UNIT.</th>
+                                <th width="30" class="text-right">TOTAL</th>
+                                <th width="20" class="text-center"><i class="fa fa-trash-o"></i></th>
+                            </tr>
+                        </thead>
+                    @else
                         <thead> 
                             <tr>
                                 <th class="col-sm-1 col-md-1">MODELO</th>
-                                
-                                @if ($config->FLG_USA_GRADE_PEDIDO == 1)
-                                <th class="col-sm-1 col-md-1 text-center">TAMANHO</th>
-                                @endif
-                                
                                 <th class="hidden-xs col-md-5">DESCRIÇÃO</th>
                                 <th class="hidden-xs col-md-1 text-right">PREÇO</th>
                                 <th class="hidden-xs col-md-1 text-right">QUANTIDADE</th>
@@ -191,6 +214,8 @@
                                 <th class="col-sm-1 col-md-1 text-center"><i class="fa fa-trash-o"></i></th>
                             </tr>
                         </thead>
+                    @endif
+
                         <tbody id="grid_itens">
 
                         </tbody>

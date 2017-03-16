@@ -239,12 +239,6 @@ $(document).ready(function() {
 																	'   	<span class="card-preco">R$ '+ this.PRECO_VENDA +'</span>' +												
 																	'	</div></div></div>');											
 
-
-
-											
-											
-
-
 						            		/*
 						            		  MODO ANTIGO ENCHENDO UM SELECTBOX
 
@@ -259,6 +253,7 @@ $(document).ready(function() {
 
 										$('.itens_grade').append('</div>');
 										
+										$('.itens_grade :input:first').val('');
 										$('.itens_grade :input:first').select();
 										$('.itens_grade :input:first').focus();
 
@@ -374,12 +369,8 @@ $(document).ready(function() {
  		var id_produto = $("#id_produto").val(); 
  		var formURL    = '/painel/pedidos/additem';
  		var dados      = '';
-
- 		console.log(formURL + ' - ' + 'PRODUTO: ' + id_produto + ' - PEDIDO: ' + id_pedido);
- 		 
- 	
  		
- 		//monta JSON dos dados na UNHA
+  		//monta JSON dos dados na UNHA
  		if ( !modoGrade ) {
 	 		
 	 		dados = '{  "id_produto": ' + '"' + id_produto 			          + '"' + ',' +
@@ -408,18 +399,12 @@ $(document).ready(function() {
  		            	   				'"tamanho": '    + '"' + $(this).attr('data-tam')  	     + '"' + ',' +
  		               	   				'"quantidade": ' + '"' + $(this).val()                   + '"' + ',' +
  		               	   				'"preco": '   	 + '"' + $(this).attr('data-preco')      + '"' + ' }' + final_str );
-
 	 		    
-
-	 			console.log('TAMANHO>>> ' + $(this).attr('data-tam') + ' QUANT>>>' + $(this).val());
-   	
 
 			});
 
-
 	 		dados = dados.concat(']');
-	 		console.log(dados);
-	 		
+	 			 		
 	 	}
 
 
@@ -443,29 +428,33 @@ $(document).ready(function() {
 	 			     	console.log(data);
 
 
+
+
 	 			     	// verifica se está configurado para utilizar de grade e monta de acordo com as configuracoes
 						if ( modoGrade ) {	 			     				
 		 			     	
 		 			     	MontaGridItens();
 
 						} else {
-
+							
+							var jsonobj = JSON.parse(data);
+									 			     	
 		 			     	$("#tabela_itens").append('<tr><td>' + $("#edit_busca_prod" ).val().toUpperCase() + '</td>' + 
 		 			     		 						  '<td class="hidden-xs">' + $("#edit_descricao"  ).val()  + '</td>' +
-														  '<td class="hidden-xs text-right">R$ '  + data.PRECO_UNT + '</td>' +
-														  '<td class="hidden-xs text-right">' + data.QUANTIDADE  + '</td>' + 			     		                          
-														  '<td class="text-right">R$ '+ data.TOTAL_ITEM + '</td>' +
+														  '<td class="hidden-xs text-right">R$ '  + jsonobj.PRECO_UNITARIO + '</td>' +
+														  '<td class="hidden-xs text-right">' + jsonobj.QUANTIDADE  + '</td>' + 			     		                          
+														  '<td class="text-right">R$ '+ jsonobj.TOTAL_ITEM + '</td>' +
 														  '<td class="text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
 														  											     ' data-idprod="'+ id_produto   + '"' + 
 														                                                 ' data-idped="' + id_pedido    + '"' + 
-														                                                 ' data-tam="'   + data.TAMANHO + '">' + 
+														                                                 ' data-tam="'   + jsonobj.TAMANHO + '">' + 
 														                                                 '<i class="fa fa-trash-o"></i></button></td></tr>'
 														  );
 
 
 						
 							$("#total_pedido").val( '' );
-							$("#total_pedido").val( 'R$ ' + data.TOTAL_PEDIDO );
+							$("#total_pedido").val( 'R$ ' + jsonobj.TOTAL_PEDIDO );
 
 						}
 
@@ -501,6 +490,17 @@ $(document).ready(function() {
 	 		});
 		});
  	}));
+
+
+	//EXCLUI ITEM DO PEDIDO 
+	$(".itens_grade").on('focus', '.campo-tamanho' , function() {
+
+		if ( $(this).val() == 0 )  {
+
+		//	alert('entrou no ' + $(this).arrt('data-tam').val() );
+		}
+
+	});
 
 
 	//EXCLUI ITEM DO PEDIDO 
@@ -578,47 +578,68 @@ $(document).ready(function() {
 	}
 
 	function MontaGridItens() {
-
+		
+		var total_pedido    = 0;
+		var qtd_total_itens = 0;
+		var total_itens     = 0;
+		var row 		    = '';
+		
 		var grid = $("#grid_itens");
 
-		grid.empty();
+		grid.html('');
 
-		$.ajax({ url : '/painel/pedidos/getitems/' + $("#id_pedido").val(),
-	   	     	type : 'GET' ,
-	 		dataType : 'json',
-	 		success  : function(data) {
+		
+		Pace.track( function(){
 
-	 			console.log(data);
+			$.ajax({ url : '/painel/pedidos/getitems/' + $("#id_pedido").val(),
+		   	     	type : 'GET' ,
+		 		dataType : 'json',
+		 		
+		 		success  : function(data) {
 
-	 			var total_pedido = 0;
+					$.each(data, function(index) {
 
-				$.each(data, function(index) {
+						row = '<tr>'; 
+	 			     	row = row + '<td width="50">' + this.MODELO + '</td>';  
+	 			     	row = row + '<td width="30" class="hidden-md hidden-lg text-center"><button type="button" class="btn btn-primary"><i class="fa fa-hashtag"></i></button></td>';
+				     					 
+	  			     	qtd_total_itens = 0;
 
- 			     	grid.append('<tr><td>' + data[index].MODELO + '</td>' + 
- 			     		 			'<td class="text-center">' + data[index].TAMANHO  + '</td>' + 			     		 						  
- 			     		 			'<td class="hidden-xs">' + data[index].DESCRICAO  + '</td>' +
-									'<td class="hidden-xs text-right">R$ '  + data[index].PRECO_UNITARIO + '</td>' +
-									'<td class="hidden-xs text-right">' + data[index].QUANTIDADE  + '</td>' + 			     		                          
-									'<td class="text-right">R$ '+ data[index].PRECO_TOTAL + '</td>' +
-									'<td class="text-center"> '+ '<button type="button" class="btn btn-danger btn_exclui_prod"' +
-																						' data-idprod="'+ data[index].ID_PRODUTO   + '"' + 
-											                                            ' data-idped="' + data[index].ID_PEDIDO    + '"' + 
-												                                        ' data-tam="'   + data[index].TAMANHO      + '">' + 
-												                                        '<i class="fa fa-trash-o"></i></button></td></tr>');
+	 					$.each( this['GRADE'], function(tamanho, quantidade) {
+	 					
+	 						if ( quantidade == 0 ) {
+	 						     row  = row  + '<td width="20" class="hidden-xs hidden-sm text-right">-</td>';
+	 						} else {
+	 							 row  = row  + '<td width="20" class="hidden-xs hidden-sm text-right">'+ quantidade + '</td>';
+	 						}
+	 						
+	 						qtd_total_itens = qtd_total_itens + quantidade; 
 
-				
+	 					});
 
+				     	// TOTALIZA
+				     	total_itens  = ( this.PRECO * qtd_total_itens );
+				     	total_itens  = parseFloat( total_itens );
+				     	total_pedido = ( total_itens + total_pedido );
+				     	total_pedido = parseFloat( total_pedido );
 
+					   	row = row + '<td width="20" class="text-right">'           + qtd_total_itens        +'</td>' +
+					           	    '<td width="20" class="hidden-xs text-right">' + this.PRECO             +'</td>' +
+					   	            '<td width="20" class="text-right">'           + total_itens.toFixed(2) +'</td>' +
+								    '<td class="text-center"><button type="button" class="btn btn-danger btn_exclui_prod"' +
+								 											' data-idprod="'+ this.ID_PRODUTO   + '"' + 
+								                                            ' data-idped="' + this.ID_PEDIDO    + '">' + 
+									                                        '<i class="fa fa-trash-o"></i></button></td></tr>';
+				     	
+				     	grid.append( row );
+						
+					});
+					
+					$("#total_pedido").val( 'R$ ' + total_pedido.toFixed(2) );
 
- 			     	total_pedido = parseFloat(total_pedido) + parseFloat(data[index].PRECO_TOTAL);
-				
-				});
-	
-				$("#total_pedido").val( 'R$ ' + total_pedido.toFixed(2) );
-
-	 		}
-	 	});
-
+	 			}
+	 		});
+		});
 	}	
 
 

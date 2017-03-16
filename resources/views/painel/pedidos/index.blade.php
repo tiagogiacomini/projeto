@@ -71,7 +71,7 @@
 			  			@else
 			  			<tr class="row listagem info" data-toggle="tooltip" title="<p>Pedido já importado pelo CAPPELLUS!</p><p>Importado em: {!! \Carbon\Carbon::parse($pedido->DATA_IMPORTACAO)->format('d/m/Y H:i') !!} por {!! $pedido->NOME_USUARIO_IMP !!}.</p>">
 			  			@endif			  				
-			  		 		<td >{!! sprintf('%06d', $pedido->ID_PEDIDO) !!}</td>
+			  		 		<td >{!! $pedido->ID_PEDIDO !!}</td>
 							<td class="hidden-xs">{!! \Carbon\Carbon::parse($pedido->DATA_EMISSAO)->format('d/m/Y') !!}</td>			  		 		
 							<td class="hidden-xs">{!! \Carbon\Carbon::parse($pedido->PREVISAO_ENTREGA)->format('d/m/Y') !!}</td>			  		 		
 			  				<td>{!! $pedido->RAZAO !!}</td>
